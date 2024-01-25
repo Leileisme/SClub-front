@@ -4,9 +4,13 @@ import mongoose from 'mongoose'
 import cors from 'cors'
 import routerUsers from './routes/users.js'
 import routerEvents from './routes/events.js'
+import mongoSanitize from 'express-mongo-sanitize'
 
 // 建立網頁伺服器
 const app = express()
+
+// 防止對MongoDB 的惡意請求，將「$」或「.」開頭的欄位ley值刪除或取代
+app.use(mongoSanitize())
 
 // 設定是否允許跨域請求
 app.use(
@@ -26,9 +30,7 @@ app.use(
 app.use((_, req, res, next) => {
   res.status(403).json({
     success: false,
-    message: '請求被拒絕'
-    // 以下會更好delBug?????????????????????
-    //  message:'CORS請求被拒絕'
+    message: 'CORS請求被拒絕'
   })
 })
 
@@ -39,9 +41,7 @@ app.use(express.json())
 app.use((_, rep, res, next) => {
   res.status(400).json({
     success: false,
-    message: '資料格式錯誤'
-    // 以上會更好delBug????????????????????????
-    //  message:'網頁伺服器資料格式錯誤'
+    message: '「express 伺服器」資料格式錯誤'
   })
 })
 
@@ -53,7 +53,7 @@ app.use('./events', routerEvents)
 app.all('*', (req, res) => {
   res.status(404).json({
     success: false,
-    message: '找不到'
+    message: '找不到路徑'
   })
 })
 
@@ -62,5 +62,6 @@ app.all('*', (req, res) => {
 app.listen(process.env.PORT || 4000, async () => {
   console.log('伺服器啟動')
   await mongoose.connect(process.env.DB_URL)
+  mongoose.set('sanitizeFilter',true)
   console.log('資料庫連線成功')
 })
