@@ -3,7 +3,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import routerUsers from './routes/users.js'
-import routerEvents from './routes/events.js'
+// import routerEvents from './routes/events.js'
 import mongoSanitize from 'express-mongo-sanitize'
 
 // 建立網頁伺服器
@@ -47,7 +47,7 @@ app.use((_, rep, res, next) => {
 
 // 所有請求路徑
 app.use('/users', routerUsers)
-app.use('./events', routerEvents)
+// app.use('./events', routerEvents)
 // 處理請求路徑錯誤
 // * 代表任意路徑
 app.all('*', (req, res) => {
@@ -62,6 +62,6 @@ app.all('*', (req, res) => {
 app.listen(process.env.PORT || 4000, async () => {
   console.log('伺服器啟動')
   await mongoose.connect(process.env.DB_URL)
-  mongoose.set('sanitizeFilter',true)
+  mongoose.set('sanitizeFilter', true)
   console.log('資料庫連線成功')
 })
