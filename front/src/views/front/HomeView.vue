@@ -1,9 +1,6 @@
 <template>
-  <v-main>
-    <router-view />
-  </v-main>
+前台首頁
 </template>
 
 <script setup>
-  //
 </script>

@@ -1,26 +1,77 @@
 // Composables
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
   {
     path: '/',
-    component: () => import('@/layouts/default/Default.vue'),
+    component: () => import('@/layouts/FrontLayout.vue'),
     children: [
       {
         path: '',
         name: 'Home',
-        // route level code-splitting
-        // this generates a separate chunk (Home-[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import('@/views/Home.vue'),
+        component: () => import('@/views/front/HomeView.vue'),
+        mate: {
+          title: '學生社團網',
+          login: false,
+          admin: false
+        }
       },
-    ],
+      {
+        path: '',
+        name: 'register',
+        component: () => import('@/views/front/RegisterView.vue'),
+        mate: {
+          title: '學生社團網 | 註冊',
+          login: false,
+          admin: false
+        }
+      }
+
+    ]
   },
+  {
+    path: '/admin',
+    component: () => import('@/layouts/AdminLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'AdminHome',
+        component: () => import('@/views/admin/HomeView.vue'),
+        meta: {
+          title: '學生社團網 | 管理',
+          login: true,
+          admin: true
+        }
+      }]
+  },
+  {
+    path: '/404',
+    name: 'NotFound',
+    component: () => import('@/views/NotFoundView.vue'),
+    mate: {
+      title: '學生社團網 | 找不到',
+      login: true,
+      admin: true
+    }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'All',
+    redirect: '/404s'
+  }
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes,
+  history: createWebHashHistory(process.env.BASE_URL),
+  routes
 })
+
+router.afterEach((to, from) => {
+  document.title = to.meta.title
+})
+
+// router.beforeEach(async (to, from, next) => {
+//   const user = useUserStore()
+// })
 
 export default router
