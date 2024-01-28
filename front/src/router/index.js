@@ -7,23 +7,33 @@ const routes = [
     component: () => import('@/layouts/FrontLayout.vue'),
     children: [
       {
-        path: '',
+        path: '/home',
         name: 'Home',
         component: () => import('@/views/front/HomeView.vue'),
-        mate: {
-          title: '學生社團網',
-          login: false,
-          admin: false
+        meta: {
+          title: '學生社團網'
+          // login: false,
+          // admin: false
         }
       },
       {
-        path: '',
+        path: '/register',
         name: 'register',
         component: () => import('@/views/front/RegisterView.vue'),
-        mate: {
-          title: '學生社團網 | 註冊',
-          login: false,
-          admin: false
+        meta: {
+          title: '學生社團網 | 註冊'
+          // login: false,
+          // admin: false
+        }
+      },
+      {
+        path: '/login',
+        name: 'login',
+        component: () => import('@/views/front/LoginView.vue'),
+        meta: {
+          title: '學生社團網 | 登入'
+          // login: false,
+          // admin: false
         }
       }
 
@@ -38,9 +48,9 @@ const routes = [
         name: 'AdminHome',
         component: () => import('@/views/admin/HomeView.vue'),
         meta: {
-          title: '學生社團網 | 管理',
-          login: true,
-          admin: true
+          title: '學生社團網 | 管理'
+          // login: true,
+          // admin: true
         }
       }]
   },
@@ -48,10 +58,10 @@ const routes = [
     path: '/404',
     name: 'NotFound',
     component: () => import('@/views/NotFoundView.vue'),
-    mate: {
-      title: '學生社團網 | 找不到',
-      login: true,
-      admin: true
+    meta: {
+      title: '學生社團網 | 找不到'
+      // login: true,
+      // admin: true
     }
   },
   {

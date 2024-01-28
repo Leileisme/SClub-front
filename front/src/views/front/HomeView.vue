@@ -1,6 +1,5 @@
 <template>
-前台首頁
+  前台首頁
 </template>
 
-<script setup>
-</script>
+<script setup></script>
