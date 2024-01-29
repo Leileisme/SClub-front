@@ -167,7 +167,7 @@ const schema = new Schema({
   // 6.姓名/社團名
   REAL_NAME: {
     type: String,
-    required:[true,'缺少「使用者姓名/社團名」'],
+    required: [true, '缺少「使用者姓名/社團名」'],
     unique: false,
     maxlength: [12, '「使用者姓名/社團名」長度不符']
   },
@@ -188,17 +188,19 @@ const schema = new Schema({
   // 9.出生日期
   BDAY: {
     type: String,
-    required () {
-      return this.ROLE === UserRole.STUDENT || this.ROLE === UserRole.NOT_STUDENT
-    },
+    required: [
+      function () {
+        return this.ROLE === UserRole.STUDENT || this.ROLE === UserRole.NOT_STUDENT
+      }, '缺少「使用者出生日期」'],
     unique: true
   },
   // 10.性別
   GENDER: {
     type: String,
-    required () {
-      return this.ROLE === UserRole.STUDENT || this.ROLE === UserRole.NOT_STUDENT
-    },
+    required: [
+      function () {
+        return this.ROLE === UserRole.STUDENT || this.ROLE === UserRole.NOT_STUDENT
+      }, '缺少「使用者性別」'],
     unique: false,
     minlength: [3, '「使用者性別」長度不符'],
     maxlength: [3, '「使用者性別」長度不符']
@@ -206,9 +208,10 @@ const schema = new Schema({
   // 11.手機
   MOBILE: {
     type: String,
-    required () {
-      return this.ROLE === UserRole.STUDENT || this.ROLE === UserRole.NOT_STUDENT
-    },
+    required: [
+      function () {
+        return this.ROLE === UserRole.STUDENT || this.ROLE === UserRole.NOT_STUDENT
+      }, '缺少「使用者手機」'],
     unique: false,
     minlength: [9, '「使用者手機」長度不符'],
     maxlength: [9, '「使用者手機」長度不符'],
@@ -221,9 +224,11 @@ const schema = new Schema({
   // 12.年級
   STUDENT_GRADE: {
     type: String,
-    required () {
-      return this.ROLE === UserRole.STUDENT
-    },
+    required: [
+      function () {
+        return this.ROLE === UserRole.STUDENT
+      }, '缺少「使用者年級」'
+    ],
     unique: false,
     minlength: [2, '「使用者年級」長度不符'],
     maxlength: [2, '「使用者年級」長度不符'],
@@ -251,27 +256,33 @@ const schema = new Schema({
   // 14.社團屆數
   CLUB_TH: {
     type: Number,
-    required () {
-      return this.ROLE === UserRole.CLUB
-    },
+    required: [
+      function () {
+        return this.ROLE === UserRole.CLUB
+      }, '缺少「社團屆數」'
+    ],
     unique: false,
     maxlength: [3, '「社團屆數」長度不符']
   },
   // 15.幹部
   CLUB_SQUAD_LEADER: {
     type: [memberSchema],
-    required () {
-      return this.ROLE === UserRole.CLUB
-    },
+    required: [
+      function () {
+        return this.ROLE === UserRole.CLUB
+      }, '缺少「社團幹部」'
+    ],
     unique: false,
     default: [{ USER: '', ROLE: '社長', CONFIRM: 'false', CONFIRM_USER: 'null' }, { USER: '', ROLE: '副社長', CONFIRM: 'false', CONFIRM_USER: 'null' }]
   },
   // 16.社團性質
   CLUB_CATEGORY: {
     type: String,
-    required () {
-      return this.ROLE === UserRole.CLUB
-    },
+    required: [
+      function () {
+        return this.ROLE === UserRole.CLUB
+      }, '缺少「社團性質」'
+    ],
     unique: false,
     maxlength: [3, '「社團性質」長度不符'],
     enum: {
