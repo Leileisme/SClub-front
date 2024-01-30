@@ -7,6 +7,8 @@ import ViteFonts from 'unplugin-fonts/vite'
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 
+import VueDevTools from 'vite-plugin-vue-devtools'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -15,16 +17,17 @@ export default defineConfig({
     }),
     // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
     vuetify({
-      autoImport: true,
+      autoImport: true
     }),
     ViteFonts({
       google: {
         families: [{
           name: 'Roboto',
-          styles: 'wght@100;300;400;500;700;900',
-        }],
-      },
+          styles: 'wght@100;300;400;500;700;900'
+        }]
+      }
     }),
+    VueDevTools()
   ],
   define: { 'process.env': {} },
   resolve: {
@@ -38,10 +41,10 @@ export default defineConfig({
       '.mjs',
       '.ts',
       '.tsx',
-      '.vue',
-    ],
+      '.vue'
+    ]
   },
   server: {
-    port: 3000,
-  },
+    port: 3000
+  }
 })

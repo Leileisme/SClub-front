@@ -6,7 +6,6 @@
             <v-btn :to="item.to" :prepend-icon="item.icon" :active=false class="iconBottom"></v-btn>
           </template>
       </v-bottom-navigation>
-
     </template>
 
       <!-- 電腦版 Sm (可縮合)-->
@@ -68,7 +67,7 @@
   </template>
 
     <!-- 路由 main -->
-    <v-main style="height: 100vh;" class="d-flex justify-center align-center">
+    <v-main class="d-flex justify-center align-center h-screen" >
       <RouterView :key="$route.path"></RouterView>
     </v-main>
   </v-layout>
