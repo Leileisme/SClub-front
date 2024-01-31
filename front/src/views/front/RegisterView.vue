@@ -15,7 +15,7 @@
     <!-- 選單 -->
     <div>
       <v-row class="d-flex justify-center w-100 mx-auto" >
-        <v-window v-model="tab" style="width: 90%;">
+        <v-window v-model="tab" style="width: 90%;" >
         <!-- 第一頁 -->
         <v-form @submit.prevent="submitOne" :disabled="form1.isSubitting">
           <v-window-item value="one">
@@ -74,19 +74,8 @@
                 maxlength="40"
                 counter variant="outlined"
                 density="comfortable"></v-text-field>
-
-                <!-- <v-text-field
-                v-else
-                v-model="email.value.value"
-                :error-messages="email.errorMessage.value"
-                label="信箱"
-                type="email"
-                maxlength="40"
-                counter variant="outlined"
-                density="comfortable"></v-text-field> -->
-
                 <!-- 學號 -->
-                <v-text-field
+                <v-text-field v-if="role.value.value === 1"
                 v-model="studentNo.value.value"
                 :error-messages="studentNo.errorMessage.value"
                 label="學號"
@@ -119,61 +108,161 @@
               <v-col cols="12" >
                 <v-row>
                   <v-col cols="4" >
-                    <v-btn type="button" block class="mt-2  rounded-lg" style="background-color: #FF8484;height: 60px;" @click="tab='one'">上一步</v-btn>
+                    <v-btn
+                    type="button"
+                    block class="mt-2  rounded-lg"
+                    style="background-color: #FF8484;height: 60px;"
+                    @click="tab='one'">上一步</v-btn>
                   </v-col>
                   <v-col cols="8" >
-                    <v-btn type="submit" block class="mt-2  rounded-lg" style="background-color: #1BBCA9;height: 60px;">下一步</v-btn>
+                    <v-btn
+                    type="submit"
+                    block class="mt-2  rounded-lg"
+                    style="background-color: #1BBCA9;height: 60px;">下一步</v-btn>
                   </v-col>
                 </v-row>
               </v-col>
           </v-window-item>
         </v-form>
         <!-- 第三頁 -->
-        <v-form @submit.prevent>
+        <v-form @submit.prevent="submitThree" :disabled="form3.isSubitting">
           <v-window-item value="three">
               <v-col cols="12" class="mt-8">
-                <!-- 學校 -->
-                <v-text-field label="學校" variant="outlined"  density="compact"></v-text-field>
+                <!-- 學校名字 -->
+                <v-text-field
+                v-model="schoolName.value.value"
+                :error-messages="schoolName.errorMessage.value"
+                maxlength="20"
+                label="學校"
+                variant="outlined"
+                density="compact"></v-text-field>
+                <!-- item-title/item-value先刪掉了 -->
+                <!-- 學校地區 -->
+                <v-select
+                  v-model="schoolCity.value.value"
+                  :error-messages="schoolCity.errorMessage.value"
+                  :items="schoolCityItems.items"
+                  density="compact"
+                  label="學校縣市"
+                  variant="outlined"
+                ></v-select>
                 <!-- 姓名 -->
-                <v-text-field label="姓名" variant="outlined"  density="compact"></v-text-field>
-                <!-- 檔案暱稱 -->
-                <v-text-field label="檔案暱稱" variant="outlined"  density="compact"></v-text-field>
+                <v-text-field
+                v-model="realName.value.value"
+                :label="realNameLabel"
+                :error-messages="realName.errorMessage.value"
+                maxlength="6"
+                variant="outlined"
+                density="compact"></v-text-field>
                 <!-- 用戶名稱 -->
-                <v-text-field label="用戶名稱" variant="outlined"  density="compact"></v-text-field>
+                <v-text-field
+                v-model="UserName.value.value"
+                :error-messages="UserName.errorMessage.value"
+                maxlength="12"
+                label="用戶名稱"
+                variant="outlined"
+                density="compact"></v-text-field>
+                <!-- 檔案暱稱 -->
+                <v-text-field
+                v-model="nickName.value.value"
+                :error-messages="nickName.errorMessage.value"
+                maxlength="6"
+                label="檔案暱稱"
+                variant="outlined"
+                density="compact"></v-text-field>
+                <!-- 用戶名稱 -->
+                <v-text-field
+                v-model="UserName.value.value"
+                :error-messages="UserName.errorMessage.value"
+                maxlength="12"
+                label="用戶名稱"
+                variant="outlined"
+                density="compact"></v-text-field>
                 <!-- 出生日期 -->
-                <v-menu v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" min-width="290px" class="d-flex align-center justify-center">
+                <!-- 這邊的V-model??-->
+                <!-- <v-menu v-if="!useRole.CLUB" v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" min-width="290px" class="d-flex align-center justify-center">
                   <template v-slot:activator="{ attrs }">
-                    <v-text-field   density="compact" variant="outlined" v-model="date" label="出生日期" prepend-icon="mdi-calendar" readonly v-bind="attrs" @click="menu = !menu"></v-text-field>
+                    <v-text-field
+                    density="compact"
+                    variant="outlined"
+                    v-model="BDay"
+                    label="出生日期" prepend-icon="mdi-calendar" readonly v-bind="attrs" @click="menu = !menu"></v-text-field>
                   </template>
                   <v-date-picker  type="date" v-model="rawDate" no-time no-title @input="menu = false">
                     <template v-slot:footer>
                       <v-btn color="primary" @click="menu = false">確定</v-btn>
                     </template>
                   </v-date-picker>
-                </v-menu>
+                </v-menu> -->
                 <!-- 性別 -->
-                <!-- <v-select
-                  v-model="..."
+                <v-select
+                  v-if="!role.value.value === 3"
+                  v-model="gender.value.value"
+                  :error-messages="gender.errorMessage.value"
                   :items="genderValue.items"
-                  item-title="text"
-                  item-value="value"
                   density="compact"
                   label="性別"
                   variant="outlined"
-                ></v-select> -->
+                ></v-select>
                 <!-- 手機 -->
-                <v-text-field label="手機" variant="outlined"  density="compact"></v-text-field>
+                <v-text-field
+                v-if="!role.value.value === 3"
+                v-model="mobile.value.value"
+                :error-messages="mobile.errorMessage.value"
+                minlength="9"
+                maxlength="9"
+                label="手機"
+                variant="outlined"
+                density="compact"></v-text-field>
                 <!-- 常用信箱 -->
-                <v-text-field label="常用信箱" variant="outlined"  density="compact"></v-text-field>
-              </v-col>
+                <v-text-field
+                v-model="emailUB.value.value"
+                :error-messages="emailUB.errorMessage.value"
+                maxlength="40"
+                label="常用信箱"
+                variant="outlined"
+                density="compact"></v-text-field>
+                <!-- 社團屆數 -->
+                <v-text-field
+                v-if="role.value.value === 3"
+                v-model="clubTh.value.value"
+                :error-messages="clubTh.errorMessage.value"
+                maxlength="3"
+                label="社團屆數"
+                variant="outlined"
+                density="compact"></v-text-field>
+              <!-- 幹部 -->
+              <v-text-field
+              v-if="role.value.value === 3"
+              v-model="clubCoreMember.value.value"
+              :error-messages="clubCoreMember.errorMessage.value"
+              label="幹部"
+              variant="outlined"
+              density="compact"></v-text-field>
+
+              <!-- 社團類別 -->
+              <v-select
+              v-if="role.value.value === 3"
+              v-model="clubCategory.value.value"
+              :items="clubItems.items"
+              label="社團類別"
+              variant="outlined"
+              density="compact"></v-select>
+
+            </v-col>
               <!-- 送出 -->
               <v-col cols="12" >
                 <v-row>
                   <v-col cols="4" >
-                    <v-btn type="button" block class="mt-2  rounded-lg" style="background-color: #FF8484;height: 60px;" @click="tab='two'">上一步</v-btn>
+                    <v-btn type="button"
+                    block class="mt-2  rounded-lg"
+                    style="background-color: #FF8484;height: 60px;"
+                    @click="tab='two'" >上一步</v-btn>
                   </v-col>
                   <v-col cols="8" >
-                    <v-btn type="submit" block class="mt-2  rounded-lg" style="background-color: #1BBCA9;height: 60px;" @click="tab='three'">註冊成功</v-btn>
+                    <v-btn type="submit"
+                    block class="mt-2  rounded-lg"
+                    style="background-color: #1BBCA9;height: 60px;">註冊成功</v-btn>
                   </v-col>
                 </v-row>
               </v-col>
@@ -199,6 +288,13 @@ import validator from 'validator'
 // JS物件模式驗證器，這裡創建表單驗證的規則
 import * as yup from 'yup'
 import UseRole from '@/enums/UserRole.js'
+import { useRouter } from 'vue-router'
+import { useSnackbar } from 'vuetify-use-dialog'
+// import { useApi } from '@/composables/axios'
+
+// const { api } = useApi()
+const router = useRouter()
+const createSnackbar = useSnackbar()
 
 // 判斷是否用手機
 const { xs } = useDisplay()
@@ -230,10 +326,12 @@ const roleItems = {
   ]
 }
 
-const roleNull = {
-  items: [
-    { text: '', value: '' }
-  ]
+const schoolCityItems = {
+  items: ['臺北市', '新北市', '桃園市', '臺中市', '臺南市', '高雄市', '新竹縣', '苗栗縣', '彰化縣', '南投縣', '雲林縣', '嘉義縣', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '澎湖縣', '金門縣', '連江縣', '基隆市', '新竹市', '嘉義市']
+}
+
+const clubItems = {
+  items: ['學術', '學藝', '音樂', '康樂', '服務', '體育', '康輔', '聯誼', '其他']
 }
 
 const group = {
@@ -258,7 +356,7 @@ const formatDate = (value) => {
   return date.toLocaleDateString('zh-TW', { year: 'numeric', month: '2-digit', day: '2-digit' })
 }
 
-const date = computed({
+const BDay = computed({
   // 用於計算和返回屬性的值
   get: () => formatDate(rawDate.value),
   // 屬性被賦新值時被調用，將 rawDate.value 設置為新的 Date 物件
@@ -310,7 +408,14 @@ const schemaTwo = yup.object({
     ),
   studentNo: yup
     .string()
-    .required('學號必填')
+    .required('學號必填',
+      (value) => {
+        if (role.value.value === UseRole.STUDENT && value) {
+          return true
+        }
+        return false
+      }
+    )
     .max(20, '學號長度不符'),
   password: yup
     .string()
@@ -346,11 +451,175 @@ const emailLabel = computed(() => {
 // 2.送出表單
 const submitTwo = form2.handleSubmit(async (value) => {
   try {
-    if (email.value.value && studentNo.value.value && password.value.value && passwordConfirm.value.value) {
-      tab.value = 'three'
-    }
+    form3.resetForm()
+    tab.value = 'three'
   } catch (error) {
     console(error)
+  }
+})
+
+// 3.定義註冊表單的資料格式
+const schemaThree = yup.object({
+  // 學校名字
+  schoolName: yup
+    .string()
+    .required('學校必填')
+    .max(20, '學校長度不符'),
+  // 學校地區
+  schoolCity: yup
+    .string()
+    .required('學校縣市必填')
+    .min(3, '學校縣市長度不符')
+    .max(3, '學校縣市長度不符'),
+  // 姓名/社團名
+  realName: yup
+    .string()
+    .required('姓名/社團名必填')
+    .max(6, '姓名/社團名長度不符'),
+  //  用戶名稱
+  UserName: yup
+    .string()
+    .required('用戶名稱必填')
+    .max(12, '用戶名稱長度不符')
+    .matches(/^[a-zA-Z0-9]*$/, '用戶名稱格式錯誤,只能英文或數字'),
+  // 檔案暱稱
+  nickName: yup
+    .string()
+    .max(6, '檔案暱稱長度不符'),
+  // 出生日期
+  BDAY: yup
+    .string()
+    .required('出生日期必填',
+      (value) => {
+        if (role.value.value === UseRole.CLUB && !value) {
+          return false
+        } else {
+          return true
+        }
+      }),
+  // 性別
+  gender: yup
+    .string()
+    .required('性別必填',
+      (value) => {
+        if (role.value.value === UseRole.CLUB && !value) {
+          return false
+        } else {
+          return true
+        }
+      })
+    .min(3, '性別長度不符')
+    .max(3, '性別長度不符'),
+  // 手機
+  mobile: yup
+    .string()
+    .required('手機必填', (value) => {
+      if (role.value.value === UseRole.CLUB && !value) {
+        return false
+      } else {
+        return true
+      }
+    })
+    .min(9, '手機長度不符')
+    .max(9, '手機長度不符')
+    .matches(/^0[0-9]{9}$/, '手機格式錯誤,從9開始'),
+  // 常用信箱
+  studentGrade: yup
+    .string()
+    .required('年級必填')
+    .min(2, '年級長度不符')
+    .max(2, '年級長度不符'),
+  // 備用信箱
+  emailUB: yup
+    .string()
+    .required('備用信箱必填')
+    .max(40, '備用信箱長度不符')
+    .test(
+      'isEmail', '備用信箱格式錯誤',
+      (value) => {
+        return validator.isEmail(value)
+      }
+    ),
+  // 社團屆數
+  clubTh: yup
+    .number()
+    .required('社團屆數必填',
+      (value) => {
+        if (role.value.value === UseRole.CLUB && value) {
+          return true
+        } else {
+          return false
+        }
+      })
+    .max(3, '社團屆數長度不符'),
+  // 社團幹部
+  clubCoreMember: yup
+    .object(),
+  // 社團類別
+  clubCategory: yup
+    .string()
+    .required('社團類別必填',
+      (value) => {
+        if (role.value.value === UseRole.CLUB && value) {
+          return true
+        } else {
+          return false
+        }
+      })
+    .min(2, '社團類別不符')
+    .max(2, '社團類別不符')
+    .required('社團類別必填')
+})
+
+// 3.useForm建立一個表單
+const form3 = useForm({ validationSchema: schemaThree })
+
+// 3.useField建立表單的欄位
+const schoolName = useField('schoolName', undefined, { form: form3 })
+const schoolCity = useField('schoolCity', undefined, { form: form3 })
+const realName = useField('realName', undefined, { form: form3 })
+const UserName = useField('UserName', undefined, { form: form3 })
+const nickName = useField('nickName', undefined, { form: form3 })
+const BDAY = useField('BDay', undefined, { form: form3 })
+const gender = useField('gender', undefined, { form: form3 })
+const mobile = useField('mobile', undefined, { form: form3 })
+const studentGrade = useField('studentGrade', undefined, { form: form3 })
+const emailUB = useField('emailUB', undefined, { form: form3 })
+const clubTh = useField('clubTh', undefined, { form: form3 })
+const clubCoreMember = useField('clubCoreMember', undefined, { form: form3 })
+const clubCategory = useField('clubCategory', undefined, { form: form3 })
+const isStudent = role.value.value !== UseRole.NOT_STUDENT
+
+// 姓名、社團名稱判斷
+const realNameLabel = computed(() => {
+  return role.value.value === UseRole.CLUB ? '社團名稱' : '姓名'
+})
+
+// 3.送出表單
+const submitThree = form3.handleSubmit(async (values) => {
+  try {
+    // await api.post('/users', {
+    //   ROLE: role.value.value,
+    //   EMAIL: email.value.value,
+    //   PASSWORD: password.value.value,
+    //   STUDENT_NO: studentNo.value.value,
+    //   SCHOOL_NAME: schoolName.value.value,
+    //   SCHOOL_CITY: schoolCity.value.value,
+    //   REAL_NAME: realName.value.value,
+    //   USER_NAME: UserName.value.value,
+    //   NICK_NAME: nickName.value.value,
+    //   BDAY: BDAY.value.value,
+    //   GENDER: gender.value.value,
+    //   MOBILE: mobile.value.value,
+    //   STUDENT_GRADE: studentGrade.value.value,
+    //   EMAIL_UB: emailUB.value.value,
+    //   CLUB_TH: clubTh.value.value,
+    //   CLUB_CORE_MEMBER: clubCoreMember.value.value,
+    //   CLUB_CATEGORY: clubCategory.value.value,
+    //   IS_STUDENT: isStudent
+    // })
+  } catch (error) {
+    console.log(error)
   }
 })
 

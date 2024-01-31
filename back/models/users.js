@@ -169,7 +169,7 @@ const schema = new Schema({
     type: String,
     required: [true, '缺少「使用者姓名/社團名」'],
     unique: false,
-    maxlength: [12, '「使用者姓名/社團名」長度不符']
+    maxlength: [6, '「使用者姓名/社團名」長度不符']
   },
   // 7.用戶名稱
   USER_NAME: {
@@ -183,7 +183,7 @@ const schema = new Schema({
     type: String,
     required: [true, '缺少「使用者檔案暱稱」'],
     unique: false,
-    maxlength: [12, '「使用者檔案暱稱」長度不符']
+    maxlength: [6, '「使用者檔案暱稱」長度不符']
   },
   // 9.出生日期
   BDAY: {
@@ -275,19 +275,19 @@ const schema = new Schema({
     unique: false,
     default: [{ USER: '', ROLE: '社長', CONFIRM: 'false', CONFIRM_USER: 'null' }, { USER: '', ROLE: '副社長', CONFIRM: 'false', CONFIRM_USER: 'null' }]
   },
-  // 16.社團性質
+  // 16.社團類別
   CLUB_CATEGORY: {
     type: String,
     required: [
       function () {
         return this.ROLE === UserRole.CLUB
-      }, '缺少「社團性質」'
+      }, '缺少「社團類別」'
     ],
     unique: false,
-    maxlength: [3, '「社團性質」長度不符'],
+    maxlength: [3, '「社團類別」長度不符'],
     enum: {
       values: ['學術', '學藝', '音樂', '康樂', '服務', '體育', '康輔', '聯誼', '其他'],
-      message: '「社團性質」分類錯誤'
+      message: '「社團類別」分類錯誤'
     }
   },
   // 17.大頭貼
