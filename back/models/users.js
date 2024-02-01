@@ -3,6 +3,7 @@ import validator from 'validator'
 import bcrypt from 'bcrypt'
 import UserRole from '../enums/UserRole.js'
 import NotifyType from '../enums/NotifyType.js'
+import IsAble from '../enums/IsAble.js'
 
 // 幹部
 const memberSchema = new Schema({
@@ -23,8 +24,7 @@ const memberSchema = new Schema({
   // 4.確認中的使用者(功能先不用，key先存)
   CONFIRM_USER: {
     type: ObjectId,
-    ref: 'users',
-    default: 'null'
+    ref: 'users'
   }
 })
 
@@ -213,8 +213,8 @@ const schema = new Schema({
         return this.ROLE === UserRole.STUDENT || this.ROLE === UserRole.NOT_STUDENT
       }, '缺少「使用者手機」'],
     unique: false,
-    minlength: [9, '「使用者手機」長度不符'],
-    maxlength: [9, '「使用者手機」長度不符'],
+    minlength: [8, '「使用者手機」長度不符'],
+    maxlength: [8, '「使用者手機」長度不符'],
     validator: {
       validator (value) {
         return validator.isMobilePhone(value, 'zh-TW')
@@ -273,7 +273,7 @@ const schema = new Schema({
       }, '缺少「社團幹部」'
     ],
     unique: false,
-    default: [{ USER: '', ROLE: '社長', CONFIRM: 'false', CONFIRM_USER: 'null' }, { USER: '', ROLE: '副社長', CONFIRM: 'false', CONFIRM_USER: 'null' }]
+    default: [{ ROLE: '社長', CONFIRM: 'false' }, { ROLE: '副社長', CONFIRM: 'false' }]
   },
   // 16.社團類別
   CLUB_CATEGORY: {
@@ -294,12 +294,15 @@ const schema = new Schema({
   IMAGE: {
     type: String,
     required: [true, '缺少「使用者大頭貼」'],
-    unique: false
-    // default: 'https://source.boringavatars.com/beam/120/' + this.EMAIL
+    unique: false,
+    default: function () {
+      return 'https://source.boringavatars.com/beam/120/' + this.EMAIL
+    }
   },
   // 18.使用者角色
   ROLE: {
-    type: Number
+    type: Number,
+    required: [true, '缺少「使用者角色」']
   },
   // 19.TOKENS
   TOKENS: {
@@ -333,6 +336,12 @@ const schema = new Schema({
   KEEP_EVENT: {
     type: [ObjectId],
     ref: 'events'
+  },
+  // 26.帳號狀態
+  ISABLE: {
+    type: Number,
+    required: [true, '缺少「帳號狀態」'],
+    default: IsAble.Y
   }
 },
 {

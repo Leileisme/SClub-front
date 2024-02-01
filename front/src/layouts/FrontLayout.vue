@@ -67,8 +67,8 @@
   </template>
 
     <!-- 路由 main -->
-    <v-main class="d-flex justify-center align-center h-screen" >
-      <RouterView :key="$route.path"></RouterView>
+    <v-main class="d-flex justify-center " :style="heigh">
+      <RouterView :key="$route.path" ></RouterView>
     </v-main>
   </v-layout>
 </template>
@@ -88,12 +88,20 @@ const router = useRouter()
 // const user = useUserStore()
 
 // 判斷是否用手機
-const { mobile, sm, xs } = useDisplay()
+const { sm, xs } = useDisplay()
 const isXs = computed(() => xs.value)
 const isSm = computed(() => sm.value)
 
 const drawer = ref(true)
 const rail = ref(true)
+
+const heigh = computed(() => {
+  if (!isXs.value) {
+    return 'height: 100vh; align-items: center;'
+  } else {
+    return 'height:auto'
+  }
+})
 
 const navItems = computed(() => {
   return [

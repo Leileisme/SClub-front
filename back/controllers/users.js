@@ -5,8 +5,10 @@ import validator from 'validator'
 export const create = async (req, res) => {
   try {
     // 這邊的 image 是我表單自訂的名字
-    req.body.IMAGE = req.file.path
+    // req.body.IMAGE = req.file.path
+    console.log('start')
     await users.create(req.body)
+    console.log('end')
     res.status(200).json({
       success: true,
       message: ''
@@ -21,7 +23,7 @@ export const create = async (req, res) => {
       // error.errors 包含了驗證失敗時的詳細資訊，EX：哪個欄位未通過驗證...
       // error.errors[0] 取錯誤物件第一個屬性名稱
       // error.errors[key].message 取其錯誤訊息
-      const key = Object.keys(error.errors[0])
+      const key = Object.keys(error.errors)[0]
       const message = error.errors[key].message
       res.status(400).json({
         success: false,
