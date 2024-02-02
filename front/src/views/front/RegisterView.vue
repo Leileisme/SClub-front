@@ -10,6 +10,9 @@
     <!-- 標題Logo -->
     <div class="mb-1">
         <div class="text-center font-weight-bold text-h3">LogoHere</div>
+        <div class="text-center mt-5">
+          <p>註冊馬上加入「學生社團」社群行列</p>
+        </div>
     </div>
     <!-- 選單 -->
     <div>
@@ -20,9 +23,9 @@
         <v-form @submit.prevent="submitOne" :disabled="form1.isSubmitting.value" >
           <v-window-item value="one">
               <!-- 副標 -->
-                <div class="text-center mt-5">
+                <!-- <div class="text-center mt-5">
                   <p>註冊馬上加入「學生社團」社群行列</p>
-                </div>
+                </div> -->
                 <!-- 單位 -->
                 <v-col cols="12" class="mt-8">
                 <v-select
@@ -61,9 +64,9 @@
         <v-form @submit.prevent="submitTwo" :disabled="form2.isSubmitting.value">
           <v-window-item value="two">
               <!-- 副標 -->
-                <div class="text-center mt-5">
+                <!-- <div class="text-center mt-5">
                   <p>註冊馬上加入「學生社團」社群行列</p>
-                </div>
+                </div> -->
               <v-col cols="12" class="mt-8">
                 <!-- 學校信箱 -->
                 <v-text-field
@@ -195,7 +198,7 @@
                   </template>
                   <v-date-picker  type="date" v-model="BDAY.value.value" no-time no-title @input="menu = false">
                     <template v-slot:actions>
-                      <v-btn color="primary" @click="menu = false">確定</v-btn>
+                      <v-btn  style="background-color: #1BBCA9; box-shadow: #3effe5 0 0 3px; color: rgb(255, 255, 255);" @click="menu = false">確定</v-btn>
                     </template>
                   </v-date-picker>
                 </v-menu>
@@ -232,15 +235,14 @@
                 label="年級"
                 variant="outlined"
                 density="compact"></v-select>
-                <!-- 備用信箱 -->
-                <v-text-field
-                v-model="emailUB.value.value"
-                :error-messages="emailUB.errorMessage.value"
-                maxlength="40"
-                counter
-                label="備用信箱"
+                <!-- 社團類別 -->
+                <v-select
+                v-if="role.value.value === 3"
+                v-model="clubCategory.value.value"
+                :items="clubItems.items"
+                label="社團類別"
                 variant="outlined"
-                density="compact"></v-text-field>
+                density="compact"></v-select>
                 <!-- 社團屆數 -->
                 <v-text-field
                 v-if="role.value.value === 3"
@@ -259,16 +261,15 @@
               label="幹部"
               variant="outlined"
               density="compact"></v-text-field>
-
-              <!-- 社團類別 -->
-              <v-select
-              v-if="role.value.value === 3"
-              v-model="clubCategory.value.value"
-              :items="clubItems.items"
-              label="社團類別"
-              variant="outlined"
-              density="compact"></v-select>
-
+              <!-- 備用信箱 -->
+              <v-text-field
+                v-model="emailUB.value.value"
+                :error-messages="emailUB.errorMessage.value"
+                maxlength="40"
+                counter
+                label="備用信箱"
+                variant="outlined"
+                density="compact"></v-text-field>
             </v-col>
               <!-- 送出 -->
               <v-col cols="12" >

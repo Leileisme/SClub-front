@@ -5,7 +5,7 @@ import UserRole from '../enums/UserRole.js'
 import NotifyType from '../enums/NotifyType.js'
 import IsAble from '../enums/IsAble.js'
 
-// 幹部
+// // 幹部
 const memberSchema = new Schema({
   // 1.使用者id
   USER: {
@@ -28,7 +28,7 @@ const memberSchema = new Schema({
   }
 })
 
-// 票券
+// // 票券
 const ticketCartSchema = new Schema({
   // 1.活動ID
   EVENT: {
@@ -41,7 +41,7 @@ const ticketCartSchema = new Schema({
   }
 })
 
-// 通知
+// // 通知
 const notifySchema = new Schema({
   // 1.通知類別
   TYPE: {
@@ -127,8 +127,7 @@ const schema = new Schema({
   // 2.密碼，長度下方驗證後加密
   PASSWORD: {
     type: String,
-    required: [true, '缺少「使用者密碼」'],
-    unique: false
+    required: [true, '缺少「使用者密碼」']
   },
   // 3.學號
   STUDENT_NO: {
@@ -149,14 +148,12 @@ const schema = new Schema({
   SCHOOL_NAME: {
     type: String,
     required: [true, '缺少「使用者學校」'],
-    unique: false,
     maxlength: [20, '「使用者學校」長度不符']
   },
   // 5.學校縣市
   SCHOOL_CITY: {
     type: String,
     required: [true, '缺少「使用者學校縣市」'],
-    unique: false,
     minlength: [3, '「使用者學校縣市」長度不符'],
     maxlength: [3, '「使用者學校縣市」長度不符'],
     enum: {
@@ -168,7 +165,6 @@ const schema = new Schema({
   REAL_NAME: {
     type: String,
     required: [true, '缺少「使用者姓名/社團名」'],
-    unique: false,
     maxlength: [6, '「使用者姓名/社團名」長度不符']
   },
   // 7.用戶名稱
@@ -182,7 +178,6 @@ const schema = new Schema({
   NICK_NAME: {
     type: String,
     required: [true, '缺少「使用者檔案暱稱」'],
-    unique: false,
     maxlength: [6, '「使用者檔案暱稱」長度不符']
   },
   // 9.出生日期
@@ -201,7 +196,6 @@ const schema = new Schema({
       function () {
         return this.ROLE === UserRole.STUDENT || this.ROLE === UserRole.NOT_STUDENT
       }, '缺少「使用者性別」'],
-    unique: false,
     minlength: [3, '「使用者性別」長度不符'],
     maxlength: [3, '「使用者性別」長度不符']
   },
@@ -212,7 +206,6 @@ const schema = new Schema({
       function () {
         return this.ROLE === UserRole.STUDENT || this.ROLE === UserRole.NOT_STUDENT
       }, '缺少「使用者手機」'],
-    unique: false,
     minlength: [8, '「使用者手機」長度不符'],
     maxlength: [8, '「使用者手機」長度不符'],
     validator: {
@@ -229,7 +222,6 @@ const schema = new Schema({
         return this.ROLE === UserRole.STUDENT
       }, '缺少「使用者年級」'
     ],
-    unique: false,
     minlength: [2, '「使用者年級」長度不符'],
     maxlength: [2, '「使用者年級」長度不符'],
     enum: {
@@ -245,7 +237,6 @@ const schema = new Schema({
   // 13.備用信箱
   EMAIL_UB: {
     type: String,
-    unique: false,
     maxlength: [40, '「使用者備用信箱」長度不符'],
     validator: {
       validator (value) {
@@ -261,7 +252,6 @@ const schema = new Schema({
         return this.ROLE === UserRole.CLUB
       }, '缺少「社團屆數」'
     ],
-    unique: false,
     maxlength: [3, '「社團屆數」長度不符']
   },
   // 15.幹部
@@ -272,7 +262,6 @@ const schema = new Schema({
         return this.ROLE === UserRole.CLUB
       }, '缺少「社團幹部」'
     ],
-    unique: false,
     default: [{ ROLE: '社長', CONFIRM: 'false' }, { ROLE: '副社長', CONFIRM: 'false' }]
   },
   // 16.社團類別
@@ -283,7 +272,6 @@ const schema = new Schema({
         return this.ROLE === UserRole.CLUB
       }, '缺少「社團類別」'
     ],
-    unique: false,
     maxlength: [3, '「社團類別」長度不符'],
     enum: {
       values: ['學術', '學藝', '音樂', '康樂', '服務', '體育', '康輔', '聯誼', '其他'],
@@ -294,7 +282,6 @@ const schema = new Schema({
   IMAGE: {
     type: String,
     required: [true, '缺少「使用者大頭貼」'],
-    unique: false,
     default: function () {
       return 'https://source.boringavatars.com/beam/120/' + this.EMAIL
     }
@@ -349,7 +336,8 @@ const schema = new Schema({
   timestamps: true,
   // 修改幾次
   versionKey: false
-})
+}
+)
 
 // 密碼存檔前驗證
 schema.pre('save', function (next) {
@@ -371,6 +359,7 @@ schema.pre('save', function (next) {
       this.PASSWORD = bcrypt.hashSync(this.PASSWORD, 10)
     }
   }
+  next()
 })
 
 export default model('users', schema)
