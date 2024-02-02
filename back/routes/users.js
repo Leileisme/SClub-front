@@ -1,5 +1,4 @@
 import { Router } from 'express'
-// import { data } from '../users_test.js'
 import { create } from '../controllers/users.js'
 
 // import fileUpload from '../middlewares/fileUpload.js'

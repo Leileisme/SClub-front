@@ -7,26 +7,24 @@
       </v-app-bar>
   </template>
 
-  <div style="width: 400px; " :style="boxBorder" class="pb-8" >
+  <div style="width: 400px;" :style="boxBorder" class="pb-8" >
     <div v-if="!isXs" style="height: 65px; width: 100%; box-shadow: 0 1px 5px #000;" class="d-flex justify-center align-center">
       <div class="text-h5 font-weight-black">註冊</div>
     </div>
     <!-- 標題Logo -->
-    <v-container>
-    <div class="mb-1 mt-3">
+    <div class="mb-1 mt-5">
         <div class="text-center font-weight-bold text-h3">LogoHere</div>
         <div class="text-center mt-5">
           <p>註冊馬上加入「學生社團」社群行列</p>
         </div>
     </div>
-
     <!-- 選單 -->
-    <div class="d-flex justify-center w-100 mx-auto">
-        <v-window v-model="tab" style="width: 95%;" :touch="false">
+    <div>
+      <v-row class="d-flex justify-center w-100 mx-auto" >
+        <v-window v-model="tab" style="width: 90%;" :touch="false">
         <!-- 第一頁 -->
         <v-form @submit.prevent="submitOne" :disabled="form1.isSubmitting.value" >
           <v-window-item value="one">
-            <v-row>
                 <!-- 單位 -->
                 <v-col cols="12" class="mt-8">
                 <v-select
@@ -57,17 +55,17 @@
 
                 <!-- 往第二頁的按鈕 -->
                 <v-col cols="12" >
-                  <v-btn type="submit"
-                  class="mt-2 rounded-lg w-100"
-                  style="background-color: #1BBCA9; height: 60px; font-weight: 900;">下一步</v-btn>
+                  <v-btn type="submit" block class="mt-2 py-6 rounded-lg text-blod" style="background-color: #1BBCA9;">下一步</v-btn>
                 </v-col>
-                </v-row>
           </v-window-item>
         </v-form>
           <!-- 第二頁 -->
         <v-form @submit.prevent="submitTwo" :disabled="form2.isSubmitting.value">
           <v-window-item value="two">
-              <v-row>
+              <!-- 副標 -->
+                <!-- <div class="text-center mt-5">
+                  <p>註冊馬上加入「學生社團」社群行列</p>
+                </div> -->
               <v-col cols="12" class="mt-8">
                 <!-- 學校信箱 -->
                 <v-text-field
@@ -118,27 +116,28 @@
               </v-col>
 
               <!-- 往第三頁的按鈕 -->
+              <v-col cols="12" >
+                <v-row>
                   <v-col cols="4" >
                     <v-btn
                     type="button"
                     block class="mt-2  rounded-lg"
-                    style="background-color: #FF8484;height: 60px; font-weight: 900;"
+                    style="background-color: #FF8484;height: 60px;"
                     @click="tab='one'">上一步</v-btn>
                   </v-col>
                   <v-col cols="8" >
                     <v-btn
                     type="submit"
                     block class="mt-2  rounded-lg"
-                    style="background-color: #1BBCA9;height: 60px; font-weight: 900;">下一步</v-btn>
+                    style="background-color: #1BBCA9;height: 60px;">下一步</v-btn>
+                  </v-col>
+                </v-row>
               </v-col>
-            </v-row>
           </v-window-item>
         </v-form>
-
         <!-- 第三頁 -->
         <v-form @submit.prevent="submitThree" :disabled="form3.isSubmitting.value">
           <v-window-item value="three">
-            <v-row>
               <v-col cols="12" class="mt-8">
                 <!-- 學校名字 -->
                 <v-text-field
@@ -199,7 +198,7 @@
                   </template>
                   <v-date-picker  type="date" v-model="BDAY.value.value" no-time no-title @input="menu = false">
                     <template v-slot:actions>
-                      <v-btn  style="background-color: #1BBCA9; color: rgb(255, 255, 255); font-weight: 900;" @click="menu = false">確定</v-btn>
+                      <v-btn  style="background-color: #1BBCA9; box-shadow: #3effe5 0 0 3px; color: rgb(255, 255, 255);" @click="menu = false">確定</v-btn>
                     </template>
                   </v-date-picker>
                 </v-menu>
@@ -274,23 +273,26 @@
                 density="compact"></v-text-field>
             </v-col>
               <!-- 送出 -->
+              <v-col cols="12" >
+                <v-row>
                   <v-col cols="4" >
                     <v-btn type="button"
                     block class="mt-2  rounded-lg"
-                    style="background-color: #FF8484;height: 60px; font-weight: 900;"
+                    style="background-color: #FF8484;height: 60px;"
                     @click="tab='two'" >上一步</v-btn>
                   </v-col>
                   <v-col cols="8" >
                     <v-btn type="submit"
                     block class="mt-2  rounded-lg "
-                    style="background-color: #1BBCA9;height: 60px; font-weight: 900;">註冊</v-btn>
+                    style="background-color: #1BBCA9;height: 60px; ">註冊</v-btn>
                   </v-col>
-              </v-row>
+                </v-row>
+              </v-col>
           </v-window-item>
         </v-form>
     </v-window>
+    </v-row>
     </div>
-  </v-container>
   </div>
 </template>
 
@@ -323,7 +325,7 @@ const boxBorder = computed(() => {
   if (isXs.value) {
     return 'border: none; '
   } else {
-    return 'border: 1px solid #333; box-shadow: 0 1px 10px #363636;'
+    return 'border: 1px solid #333;'
   }
 })
 

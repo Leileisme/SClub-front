@@ -137,7 +137,6 @@ const schema = new Schema({
         return this.ROLE === UserRole.STUDENT
       }, '缺少「使用者學號」'
     ],
-    unique: true,
     validator: {
       validator (value) {
         return validator.isAlphanumeric(value)
@@ -186,8 +185,7 @@ const schema = new Schema({
     required: [
       function () {
         return this.ROLE === UserRole.STUDENT || this.ROLE === UserRole.NOT_STUDENT
-      }, '缺少「使用者出生日期」'],
-    unique: true
+      }, '缺少「使用者出生日期」']
   },
   // 10.性別
   GENDER: {
@@ -251,18 +249,12 @@ const schema = new Schema({
       function () {
         return this.ROLE === UserRole.CLUB
       }, '缺少「社團屆數」'
-    ],
-    maxlength: [3, '「社團屆數」長度不符']
+    ]
   },
   // 15.幹部
   CLUB_SQUAD_LEADER: {
     type: [memberSchema],
-    required: [
-      function () {
-        return this.ROLE === UserRole.CLUB
-      }, '缺少「社團幹部」'
-    ],
-    default: [{ ROLE: '社長', CONFIRM: 'false' }, { ROLE: '副社長', CONFIRM: 'false' }]
+    default: [{ USER: null, ROLE: '社長', CONFIRM: 'false', CONFIRM_USER: null }, { USER: null, ROLE: '副社長', CONFIRM: 'false', CONFIRM_USER: null }]
   },
   // 16.社團類別
   CLUB_CATEGORY: {

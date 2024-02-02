@@ -25,6 +25,7 @@
       <v-form @submit.prevent="submit"  :disabled="isSubmitting">
         <v-row class="d-flex justify-center w-100 mx-auto" >
           <v-col cols="12"></v-col>
+          <!-- 信箱 -->
           <v-col cols="12">
             <v-text-field
             v-model="email.value.value"
@@ -35,6 +36,7 @@
             counter
             variant="outlined"></v-text-field>
           </v-col>
+          <!-- 密碼 -->
           <v-col>
             <v-text-field
             v-model="password.value.value"
@@ -50,9 +52,16 @@
             ></v-text-field>
           </v-col>
           <v-col cols="12" >
-            <v-btn type="submit" block class="mt-2 py-6 rounded-lg text-blod" style="background-color: #1BBCA9;">下一步</v-btn>
+            <v-btn type="submit" block class=" rounded-lg " style="background-color: #1BBCA9; font-weight: 900; height: 60px;">下一步</v-btn>
           </v-col>
-        </v-row>
+            <v-col cols="12"  class="text-center">
+              <span>忘記密碼?</span>
+            <v-btn type="button"  class="rounded-lg  mx-8"
+            style="background-color: #4F75D9;
+            font-weight: 900; height: 42px; width: 25%;">註冊</v-btn>
+
+            </v-col>
+          </v-row>
       </v-form>
     </div>
   </v-container>
@@ -90,7 +99,7 @@ const boxBorder = computed(() => {
   if (isXs.value) {
     return 'border: none; '
   } else {
-    return 'border: 1px solid #333;'
+    return 'border: 1px solid #333; box-shadow: 0 1px 10px #363636;'
   }
 })
 

@@ -1,19 +1,24 @@
+import 'dotenv/config'
+import texts from './models/texts.js'
 import users from './models/users.js'
-// import texts from './models/texts.js'node
+import mongoose from 'mongoose'
+
+// console.log(process.env.DB_URL)
+mongoose.connect(process.env.DB_URL)
 
 // 非學生
 const data = [
   {
-    EMAIL: '1111@gmail.com',
-    PASSWORD: '111111',
+    EMAIL: '2222@gmail.com',
+    PASSWORD: '222222',
     SCHOOL_NAME: '科技大學',
     SCHOOL_CITY: '臺北市',
     REAL_NAME: '老王先生',
-    USER_NAME: '1111',
+    USER_NAME: '2222',
     NICK_NAME: '老王先生',
-    BDAY: '2000/1/1',
+    BDAY: '2010/1/1',
     GENDER: '生理女',
-    MOBILE: '12345678',
+    MOBILE: '12345578',
     STUDENT_GRADE: '高一',
     EMAIL_UB: '',
     ROLE: 2,
@@ -21,7 +26,7 @@ const data = [
     IS_STUDENT: true
   }]
 
-const test = async () => {
+export const test = async () => {
   console.log('start')
   await users.create(data)
   console.log('end')
@@ -41,4 +46,4 @@ const test = async () => {
 //   }
 // }
 
-test()
+test().catch(err => console.error(err))
