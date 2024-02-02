@@ -6,9 +6,13 @@
       </VContainer>
       </v-app-bar>
   </template>
-  <div style="width: 400px;" :style="boxBorder" class="py-8" >
+
+  <div style="width: 400px;" :style="boxBorder" class="pb-8" >
+    <div v-if="!isXs" style="height: 65px; width: 100%; box-shadow: 0 1px 5px #000;" class="d-flex justify-center align-center">
+      <div class="text-h5 font-weight-black">註冊</div>
+    </div>
     <!-- 標題Logo -->
-    <div class="mb-1">
+    <div class="mb-1 mt-5">
         <div class="text-center font-weight-bold text-h3">LogoHere</div>
         <div class="text-center mt-5">
           <p>註冊馬上加入「學生社團」社群行列</p>
@@ -19,13 +23,8 @@
       <v-row class="d-flex justify-center w-100 mx-auto" >
         <v-window v-model="tab" style="width: 90%;" :touch="false">
         <!-- 第一頁 -->
-        <!-- :disabled="form1.isSubmitting" 會錯 -->
         <v-form @submit.prevent="submitOne" :disabled="form1.isSubmitting.value" >
           <v-window-item value="one">
-              <!-- 副標 -->
-                <!-- <div class="text-center mt-5">
-                  <p>註冊馬上加入「學生社團」社群行列</p>
-                </div> -->
                 <!-- 單位 -->
                 <v-col cols="12" class="mt-8">
                 <v-select
@@ -93,6 +92,7 @@
                 :error-messages="password.errorMessage.value"
                 minlength="6"
                 maxlength="20"
+                counter
                 label="密碼"
                 variant="outlined"
                 density="comfortable"
@@ -349,18 +349,18 @@ const roleItems = {
   ]
 }
 
+const group = {
+  items: [
+    { text: '社團', value: UseRole.CLUB }
+  ]
+}
+
 const schoolCityItems = {
   items: ['臺北市', '新北市', '桃園市', '臺中市', '臺南市', '高雄市', '新竹縣', '苗栗縣', '彰化縣', '南投縣', '雲林縣', '嘉義縣', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '澎湖縣', '金門縣', '連江縣', '基隆市', '新竹市', '嘉義市']
 }
 
 const clubItems = {
   items: ['學術', '學藝', '音樂', '康樂', '服務', '體育', '康輔', '聯誼', '其他']
-}
-
-const group = {
-  items: [
-    { text: '社團', value: UseRole.CLUB }
-  ]
 }
 
 // 性別

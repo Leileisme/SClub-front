@@ -120,7 +120,7 @@ const navItems = computed(() => {
 const BottomNavItems = computed(() => {
   return [
     { to: '/home', text: '首頁', icon: 'mdi-home', show: '' },
-    { to: '/register', text: '登入', icon: 'mdi-login', show: '' },
+    { to: '/login', text: '登入', icon: 'mdi-login', show: '' },
     // { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: '' },
     { to: '/register', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show: '' },
     { to: '/register', text: '動態', icon: 'mdi-account-multiple', show: '' },
