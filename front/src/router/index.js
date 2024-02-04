@@ -38,7 +38,7 @@ const routes = [
       },
       {
         path: '/event',
-        name: 'levent',
+        name: 'event',
         component: () => import('@/views/front/EventView.vue'),
         meta: {
           title: '學生社團網 | 活動'

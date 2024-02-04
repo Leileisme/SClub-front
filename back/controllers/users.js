@@ -14,7 +14,7 @@ export const create = async (req, res) => {
       message: ''
     })
   } catch (error) {
-    console.log(error, 'users create')
+    console.log(error, 'users create controller')
     // 當 models 驗證未過時，將產生一個 ValidationError 錯誤
     if (error.name === 'ValidationError') {
       // error.errors 中的錯誤是根據 models 定義中設置的驗證條件所產生的
@@ -61,6 +61,47 @@ export const login = async (req, res) => {
       }
     })
   } catch (error) {
+    console.log(error, 'users login controller')
+    res.status(500).json({
+      success: false,
+      message: '登入的未知錯誤'
+    })
+  }
+}
 
+export const logout = async (req, res) => {
+  try {
+    req.TOKENS = req.user.TOKENS.filter((token) => token !== req.TOKENS)
+    await req.user.save()
+    res.status(200).json({
+      success: true,
+      message: ''
+    })
+  } catch (error) {
+    console.log(error, 'users logout controller')
+    res.status(500).json({
+      success: false,
+      message: '登出的未知錯誤'
+    })
+  }
+}
+
+export const extend = async (req, res, next) => {
+  try {
+    const idx = req.user.TOKENS.findIndex((token) => token === req.TOKENS)
+    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
+    req.user.TOKENS[idx] = token
+    await req.save()
+    res.status(200).json({
+      success: true,
+      message: '',
+      result: token
+    })
+  } catch (error) {
+    console.log(error, 'users extend controller')
+    res.status(500).json({
+      success: false,
+      message: 'token換新的未知錯誤'
+    })
   }
 }

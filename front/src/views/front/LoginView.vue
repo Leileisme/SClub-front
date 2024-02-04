@@ -56,7 +56,7 @@
               <v-btn type="submit"
                 block class=" rounded-lg "
                 style="background-color: #1BBCA9; font-weight: 900; height: 60px;">
-                下一步
+                登入
               </v-btn>
             </v-col>
             <v-col cols="12"  class="text-center">
@@ -77,14 +77,8 @@
 <script setup>
 import { useDisplay } from 'vuetify'
 import { computed, ref } from 'vue'
-// vee-validate 表單驗證庫
-// useForm 是一個用於創建表單驗證的函數
-// useField 是一個用於創建表單欄位驗證的函數
-// 在前端進行驗證，並顯示錯誤訊息，不會阻止表單送出到後端
 import { useForm, useField } from 'vee-validate'
-// 靜態方法來驗證字符
 import validator from 'validator'
-// JS物件模式驗證器，這裡創建表單驗證的規則
 import * as yup from 'yup'
 import { useRouter } from 'vue-router'
 import { useSnackbar } from 'vuetify-use-dialog'
@@ -136,11 +130,12 @@ const password = useField('password')
 
 const submit = handleSubmit(async (values) => {
   try {
-    const { data } = await api.post('/users/login', {
-      email: values.email,
-      password: values.password
+    // 因為有引入 axios 並有 baseURL 所以路由'/users'即可
+    await api.post('/users/login', {
+      EMAIL: values.email,
+      PASSWORD: values.password
     })
-    this.login(data.result)
+
     createSnackbar({
       text: '登入成功',
       showCloseButton: false,
@@ -152,13 +147,14 @@ const submit = handleSubmit(async (values) => {
     })
     router.push('/')
   } catch (error) {
+    console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
     createSnackbar({
       text,
       showCloseButton: false,
       snackbarProps: {
         timeout: 2000,
-        console: 'red',
+        color: 'red',
         location: 'bottom'
       }
     })

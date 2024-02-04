@@ -28,7 +28,7 @@ passport.use(
         // (錯誤物件, 使用者物件(失敗為 false 或 null), 傳遞關於驗證狀態的額外訊息)
         return done(null, user, null)
       } catch (error) {
-        console.log(error)
+        console.log(error, 'passport login')
         if (error.message === 'EMAIL') {
           return done(null, null, { message: '信箱不存在' })
         } else if (error.message === 'PASSWORD') {
@@ -75,7 +75,7 @@ passport.use(
 
         return done(null, { user, token }, null)
       } catch (error) {
-        console.log(error)
+        console.log(error, 'passport jwt')
         if (error.message === 'EXPIRED') {
           return done(null, null, { message: 'JWT 過期' })
         } else if (error.message === 'JWT') {
