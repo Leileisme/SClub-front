@@ -8,7 +8,7 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'Home',
+        name: 'home',
         component: () => import('@/views/front/HomeView.vue'),
         meta: {
           title: '學生社團網'
@@ -32,6 +32,16 @@ const routes = [
         component: () => import('@/views/front/LoginView.vue'),
         meta: {
           title: '學生社團網 | 登入'
+          // login: false,
+          // admin: false
+        }
+      },
+      {
+        path: '/event',
+        name: 'levent',
+        component: () => import('@/views/front/EventView.vue'),
+        meta: {
+          title: '學生社團網 | 活動'
           // login: false,
           // admin: false
         }

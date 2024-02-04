@@ -1,10 +1,10 @@
 <template>
-<template v-if="isXs">
-      <v-app-bar >
-        <VContainer class="d-flex align-center text-center">
+  <template v-if="isXs">
+    <v-app-bar >
+      <VContainer class="d-flex align-center text-center">
         <v-app-bar-title class="font-weight-black text-h5">登入</v-app-bar-title>
       </VContainer>
-      </v-app-bar>
+    </v-app-bar>
   </template>
 
   <div style="width: 400px; " :style="boxBorder" class="pb-8" >
@@ -13,58 +13,64 @@
     </div>
 
     <v-container>
-    <!-- 標題Logo -->
-    <div class="mb-1 mt-3">
+      <!-- 標題Logo -->
+      <div class="mb-1 mt-3">
         <div class="text-center font-weight-bold text-h3">LogoHere</div>
         <div class="text-center mt-5">
           <p>馬上登入觀看社群最新活動</p>
         </div>
-    </div>
-    <!-- 選單 -->
-    <div>
-      <v-form @submit.prevent="submit"  :disabled="isSubmitting">
-        <v-row class="d-flex justify-center w-100 mx-auto" >
-          <v-col cols="12"></v-col>
-          <!-- 信箱 -->
-          <v-col cols="12">
-            <v-text-field
-            v-model="email.value.value"
-            :error-messages="email.errorMessage.value"
-            label="信箱"
-            type="email"
-            maxlength="40"
-            counter
-            variant="outlined"></v-text-field>
-          </v-col>
-          <!-- 密碼 -->
-          <v-col>
-            <v-text-field
-            v-model="password.value.value"
-            :error-messages="password.errorMessage.value"
-            minlength="6"
-            maxlength="20"
-            counter
-            label="密碼"
-            variant="outlined"
-            :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
-            :type="visible ? 'text' : 'password'"
-            @click:append-inner="visible = !visible"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" >
-            <v-btn type="submit" block class=" rounded-lg " style="background-color: #1BBCA9; font-weight: 900; height: 60px;">下一步</v-btn>
-          </v-col>
+      </div>
+      <!-- 選單 -->
+      <div>
+        <v-form @submit.prevent="submit"  :disabled="isSubmitting">
+          <v-row class="d-flex justify-center w-100 mx-auto" >
+            <v-col cols="12"></v-col>
+            <!-- 信箱 -->
+            <v-col cols="12">
+              <v-text-field
+                v-model="email.value.value"
+                :error-messages="email.errorMessage.value"
+                label="信箱"
+                type="email"
+                maxlength="40"
+                counter
+                variant="outlined">
+              </v-text-field>
+            </v-col>
+            <!-- 密碼 -->
+            <v-col>
+              <v-text-field
+                v-model="password.value.value"
+                :error-messages="password.errorMessage.value"
+                minlength="6"
+                maxlength="20"
+                counter
+                label="密碼"
+                variant="outlined"
+                :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="visible ? 'text' : 'password'"
+                @click:append-inner="visible = !visible">
+              </v-text-field>
+            </v-col>
+            <v-col cols="12" >
+              <v-btn type="submit"
+                block class=" rounded-lg "
+                style="background-color: #1BBCA9; font-weight: 900; height: 60px;">
+                下一步
+              </v-btn>
+            </v-col>
             <v-col cols="12"  class="text-center">
               <span>忘記密碼?</span>
-            <v-btn type="button"  class="rounded-lg  mx-8"
-            style="background-color: #4F75D9;
-            font-weight: 900; height: 42px; width: 25%;">註冊</v-btn>
-
+              <v-btn type="button"  class="rounded-lg  mx-8"
+                style="background-color: #4F75D9;
+                font-weight: 900; height: 42px; width: 25%;"  to="./register">
+                註冊
+              </v-btn>
             </v-col>
           </v-row>
-      </v-form>
-    </div>
-  </v-container>
+        </v-form>
+      </div>
+    </v-container>
   </div>
 </template>
 

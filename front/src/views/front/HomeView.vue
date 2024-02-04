@@ -1,5 +1,5 @@
 <template>
-    <template class="d-flex d-sm-none">
+    <template v-if="isXS">
       <v-app-bar>
         <VContainer class="d-flex align-center">
         <v-app-bar-title>LogoHere</v-app-bar-title>
@@ -8,6 +8,12 @@
         </template>
       </VContainer>
       </v-app-bar>
+
+      <div class="text-h5 mt-10">首頁</div>
+  </template>
+
+  <template v-else>
+      首頁
   </template>
 </template>
 
@@ -16,9 +22,8 @@ import { useDisplay } from 'vuetify'
 import { computed, ref } from 'vue'
 
 // 判斷是否用手機
-const { mobile } = useDisplay()
-const isMobile = computed(() => mobile.value)
-
+const { xs, sm } = useDisplay()
+const isXS = computed(() => xs.value)
 
 const TopNavItems = computed(() => {
   return [

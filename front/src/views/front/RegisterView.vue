@@ -13,31 +13,31 @@
     </div>
     <!-- 標題Logo -->
     <v-container>
-    <div class="mb-1 mt-3">
+      <div class="mb-1 mt-3">
         <div class="text-center font-weight-bold text-h3">LogoHere</div>
         <div class="text-center mt-5">
           <p>註冊馬上加入「學生社團」社群行列</p>
         </div>
-    </div>
+      </div>
 
-    <!-- 選單 -->
-    <div class="d-flex justify-center w-100 mx-auto">
+      <!-- 選單 -->
+      <div class="d-flex justify-center w-100 mx-auto">
         <v-window v-model="tab" style="width: 95%;" :touch="false">
-        <!-- 第一頁 -->
-        <v-form @submit.prevent="submitOne" :disabled="form1.isSubmitting.value" >
-          <v-window-item value="one">
-            <v-row>
+          <!-- 第一頁 -->
+          <v-form @submit.prevent="submitOne" :disabled="form1.isSubmitting.value" >
+            <v-window-item value="one">
+              <v-row>
                 <!-- 單位 -->
                 <v-col cols="12" class="mt-8">
-                <v-select
-                  v-model="type.selected"
-                  :items="type.items"
-                  item-title="text"
-                  item-value="value"
-                  label="註冊單位"
-                  variant="outlined"
-                  @update:model-value="role.value.value = undefined"
-                ></v-select>
+                  <v-select
+                    v-model="type.selected"
+                    :items="type.items"
+                    item-title="text"
+                    item-value="value"
+                    label="註冊單位"
+                    variant="outlined"
+                    @update:model-value="role.value.value = undefined">
+                  </v-select>
                 </v-col>
 
                 <!-- 身分 -->
@@ -51,246 +51,277 @@
                     label="註冊身分"
                     variant="outlined"
                     :disabled="!type.selected"
-                    :error-messages="role.errorMessage.value"
-                  ></v-select>
+                    :error-messages="role.errorMessage.value">
+                  </v-select>
                 </v-col>
 
                 <!-- 往第二頁的按鈕 -->
                 <v-col cols="12" >
                   <v-btn type="submit"
-                  class="mt-2 rounded-lg w-100"
-                  style="background-color: #1BBCA9; height: 60px; font-weight: 900;">下一步</v-btn>
+                    class="mt-2 rounded-lg w-100"
+                    style="background-color: #1BBCA9; height: 60px; font-weight: 900;">
+                    下一步
+                  </v-btn>
                 </v-col>
-                </v-row>
-          </v-window-item>
-        </v-form>
-          <!-- 第二頁 -->
-        <v-form @submit.prevent="submitTwo" :disabled="form2.isSubmitting.value">
-          <v-window-item value="two">
-              <v-row>
-              <v-col cols="12" class="mt-8">
-                <!-- 學校信箱 -->
-                <v-text-field
-                v-model="email.value.value"
-                :error-messages="email.errorMessage.value"
-                :label="emailLabel"
-                type="email"
-                maxlength="40"
-                counter
-                variant="outlined"
-                density="comfortable"></v-text-field>
-                <!-- 學號 -->
-                <v-text-field v-if="role.value.value === 1"
-                v-model="studentNo.value.value"
-                :error-messages="studentNo.errorMessage.value"
-                label="學號"
-                maxlength="20"
-                counter
-                variant="outlined"
-                density="comfortable"></v-text-field>
-                <!-- 密碼 -->
-                <v-text-field
-                v-model="password.value.value"
-                :error-messages="password.errorMessage.value"
-                minlength="6"
-                maxlength="20"
-                counter
-                label="密碼"
-                variant="outlined"
-                density="comfortable"
-                :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="visible ? 'text' : 'password'"
-                @click:append-inner="visible = !visible"
-                ></v-text-field>
-                <!-- 確認密碼 -->
-                <v-text-field
-                v-model="passwordConfirm.value.value"
-                :error-messages="passwordConfirm.errorMessage.value"
-                minlength="6"
-                maxlength="20"
-                counter
-                :append-inner-icon="visibleConfirm ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="visibleConfirm ? 'text' : 'password'"
-                @click:append-inner="visibleConfirm = !visibleConfirm"
-                label="確認密碼"
-                variant="outlined"
-                density="comfortable"></v-text-field>
-              </v-col>
+                <v-col cols="12"  class="text-center">
+                  <span>已經有帳號?</span>
+                  <v-btn type="button"  class="rounded-lg  mx-8"
+                    style="background-color: #4F75D9;
+                    font-weight: 900; height: 42px; width: 25%;"  to="./login">
+                    登入
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-window-item>
+          </v-form>
 
-              <!-- 往第三頁的按鈕 -->
-                  <v-col cols="4" >
-                    <v-btn
+          <!-- 第二頁 -->
+          <v-form @submit.prevent="submitTwo" :disabled="form2.isSubmitting.value">
+            <v-window-item value="two">
+              <v-row>
+                <v-col cols="12" class="mt-8">
+                  <!-- 學校信箱 -->
+                  <v-text-field
+                    v-model="email.value.value"
+                    :error-messages="email.errorMessage.value"
+                    :label="emailLabel"
+                    type="email"
+                    maxlength="40"
+                    counter
+                    variant="outlined"
+                    density="comfortable">
+                  </v-text-field>
+                  <!-- 學號 -->
+                  <v-text-field v-if="role.value.value === 1"
+                    v-model="studentNo.value.value"
+                    :error-messages="studentNo.errorMessage.value"
+                    label="學號"
+                    maxlength="20"
+                    counter
+                    variant="outlined"
+                    density="comfortable">
+                  </v-text-field>
+                  <!-- 密碼 -->
+                  <v-text-field
+                    v-model="password.value.value"
+                    :error-messages="password.errorMessage.value"
+                    minlength="6"
+                    maxlength="20"
+                    counter
+                    label="密碼"
+                    variant="outlined"
+                    density="comfortable"
+                    :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="visible ? 'text' : 'password'"
+                    @click:append-inner="visible = !visible">
+                  </v-text-field>
+                  <!-- 確認密碼 -->
+                  <v-text-field
+                    v-model="passwordConfirm.value.value"
+                    :error-messages="passwordConfirm.errorMessage.value"
+                    minlength="6"
+                    maxlength="20"
+                    counter
+                    :append-inner-icon="visibleConfirm ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="visibleConfirm ? 'text' : 'password'"
+                    @click:append-inner="visibleConfirm = !visibleConfirm"
+                    label="確認密碼"
+                    variant="outlined"
+                    density="comfortable">
+                  </v-text-field>
+                </v-col>
+
+                <!-- 按鈕 -->
+                <v-col cols="4" >
+                  <v-btn
                     type="button"
                     block class="mt-2  rounded-lg"
                     style="background-color: #FF8484;height: 60px; font-weight: 900;"
-                    @click="tab='one'">上一步</v-btn>
-                  </v-col>
-                  <v-col cols="8" >
-                    <v-btn
+                    @click="tab='one'">
+                    上一步
+                  </v-btn>
+                </v-col>
+                <v-col cols="8" >
+                  <v-btn
                     type="submit"
                     block class="mt-2  rounded-lg"
-                    style="background-color: #1BBCA9;height: 60px; font-weight: 900;">下一步</v-btn>
-              </v-col>
-            </v-row>
-          </v-window-item>
-        </v-form>
+                    style="background-color: #1BBCA9;height: 60px; font-weight: 900;">
+                    下一步
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-window-item>
+          </v-form>
 
-        <!-- 第三頁 -->
-        <v-form @submit.prevent="submitThree" :disabled="form3.isSubmitting.value">
-          <v-window-item value="three">
-            <v-row>
-              <v-col cols="12" class="mt-8">
-                <!-- 學校名字 -->
-                <v-text-field
-                v-model="schoolName.value.value"
-                :error-messages="schoolName.errorMessage.value"
-                maxlength="20"
-                counter
-                label="學校"
-                variant="outlined"
-                density="compact"></v-text-field>
-                <!-- item-title/item-value先刪掉了 -->
-                <!-- 學校地區 -->
-                <v-select
-                  v-model="schoolCity.value.value"
-                  :error-messages="schoolCity.errorMessage.value"
-                  :items="schoolCityItems.items"
-                  density="compact"
-                  label="學校縣市"
-                  variant="outlined"
-                ></v-select>
-                <!-- 姓名 -->
-                <v-text-field
-                v-model="realName.value.value"
-                :label="realNameLabel"
-                :error-messages="realName.errorMessage.value"
-                maxlength="6"
-                counter
-                variant="outlined"
-                density="compact"></v-text-field>
-                <!-- 用戶名稱 -->
-                <v-text-field
-                v-model="UserName.value.value"
-                :error-messages="UserName.errorMessage.value"
-                maxlength="12"
-                counter
-                label="用戶名稱"
-                variant="outlined"
-                density="compact"></v-text-field>
-                <!-- 檔案暱稱 -->
-                <v-text-field
-                v-model="nickName.value.value"
-                :error-messages="nickName.errorMessage.value"
-                maxlength="6"
-                counter
-                label="檔案暱稱"
-                variant="outlined"
-                density="compact"></v-text-field>
-                <!-- 出生日期 -->
-                <!-- 這邊的V-model??-->
-                <v-menu v-if="role.value.value !== 3" v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" min-width="290px" class="d-flex align-center justify-center">
-                  <template v-slot:activator="{ attrs }">
-                    <v-text-field
-                    :model-value="BDAYText"
-                    :error-messages="BDAY.errorMessage.value"
-                    density="compact"
+          <!-- 第三頁 -->
+          <v-form @submit.prevent="submitThree" :disabled="form3.isSubmitting.value">
+            <v-window-item value="three">
+              <v-row>
+                <v-col cols="12" class="mt-8">
+                  <!-- 學校名字 -->
+                  <v-text-field
+                    v-model="schoolName.value.value"
+                    :error-messages="schoolName.errorMessage.value"
+                    maxlength="20"
+                    counter
+                    label="學校"
                     variant="outlined"
-                    label="出生日期" prepend-icon="mdi-calendar" readonly v-bind="attrs" @click="menu = !menu"></v-text-field>
-                  </template>
-                  <v-date-picker  type="date" v-model="BDAY.value.value" no-time no-title @input="menu = false">
-                    <template v-slot:actions>
-                      <v-btn  style="background-color: #1BBCA9; color: rgb(255, 255, 255); font-weight: 900;" @click="menu = false">確定</v-btn>
+                    density="compact">
+                  </v-text-field>
+                  <!-- 學校地區 -->
+                  <v-select
+                    v-model="schoolCity.value.value"
+                    :error-messages="schoolCity.errorMessage.value"
+                    :items="schoolCityItems.items"
+                    density="compact"
+                    label="學校縣市"
+                    variant="outlined">
+                  </v-select>
+                  <!-- 姓名 -->
+                  <v-text-field
+                    v-model="realName.value.value"
+                    :label="realNameLabel"
+                    :error-messages="realName.errorMessage.value"
+                    maxlength="6"
+                    counter
+                    variant="outlined"
+                    density="compact">
+                  </v-text-field>
+                  <!-- 用戶名稱 -->
+                  <v-text-field
+                    v-model="UserName.value.value"
+                    :error-messages="UserName.errorMessage.value"
+                    maxlength="12"
+                    counter
+                    label="用戶名稱"
+                    variant="outlined"
+                    density="compact">
+                  </v-text-field>
+                  <!-- 檔案暱稱 -->
+                  <v-text-field
+                    v-model="nickName.value.value"
+                    :error-messages="nickName.errorMessage.value"
+                    maxlength="6"
+                    counter
+                    label="檔案暱稱"
+                    variant="outlined"
+                    density="compact">
+                  </v-text-field>
+                  <!-- 出生日期 -->
+                  <v-menu v-if="role.value.value !== 3" v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" min-width="290px" class="d-flex align-center justify-center">
+                    <template v-slot:activator="{ attrs }">
+                      <v-text-field
+                        :model-value="BDAYText"
+                        :error-messages="BDAY.errorMessage.value"
+                        density="compact"
+                        variant="outlined"
+                        label="出生日期" prepend-icon="mdi-calendar" readonly v-bind="attrs" @click="menu = !menu">
+                      </v-text-field>
                     </template>
-                  </v-date-picker>
-                </v-menu>
-                <!-- 性別 -->
-                <v-select
-                  v-if="role.value.value !== 3"
-                  v-model="gender.value.value"
-                  :error-messages="gender.errorMessage.value"
-                  :items="genderValue.items"
-                  density="compact"
-                  label="性別"
+                    <v-date-picker  type="date" v-model="BDAY.value.value" no-time no-title @input="menu = false">
+                      <template v-slot:actions>
+                        <v-btn  style="background-color: #1BBCA9; color: rgb(255, 255, 255); font-weight: 900;" @click="menu = false">確定</v-btn>
+                      </template>
+                    </v-date-picker>
+                  </v-menu>
+                  <!-- 性別 -->
+                  <v-select
+                    v-if="role.value.value !== 3"
+                    v-model="gender.value.value"
+                    :error-messages="gender.errorMessage.value"
+                    :items="genderValue.items"
+                    density="compact"
+                    label="性別"
+                    variant="outlined">
+                  </v-select>
+                  <!-- 手機 -->
+                  <v-text-field
+                    v-if="role.value.value !== 3"
+                    v-model="mobile.value.value"
+                    :error-messages="mobile.errorMessage.value"
+                    maxlength="8"
+                    label="手機"
+                    prefix="09"
+                    variant="outlined"
+                    counter
+                    density="compact">
+                  </v-text-field>
+                  <!-- 年級 -->
+                  <v-select
+                    v-if="role.value.value === 1"
+                    v-model="studentGrade.value.value"
+                    :error-messages="studentGrade.errorMessage.value"
+                    :items="studentGradeItems"
+                    minlength="2"
+                    maxlength="2"
+                    counter
+                    label="年級"
+                    variant="outlined"
+                    density="compact">
+                  </v-select>
+                  <!-- 社團類別 -->
+                  <v-select
+                    v-if="role.value.value === 3"
+                    v-model="clubCategory.value.value"
+                    ::error-messages="clubCategory.errorMessage.value"
+                    :items="clubItems.items"
+                    label="社團類別"
+                    variant="outlined"
+                    density="compact">
+                  </v-select>
+                  <!-- 社團屆數 -->
+                  <v-text-field
+                    v-if="role.value.value === 3"
+                    v-model="clubTh.value.value"
+                    :error-messages="clubTh.errorMessage.value"
+                    maxlength="3"
+                    counter
+                    label="社團屆數"
+                    variant="outlined"
+                    density="compact">
+                  </v-text-field>
+                <!-- 幹部 -->
+                <v-text-field
+                  v-if="role.value.value === 3"
+                  v-model="clubCoreMember.value.value"
+                  :error-messages="clubCoreMember.errorMessage.value"
+                  label="幹部"
                   variant="outlined"
-                ></v-select>
-                <!-- 手機 -->
+                  density="compact">
+                </v-text-field>
+                <!-- 備用信箱 -->
                 <v-text-field
-                v-if="role.value.value !== 3"
-                v-model="mobile.value.value"
-                :error-messages="mobile.errorMessage.value"
-                maxlength="8"
-                label="手機"
-                prefix="09"
-                variant="outlined"
-                counter
-                density="compact"></v-text-field>
-                <!-- 年級 -->
-                <v-select
-                v-if="role.value.value === 1"
-                v-model="studentGrade.value.value"
-                :error-messages="studentGrade.errorMessage.value"
-                :items="studentGradeItems"
-                minlength="2"
-                maxlength="2"
-                counter
-                label="年級"
-                variant="outlined"
-                density="compact"></v-select>
-                <!-- 社團類別 -->
-                <v-select
-                v-if="role.value.value === 3"
-                v-model="clubCategory.value.value"
-                ::error-messages="clubCategory.errorMessage.value"
-                :items="clubItems.items"
-                label="社團類別"
-                variant="outlined"
-                density="compact"></v-select>
-                <!-- 社團屆數 -->
-                <v-text-field
-                v-if="role.value.value === 3"
-                v-model="clubTh.value.value"
-                :error-messages="clubTh.errorMessage.value"
-                maxlength="3"
-                counter
-                label="社團屆數"
-                variant="outlined"
-                density="compact"></v-text-field>
-              <!-- 幹部 -->
-              <v-text-field
-              v-if="role.value.value === 3"
-              v-model="clubCoreMember.value.value"
-              :error-messages="clubCoreMember.errorMessage.value"
-              label="幹部"
-              variant="outlined"
-              density="compact"></v-text-field>
-              <!-- 備用信箱 -->
-              <v-text-field
-                v-model="emailUB.value.value"
-                :error-messages="emailUB.errorMessage.value"
-                maxlength="40"
-                counter
-                label="備用信箱"
-                variant="outlined"
-                density="compact"></v-text-field>
-            </v-col>
-              <!-- 送出 -->
-                  <v-col cols="4" >
-                    <v-btn type="button"
+                  v-model="emailUB.value.value"
+                  :error-messages="emailUB.errorMessage.value"
+                  maxlength="40"
+                  counter
+                  label="備用信箱"
+                  variant="outlined"
+                  density="compact">
+                </v-text-field>
+                </v-col>
+                <!-- 送出 -->
+                <v-col cols="4" >
+                  <v-btn type="button"
                     block class="mt-2  rounded-lg"
                     style="background-color: #FF8484;height: 60px; font-weight: 900;"
-                    @click="tab='two'" >上一步</v-btn>
-                  </v-col>
-                  <v-col cols="8" >
-                    <v-btn type="submit"
+                    @click="tab='two'" >
+                    上一步
+                  </v-btn>
+                </v-col>
+                <v-col cols="8" >
+                  <v-btn type="submit"
                     block class="mt-2  rounded-lg "
-                    style="background-color: #1BBCA9;height: 60px; font-weight: 900;">註冊</v-btn>
-                  </v-col>
+                    style="background-color: #1BBCA9;height: 60px; font-weight: 900;">
+                    註冊
+                  </v-btn>
+                </v-col>
               </v-row>
-          </v-window-item>
-        </v-form>
-    </v-window>
-    </div>
-  </v-container>
+            </v-window-item>
+          </v-form>
+        </v-window>
+      </div>
+    </v-container>
   </div>
 </template>
 

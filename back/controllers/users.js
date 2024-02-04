@@ -43,3 +43,24 @@ export const create = async (req, res) => {
     }
   }
 }
+
+// 回傳的資料以後可以看看要不要增加
+export const login = async (req, res) => {
+  try {
+    // jwt.sign 創造一個新的JWT，並接受三個參數 ( 物件、密鑰、選項 )
+    const token = jwt.sign({ _id: req.user.id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
+    req.user.TOKENS.push(token)
+    await req.user.save()
+    res.status(200).json({
+      success: true,
+      message: '',
+      result: {
+        TOKENS: token,
+        EMAIL: req.user.EMAIL,
+        ROLE: req.user.ROLE
+      }
+    })
+  } catch (error) {
+
+  }
+}

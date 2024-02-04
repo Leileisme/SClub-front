@@ -3,7 +3,7 @@
     <template v-if="isXs">
       <v-bottom-navigation>
           <template v-for="item in BottomNavItems" :key="item.to">
-            <v-btn :to="item.to" :prepend-icon="item.icon" :active=false class="iconBottom"></v-btn>
+            <v-btn :to="item.to" :prepend-icon="item.icon" exact class="iconBottom"></v-btn>
           </template>
       </v-bottom-navigation>
     </template>
@@ -32,7 +32,7 @@
 
         <v-list density="compact" nav>
           <template v-for="item in navItems" :key="item.to">
-            <v-list-item :to="item.to">
+            <v-list-item :to="item.to"  exact>
               <template v-slot:prepend>
             <VIcon :icon="item.icon"></VIcon>
               </template>
@@ -54,8 +54,8 @@
               </v-list>
               <!-- icon+路由 -->
               <v-list nav>
-                <template v-for="item in navItems" :key="item.to">
-                  <v-list-item :to="item.to">
+                <template v-for="item in navItems" :key="item.to" >
+                  <v-list-item :to="item.to"  exact>
             <template v-slot:prepend>
               <VIcon :icon="item.icon"></VIcon>
             </template>
@@ -76,16 +76,6 @@
 <script setup>
 import { useDisplay } from 'vuetify'
 import { computed, ref } from 'vue'
-// import { useUserStore } from '@/store/user'
-// import { useApi } from '@/composables/axios'
-// import { useSnackbar } from 'vuetify-use-dialog'
-import { useRouter } from 'vue-router'
-
-//  axios
-// const { apiAuth } = useApi()
-const router = useRouter()
-// const createSnackbar = useSnackbar()
-// const user = useUserStore()
 
 // 判斷是否用手機
 const { sm, xs } = useDisplay()
@@ -105,26 +95,26 @@ const heigh = computed(() => {
 
 const navItems = computed(() => {
   return [
-    { to: '/home', text: '首頁', icon: 'mdi-home', show: '' },
+    { to: '/', text: '首頁', icon: 'mdi-home', show: '' },
     { to: '/login', text: '登入', icon: 'mdi-login', show: '' },
     { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: '' },
     // { to: '/login', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show: '' },
     // { to: '/login', text: '動態', icon: 'mdi-account-multiple', show: '' },
-    { to: '/register', text: '個人檔案', icon: 'mdi-account-circle-outline', show: '' },
-    { to: '/register', text: '票券', icon: 'mdi-ticket-confirmation-outline', show: '' },
-    { to: '/register', text: '通知', icon: 'mdi-bell-outline', show: '' },
-    { to: '/register', text: '訊息', icon: 'mdi-chat-processing', show: '' }
+    { to: '', text: '個人檔案', icon: 'mdi-account-circle-outline', show: '' },
+    { to: '', text: '票券', icon: 'mdi-ticket-confirmation-outline', show: '' },
+    { to: '', text: '通知', icon: 'mdi-bell-outline', show: '' },
+    { to: '', text: '訊息', icon: 'mdi-chat-processing', show: '' }
   ]
 })
 
 const BottomNavItems = computed(() => {
   return [
-    { to: '/home', text: '首頁', icon: 'mdi-home', show: '' },
+    { to: '/', text: '首頁', icon: 'mdi-home', show: '' },
     { to: '/login', text: '登入', icon: 'mdi-login', show: '' },
-    // { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: '' },
-    { to: '/register', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show: '' },
-    { to: '/register', text: '動態', icon: 'mdi-account-multiple', show: '' },
-    { to: '/register', text: '個人檔案', icon: 'mdi-account-circle-outline', show: '' }
+    { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: '' },
+    // { to: '', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show: '' },
+    { to: '', text: '動態', icon: 'mdi-account-multiple', show: '' },
+    { to: '', text: '個人檔案', icon: 'mdi-account-circle-outline', show: '' }
   ]
 })
 </script>
