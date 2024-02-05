@@ -1,5 +1,6 @@
 // Composables
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, START_LOCATION } from 'vue-router'
+import { useUserStore } from '@/store/user'
 
 const routes = [
   {
@@ -11,9 +12,9 @@ const routes = [
         name: 'home',
         component: () => import('@/views/front/HomeView.vue'),
         meta: {
-          title: '學生社團網'
-          // login: false,
-          // admin: false
+          title: '學生社團網',
+          login: true,
+          admin: false
         }
       },
       {
@@ -21,9 +22,9 @@ const routes = [
         name: 'register',
         component: () => import('@/views/front/RegisterView.vue'),
         meta: {
-          title: '學生社團網 | 註冊'
-          // login: false,
-          // admin: false
+          title: '學生社團網 | 註冊',
+          login: false,
+          admin: false
         }
       },
       {
@@ -31,9 +32,10 @@ const routes = [
         name: 'login',
         component: () => import('@/views/front/LoginView.vue'),
         meta: {
-          title: '學生社團網 | 登入'
-          // login: false,
-          // admin: false
+          title: '學生社團網 | 登入',
+          login: false,
+          admin: false
+
         }
       },
       {
@@ -41,9 +43,9 @@ const routes = [
         name: 'event',
         component: () => import('@/views/front/EventView.vue'),
         meta: {
-          title: '學生社團網 | 活動'
-          // login: false,
-          // admin: false
+          title: '學生社團網 | 活動',
+          login: true,
+          admin: false
         }
       }
 
@@ -58,9 +60,9 @@ const routes = [
         name: 'AdminHome',
         component: () => import('@/views/admin/HomeView.vue'),
         meta: {
-          title: '學生社團網 | 管理'
-          // login: true,
-          // admin: true
+          title: '學生社團網 | 管理',
+          login: true,
+          admin: true
         }
       }]
   },
@@ -69,9 +71,9 @@ const routes = [
     name: 'NotFound',
     component: () => import('@/views/NotFoundView.vue'),
     meta: {
-      title: '學生社團網 | 找不到'
-      // login: true,
-      // admin: true
+      title: '學生社團網 | 找不到',
+      login: false,
+      admin: false
     }
   },
   {
@@ -90,8 +92,24 @@ router.afterEach((to, from) => {
   document.title = to.meta.title
 })
 
-// router.beforeEach(async (to, from, next) => {
-//   const user = useUserStore()
-// })
+router.beforeEach(async (to, from, next) => {
+  const user = useUserStore()
+
+  // START_LOCATION 網頁跳轉
+  // 進到每一個頁面之前，取的使用者的資訊
+  if (from === START_LOCATION) {
+    await user.getProfile()
+  }
+
+  if (user.isLogin && ['/register', '/login'].includes(to.path)) {
+    next('/')
+  } else if (to.meta.login && !user.isLogin) {
+    next('/login')
+  } else if (to.meta.admin && !user.isAdmin) {
+    next('/')
+  } else {
+    next()
+  }
+})
 
 export default router

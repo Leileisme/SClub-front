@@ -83,10 +83,12 @@ import * as yup from 'yup'
 import { useRouter } from 'vue-router'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
+import { useUserStore } from '@/store/user'
 
 const { api } = useApi()
 const router = useRouter()
 const createSnackbar = useSnackbar()
+const user = useUserStore()
 
 // 判斷是否用手機
 const { xs } = useDisplay()
@@ -131,10 +133,12 @@ const password = useField('password')
 const submit = handleSubmit(async (values) => {
   try {
     // 因為有引入 axios 並有 baseURL 所以路由'/users'即可
-    await api.post('/users/login', {
+    const { data } = await api.post('/users/login', {
       EMAIL: values.email,
       PASSWORD: values.password
     })
+    // 將登入資料存入store
+    user.login(data.result)
 
     createSnackbar({
       text: '登入成功',

@@ -5,7 +5,7 @@ import cors from 'cors'
 import routerUsers from './routes/users.js'
 // import routerEvents from './routes/events.js'
 import mongoSanitize from 'express-mongo-sanitize'
-import psaaport from 'passport'
+import './passport/passport.js'
 
 // 建立網頁伺服器
 const app = express()

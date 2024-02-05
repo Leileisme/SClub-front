@@ -76,6 +76,9 @@
 <script setup>
 import { useDisplay } from 'vuetify'
 import { computed, ref } from 'vue'
+import { useUserStore } from '@/store/user'
+
+const user = useUserStore()
 
 // 判斷是否用手機
 const { sm, xs } = useDisplay()
@@ -95,26 +98,30 @@ const heigh = computed(() => {
 
 const navItems = computed(() => {
   return [
-    { to: '/', text: '首頁', icon: 'mdi-home', show: '' },
-    { to: '/login', text: '登入', icon: 'mdi-login', show: '' },
-    { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: '' },
-    // { to: '/login', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show: '' },
-    // { to: '/login', text: '動態', icon: 'mdi-account-multiple', show: '' },
-    { to: '', text: '個人檔案', icon: 'mdi-account-circle-outline', show: '' },
-    { to: '', text: '票券', icon: 'mdi-ticket-confirmation-outline', show: '' },
-    { to: '', text: '通知', icon: 'mdi-bell-outline', show: '' },
-    { to: '', text: '訊息', icon: 'mdi-chat-processing', show: '' }
+    { to: '/', text: '首頁', icon: 'mdi-home', show: user.isLogin },
+    // { to: '/login', text: '登入', icon: 'mdi-login', show: !user.isLogin },
+    { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: user.isLogin },
+    // { to: '/login', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show: user.isLogin},
+    // { to: '/login', text: '動態', icon: 'mdi-account-multiple', show: user.isLogin},
+    { to: '', text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin },
+    { to: '', text: '票券', icon: 'mdi-ticket-confirmation-outline', show: user.isLogin },
+    { to: '', text: '通知', icon: 'mdi-bell-outline', show: user.isLogin },
+    { to: '', text: '訊息', icon: 'mdi-chat-processing', show: user.isLogin },
+    { to: '', text: '管理', icon: 'mdi-cog', show: user.isLogin && user.isAdmin }
+
   ]
 })
 
 const BottomNavItems = computed(() => {
   return [
-    { to: '/', text: '首頁', icon: 'mdi-home', show: '' },
-    { to: '/login', text: '登入', icon: 'mdi-login', show: '' },
-    { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: '' },
-    // { to: '', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show: '' },
-    { to: '', text: '動態', icon: 'mdi-account-multiple', show: '' },
-    { to: '', text: '個人檔案', icon: 'mdi-account-circle-outline', show: '' }
+    { to: '/', text: '首頁', icon: 'mdi-home', show: user.isLogin },
+    // { to: '/login', text: '登入', icon: 'mdi-login', show: !user.isLogin },
+    { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: user.isLogin },
+    // { to: '', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show:user.isLogin },
+    { to: '', text: '動態', icon: 'mdi-account-multiple', show: user.isLogin },
+    { to: '', text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin },
+    { to: '', text: '管理', icon: 'mdi-cog', show: user.isLogin && user.isAdmin }
+
   ]
 })
 </script>

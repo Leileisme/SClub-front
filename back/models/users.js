@@ -331,6 +331,9 @@ const schema = new Schema({
 }
 )
 
+// 這邊也可放虛擬欄位 virtual
+// https://mongoosejs.com/docs/tutorials/virtuals.html
+
 // 密碼存檔前驗證
 schema.pre('save', function (next) {
   // 如果有修改

@@ -48,14 +48,14 @@ export const create = async (req, res) => {
 export const login = async (req, res) => {
   try {
     // jwt.sign 創造一個新的JWT，並接受三個參數 ( 物件、密鑰、選項 )
-    const token = jwt.sign({ _id: req.user.id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
-    req.user.TOKENS.push(token)
+    const TOKEN = jwt.sign({ _id: req.user.id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
+    req.user.TOKENS.push(TOKEN)
     await req.user.save()
     res.status(200).json({
       success: true,
       message: '',
       result: {
-        TOKENS: token,
+        TOKEN,
         EMAIL: req.user.EMAIL,
         ROLE: req.user.ROLE
       }
@@ -89,19 +89,39 @@ export const logout = async (req, res) => {
 export const extend = async (req, res, next) => {
   try {
     const idx = req.user.TOKENS.findIndex((token) => token === req.TOKENS)
-    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
-    req.user.TOKENS[idx] = token
+    const TOKEN = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
+    req.user.TOKENS[idx] = TOKEN
     await req.save()
     res.status(200).json({
       success: true,
       message: '',
-      result: token
+      result: TOKEN
     })
   } catch (error) {
     console.log(error, 'users extend controller')
     res.status(500).json({
       success: false,
       message: 'token換新的未知錯誤'
+    })
+  }
+}
+
+// pinai 只存 JWT ，登入後執行 getProfile 取個人資料 放本地
+export const getProfile = (req, res) => {
+  try {
+    res.status(200).json({
+      success: true,
+      massage: '',
+      result: {
+        EMAIL: req.user.EMAIL,
+        ROLE: req.user.ROLE
+      }
+    })
+  } catch (error) {
+    console.log(error, 'users getProfile controller')
+    res.status(500).json({
+      success: false,
+      message: '取得個人資料的未知錯誤'
     })
   }
 }
