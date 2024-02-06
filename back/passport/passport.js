@@ -52,6 +52,7 @@ passport.use(
 passport.use(
   'jwt',
   new passportJWT.Strategy(
+
     {
       // 定義JWT來源 / JWT 密鑰 / 是否傳遞 req / 是否忽略過期(先忽略,下面再驗證)
       jwtFromRequest: passportJWT.ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -67,24 +68,23 @@ passport.use(
         if (expired && url !== '/users/extend' && url !== '/users/logout') {
           throw new Error('EXPIRED')
         }
-        const token = passportJWT.ExtractJwt.fromAuthHeaderAsBearerToken()(req)
-        const user = await users.findOne({ _id: payload._id, TOKENS: token })
+        const TOKEN = passportJWT.ExtractJwt.fromAuthHeaderAsBearerToken()(req)
+        const user = await users.findOne({ _id: payload._id, TOKENS: TOKEN })
         if (!user) {
           throw new Error('JWT')
         }
 
-        return done(null, { user, token }, null)
+        return done(null, { user, TOKEN }, null)
       } catch (error) {
         console.log(error, 'passport jwt')
         if (error.message === 'EXPIRED') {
           return done(null, null, { message: 'JWT 過期' })
         } else if (error.message === 'JWT') {
-          return done(null, null, { message: 'JWT無效' })
+          return done(null, null, { message: 'JWT 無效' })
         } else {
           return done(null, null, { message: '未知錯誤' })
         }
       }
     }
   )
-
 )

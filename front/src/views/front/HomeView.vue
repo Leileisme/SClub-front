@@ -1,16 +1,16 @@
 <template>
-    <template v-if="isXS">
+    <template v-if="isXs">
       <v-app-bar>
         <VContainer class="d-flex align-center">
         <v-app-bar-title>LogoHere</v-app-bar-title>
         <template v-for="item in TopNavItems" :key="item.to" >
-          <VBtn :to="item.to" :prepend-icon="item.icon" :active=false class="iconTop"></VBtn>
+          <VBtn :to="item.to" :active=false class="iconTop"><v-icon>{{ item.icon }}</v-icon></VBtn>
         </template>
       </VContainer>
       </v-app-bar>
 
       <div class="text-h5 mt-10">首頁</div>
-  </template>
+    </template>
 
   <template v-else>
       首頁
@@ -23,7 +23,7 @@ import { computed, ref } from 'vue'
 
 // 判斷是否用手機
 const { xs, sm } = useDisplay()
-const isXS = computed(() => xs.value)
+const isXs = computed(() => xs.value)
 
 const TopNavItems = computed(() => {
   return [
@@ -37,5 +37,5 @@ const TopNavItems = computed(() => {
 
 <style lang="sass" scoped>
 .iconTop
-  font-size: 1.2rem
+  font-size: 1.4rem
 </style>

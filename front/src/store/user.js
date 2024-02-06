@@ -11,29 +11,41 @@ export const useUserStore = defineStore('user', () => {
   const TOKEN = ref('')
   const EMAIL = ref('')
   const ROLE = ref('')
-
-  console.log('TOKEN at startup:', TOKEN.value)
+  const SCHOOL_NAME = ref('')
+  const SCHOOL_CITY = ref('')
+  const USER_NAME = ref('')
+  const NICK_NAME = ref('')
+  const CLUB_TH = ref('')
+  const CLUB_CATEGORY = ref('')
+  const IMAGE = ref('')
+  const TICKET_CART = ref([])
+  const SCORES = ref('')
+  const NOTIFY = ref([])
+  const KEEP_POST = ref([])
+  const KEEP_EVENT = ref([])
 
   const login = (data) => {
-    console.log(data)
-
     if (data.TOKEN) {
       TOKEN.value = data.TOKEN
     }
 
     EMAIL.value = data.EMAIL
     ROLE.value = data.ROLE
-  }
-
-  const logout = () => {
-    TOKEN.value = ''
-    EMAIL.value = ''
-    ROLE.value = ''
+    SCHOOL_NAME.value = data.SCHOOL_NAME
+    SCHOOL_CITY.value = data.SCHOOL_CITY
+    USER_NAME.value = data.USER_NAME
+    NICK_NAME.value = data.NICK_NAME
+    CLUB_TH.value = data.CLUB_TH
+    CLUB_CATEGORY.value = data.CLUB_CATEGORY
+    IMAGE.value = data.IMAGE
+    TICKET_CART.value = data.TICKET_CART
+    SCORES.value = data.SCORES
+    NOTIFY.value = data.NOTIFY
+    KEEP_POST.value = data.KEEP_POST
+    KEEP_EVENT.value = data.KEEP_EVENT
   }
 
   const isLogin = computed(() => {
-    console.log(TOKEN.value.length)
-
     return TOKEN.value.length > 0
   })
 
@@ -43,19 +55,50 @@ export const useUserStore = defineStore('user', () => {
 
   const getProfile = async () => {
     if (TOKEN.value.length === 0) return
-
     try {
       const { data } = await apiAuth.get('/users/profile')
+      console.log(data, 'data getProfile')
+
       login(data.result)
     } catch (error) {
       logout()
     }
   }
 
+  const logout = () => {
+    TOKEN.value = ''
+    EMAIL.value = ''
+    ROLE.value = ''
+    SCHOOL_NAME.value = ''
+    SCHOOL_CITY.value = ''
+    USER_NAME.value = ''
+    NICK_NAME.value = ''
+    CLUB_TH.value = ''
+    CLUB_CATEGORY.value = ''
+    IMAGE.value = ''
+    TICKET_CART.value = ''
+    SCORES.value = ''
+    NOTIFY.value = ''
+    KEEP_POST.value = ''
+    KEEP_EVENT.value = ''
+  }
+
   return {
     TOKEN,
     EMAIL,
     ROLE,
+    SCHOOL_NAME,
+    SCHOOL_CITY,
+    USER_NAME,
+    NICK_NAME,
+    CLUB_TH,
+    CLUB_CATEGORY,
+    IMAGE,
+    TICKET_CART,
+    SCORES,
+    NOTIFY,
+    KEEP_POST,
+    KEEP_EVENT,
     login,
     logout,
     isLogin,

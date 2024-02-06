@@ -57,7 +57,19 @@ export const login = async (req, res) => {
       result: {
         TOKEN,
         EMAIL: req.user.EMAIL,
-        ROLE: req.user.ROLE
+        ROLE: req.user.ROLE,
+        SCHOOL_NAME: req.user.SCHOOL_NAME,
+        SCHOOL_CITY: req.user.SCHOOL_CITY,
+        USER_NAME: req.user.USER_NAME,
+        NICK_NAME: req.user.NICK_NAME,
+        CLUB_TH: req.user.CLUB_TH,
+        CLUB_CATEGORY: req.user.CLUB_CATEGORY,
+        IMAGE: req.user.IMAGE,
+        TICKET_CART: req.user.TICKET_CART,
+        SCORES: req.user.SCORES,
+        NOTIFY: req.user.NOTIFY,
+        KEEP_POST: req.user.KEEP_POST,
+        KEEP_EVENT: req.user.KEEP_EVENT
       }
     })
   } catch (error) {
@@ -114,7 +126,19 @@ export const getProfile = (req, res) => {
       massage: '',
       result: {
         EMAIL: req.user.EMAIL,
-        ROLE: req.user.ROLE
+        ROLE: req.user.ROLE,
+        SCHOOL_NAME: req.user.SCHOOL_NAME,
+        SCHOOL_CITY: req.user.SCHOOL_CITY,
+        USER_NAME: req.user.USER_NAME,
+        NICK_NAME: req.user.NICK_NAME,
+        CLUB_TH: req.user.CLUB_TH,
+        CLUB_CATEGORY: req.user.CLUB_CATEGORY,
+        IMAGE: req.user.IMAGE,
+        TICKET_CART: req.user.TICKET_CART,
+        SCORES: req.user.SCORES,
+        NOTIFY: req.user.NOTIFY,
+        KEEP_POST: req.user.KEEP_POST,
+        KEEP_EVENT: req.user.KEEP_EVENT
       }
     })
   } catch (error) {

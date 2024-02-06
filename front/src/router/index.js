@@ -47,6 +47,16 @@ const routes = [
           login: true,
           admin: false
         }
+      },
+      {
+        path: '/personal',
+        name: 'personal',
+        component: () => import('@/views/front/PersonalView.vue'),
+        meta: {
+          title: '學生社團網 | 個人檔案',
+          login: true,
+          admin: false
+        }
       }
 
     ]
