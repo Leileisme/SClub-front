@@ -23,6 +23,11 @@ export const useUserStore = defineStore('user', () => {
   const NOTIFY = ref([])
   const KEEP_POST = ref([])
   const KEEP_EVENT = ref([])
+  const FANS = ref([])
+  const FOLLOW = ref([])
+  const IS_STUDENT = ref('')
+  const IS_ABLE = ref('')
+  const IS_ADMIN = ref('')
 
   const login = (data) => {
     if (data.TOKEN) {
@@ -43,6 +48,11 @@ export const useUserStore = defineStore('user', () => {
     NOTIFY.value = data.NOTIFY
     KEEP_POST.value = data.KEEP_POST
     KEEP_EVENT.value = data.KEEP_EVENT
+    FANS.value = data.FANS
+    FOLLOW.value = data.FOLLOW
+    IS_STUDENT.value = data.IS_STUDENT
+    IS_ABLE.value = data.IS_ABLE
+    IS_ADMIN.value = data.IS_ADMIN
   }
 
   const isLogin = computed(() => {
@@ -81,6 +91,11 @@ export const useUserStore = defineStore('user', () => {
     NOTIFY.value = ''
     KEEP_POST.value = ''
     KEEP_EVENT.value = ''
+    FANS.value = ''
+    FOLLOW.value = ''
+    IS_STUDENT.value = ''
+    IS_ABLE.value = ''
+    IS_ADMIN.value = ''
   }
 
   return {
@@ -99,6 +114,11 @@ export const useUserStore = defineStore('user', () => {
     NOTIFY,
     KEEP_POST,
     KEEP_EVENT,
+    FANS,
+    FOLLOW,
+    IS_STUDENT,
+    IS_ABLE,
+    IS_ADMIN,
     login,
     logout,
     isLogin,

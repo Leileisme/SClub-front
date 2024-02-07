@@ -84,10 +84,9 @@
 import { useDisplay } from 'vuetify'
 import { computed, ref } from 'vue'
 import { useUserStore } from '@/store/user'
-import { useApi } from '@/composables/axios';
+import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useRouter } from 'vue-router'
-
 
 const user = useUserStore()
 const { apiAuth } = useApi()
@@ -152,7 +151,7 @@ const logout = async () => {
       }
     })
 
-    router.push('/lo')
+    router.push('/')
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'

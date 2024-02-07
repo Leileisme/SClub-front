@@ -11,33 +11,9 @@
       </VContainer>
     </v-app-bar>
 
-    <v-container >
-      <v-row >
-        <v-col cols="4" style="background-color: brown;"></v-col>
-
-        <!-- 學校名字/地區 -->
-        <v-col cols="8" style=";">
-          <v-row>
-            <v-col cols="12"  style="padding:4px;"  class="d-flex flex-row-reverse">
-              <span style="border: 1px solid #25ECE0; padding: 5px 12px; color: #FF6868;"  >
-                <span style="margin-right: 10px; font-weight: 900; color: #25ECE0;" >{{ user.SCHOOL_NAME }}</span>
-                <span>{{ user.SCHOOL_CITY }}</span>
-              </span>
-            </v-col>
-          </v-row>
-
-          <v-row>
-            <v-col cols="12" style="font-size: 1.1rem; padding-top:0 ;padding-bottom: 0;" >{{ user.NICK_NAME }}</v-col>
-            <v-col cols="12" style="padding-top:0 ;padding-bottom: 0;">
-              <v-btn type="button" style="background-color:#1BBCA9; height: auto; padding-top: 3px; padding-bottom:3px;" > <v-icon style="text-align: le;">mdi-plus</v-icon>新增社團</v-btn>
-            </v-col>
-          </v-row>
-        </v-col>
-
-      </v-row>
-    </v-container>
-
-    </template>
+    <NotClubPersonal v-if="user.ROLE !== UserRole.CLUB"></NotClubPersonal>
+    <ClubPersonal v-if="user.ROLE === UserRole.CLUB"></ClubPersonal>
+  </template>
 
   <template v-else>
       個人頁
@@ -50,6 +26,9 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useApi } from '@/composables/axios'
 import { useUserStore } from '@/store/user'
+import UserRole from '@/enums/UserRole'
+import NotClubPersonal from '@/components/NotClubPersonal.vue'
+import ClubPersonal from '@/components/ClubPersonal.vue'
 
 const { api } = useApi()
 const router = useRouter()
@@ -62,13 +41,19 @@ const isXs = computed(() => xs.value)
 const TopNavItems = computed(() => {
   return [
     { to: '', text: '新增', icon: 'mdi-plus-box-outline', click: '' },
-    { to: '', text: '選單', icon: 'mdi-menu', click: '' },
+    { to: '', text: '選單', icon: 'mdi-menu', click: '' }
   ]
 })
+
+console.log(user.FANS)
 
 </script>
 
 <style lang="sass" scoped>
 .iconTop
   font-size: 1.4rem
+
+.v-container
+  padding: 24px !important
+
 </style>

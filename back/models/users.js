@@ -317,10 +317,52 @@ const schema = new Schema({
     ref: 'events'
   },
   // 26.帳號狀態
-  ISABLE: {
+  IS_ABLE: {
     type: Number,
     required: [true, '缺少「帳號狀態」'],
-    default: IsAble.Y
+    default () {
+      if (this.ROLE === UserRole.CLUB) {
+        return IsAble.CONFIRM_N
+      } else {
+        return IsAble.Y
+      }
+    }
+  },
+  // 27.管理員狀態
+  IS_ADMIN: {
+    type: Boolean,
+    required: [true, '缺少「管理員狀態」'],
+    default: false
+  },
+  // 28.粉絲
+  FANS: {
+    type: [ObjectId],
+    ref: 'users'
+  },
+  // 29.追蹤人數
+  FOLLOW: {
+    type: [ObjectId],
+    ref: 'users'
+  },
+  // 30.舉辦活動
+  MAKE_EVENT: {
+    type: [ObjectId],
+    ref: 'events'
+  },
+  // 31.貼文
+  MAKE_POST: {
+    type: [ObjectId],
+    ref: 'events'
+  },
+  // 32.參與活動
+  GO_EVENT: {
+    type: [ObjectId],
+    ref: 'events'
+  },
+  // 33.被標記
+  BE_MARK: {
+    type: [ObjectId],
+    ref: 'users'
   }
 },
 {

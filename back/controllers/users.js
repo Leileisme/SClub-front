@@ -69,7 +69,15 @@ export const login = async (req, res) => {
         SCORES: req.user.SCORES,
         NOTIFY: req.user.NOTIFY,
         KEEP_POST: req.user.KEEP_POST,
-        KEEP_EVENT: req.user.KEEP_EVENT
+        KEEP_EVENT: req.user.KEEP_EVENT,
+        FANS: req.user.FANS,
+        FOLLOW: req.user.FOLLOW,
+        IS_STUDENT: req.user.IS_STUDENT,
+        IS_ABLE: req.user.IS_ABLE,
+        IS_ADMIN: req.user.IS_ADMIN,
+        MAKE_EVENT: req.user.MAKE_EVENT,
+        MAKE_POST: req.user.MAKE_POST
+
       }
     })
   } catch (error) {
@@ -138,7 +146,14 @@ export const getProfile = (req, res) => {
         SCORES: req.user.SCORES,
         NOTIFY: req.user.NOTIFY,
         KEEP_POST: req.user.KEEP_POST,
-        KEEP_EVENT: req.user.KEEP_EVENT
+        KEEP_EVENT: req.user.KEEP_EVENT,
+        FANS: req.user.FANS,
+        FOLLOW: req.user.FOLLOW,
+        IS_STUDENT: req.user.IS_STUDENT,
+        IS_ABLE: req.user.IS_ABLE,
+        IS_ADMIN: req.user.IS_ADMIN,
+        MAKE_EVENT: req.user.MAKE_EVENT,
+        MAKE_POST: req.user.MAKE_POST
       }
     })
   } catch (error) {
