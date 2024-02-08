@@ -103,7 +103,8 @@ const rail = ref(true)
 
 const heigh = computed(() => {
   if (!isXs.value) {
-    return 'height: 100vh; align-items: center;'
+    // return 'height: 100vh; align-items: center;'
+    return ' align-items: center;'
   } else {
     return 'height:auto'
   }
