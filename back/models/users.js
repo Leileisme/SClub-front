@@ -363,6 +363,11 @@ const schema = new Schema({
   BE_MARK: {
     type: [ObjectId],
     ref: 'users'
+  },
+  // 34.描述
+  DESCRIBE: {
+    type: String,
+    maxlength: [50, '「使用者描述」長度不符']
   }
 },
 {

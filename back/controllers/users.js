@@ -76,8 +76,8 @@ export const login = async (req, res) => {
         IS_ABLE: req.user.IS_ABLE,
         IS_ADMIN: req.user.IS_ADMIN,
         MAKE_EVENT: req.user.MAKE_EVENT,
-        MAKE_POST: req.user.MAKE_POST
-
+        MAKE_POST: req.user.MAKE_POST,
+        DESCRIBE: req.user.DESCRIBE
       }
     })
   } catch (error) {
@@ -153,7 +153,8 @@ export const getProfile = (req, res) => {
         IS_ABLE: req.user.IS_ABLE,
         IS_ADMIN: req.user.IS_ADMIN,
         MAKE_EVENT: req.user.MAKE_EVENT,
-        MAKE_POST: req.user.MAKE_POST
+        MAKE_POST: req.user.MAKE_POST,
+        DESCRIBE: req.user.DESCRIBE
       }
     })
   } catch (error) {

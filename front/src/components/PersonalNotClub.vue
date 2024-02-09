@@ -1,34 +1,51 @@
 <template>
-  <!-- 非社團 -->
-  <v-container>
-    <v-row>
-        <!-- 學校名字/地區 -->
-        <v-col cols="8" style=";">
+  <template v-if="isXs">
+    <v-container >
+      <v-row class="box" style="background-color: ;padding-top: 1rem;">
+        <!-- 【左】大頭照 -->
+        <v-col cols="4" style="border: 0px solid ;" >
           <v-row>
-            <v-col cols="12"  style="padding:4px;"  class="d-flex flex-row-reverse">
-              <span style="border: 1px solid #25ECE0; padding: 1px 12px; color: #FF6868;"  >
+            <!-- <v-col cols="12" ></v-col> -->
+            <v-col cols="12" class="d-flex justify-center">
+            <v-avatar size="100%" style="margin-top: 0.8rem;" >
+              <v-img  :src="user.IMAGE"></v-img>
+            </v-avatar>
+          </v-col>
+          </v-row>
+        </v-col>
+
+        <!-- 【右】個人資料 -->
+        <v-col cols="8">
+
+          <v-row>
+
+            <!-- 暱稱 -->
+            <v-col cols="12" style="font-size: 1.1rem; padding-bottom: 0; " >
+                <!-- 社團名稱/屆數/成員 -->
+                <span class="me-3" >{{ user.NICK_NAME }}</span>
+            </v-col>
+
+            <!-- 學校 -->
+            <v-col cols="12"  style=" font-size: 0.9rem; padding-top: 0.6rem;"  >
+              <span style="border: 1px solid #25ECE0; padding: 3px 10px; color: #FF6868;"  >
                 <span style="margin-right: 10px; font-weight: 900; color: #25ECE0;" >{{ user.SCHOOL_NAME }}</span>
                 <span>{{ user.SCHOOL_CITY }}</span>
               </span>
             </v-col>
-          </v-row>
 
-          <v-row>
-            <!-- 暱稱 -->
-            <v-col cols="12" style="font-size: 1.1rem; padding-top:0 ;padding-bottom: 0;" >{{ user.NICK_NAME }}</v-col>
-            <!-- 新增社團 - 按鈕 -->
-            <v-col cols="12" style="padding-top:1px ;padding-bottom: 0;">
+            <!-- 新增社團按鈕 /  若有幹部則顯示幹部職位-->
+            <v-col cols="12" style="padding-top:1px ;">
               <v-btn type="button" style="background-color:#1BBCA9; height: auto; padding-top: 3px; padding-bottom:3px;" > <v-icon style="margin-left: -3px;">mdi-plus</v-icon>新增社團</v-btn>
             </v-col>
 
-            <!-- 這邊要做迴圈 -->
-            <v-col cols="12">　</v-col>
+            <!-- 簡介 (最多39字)-->
+            <v-col cols="12">{{user.DESCRIBE}}</v-col>
 
-            <!-- 粉絲/追蹤 -->
-            <v-col cols="12" v-if="user.ROLE === UserRole.CLUB">
+            <v-col cols="12" >
               <v-row>
-                <v-col cols="7" style="background-color: ;"></v-col>
+                <v-col cols="8" style="background-color: ;"></v-col>
 
+                <!-- 粉絲 -->
                 <v-col cols="2" style="background: ;">
                   <v-row class="text-center">
                     <v-col cols="12" style="padding: 0;">{{user.FANS.length}}</v-col>
@@ -36,6 +53,7 @@
                   </v-row>
                 </v-col>
 
+                <!-- 追蹤 -->
                 <v-col cols="2" style="background-color:;">
                   <v-row class="text-center">
                     <v-col cols="12" style="padding: 0;">{{user.FOLLOW.length}}</v-col>
@@ -45,11 +63,238 @@
 
               </v-row>
             </v-col>
+
           </v-row>
         </v-col>
 
-  </v-row>
-  </v-container>
+        <!-- 編輯/分享/分數 狀態按鈕 -->
+        <v-col cols="12" >
+          <v-row>
+            <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
+              <v-btn color="#444" style="font-weight: 900; width: 100%;">編輯個人檔案</v-btn>
+            </v-col>
+            <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
+              <v-btn  color="#444" style="font-weight: 900; width: 100%;">分享個人檔案</v-btn>
+            </v-col>
+            <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
+              <v-btn color="#1BBCA9" style="color: #fff; font-weight: 900;width: 100%;">榮譽分數 {{user.SCORES}} 分</v-btn>
+            </v-col>
+          </v-row>
+        </v-col>
+
+        <!-- 新增限時動態 -->
+        <v-col cols="12" style=";">
+          <v-row >
+            <!-- 每一個小圖 -->
+            <v-col cols="3" style="background:" class="text-center">
+              <v-btn icon  size="large" text  color="rgba(0,0,0,0)">
+                <v-icon style="font-size: 3.8rem; border: 1px solid #ccc; border-radius: 50%;" color="#ccc ">mdi-plus</v-icon>
+              </v-btn>
+              <div class="mt-3" style="color:#ccc">新增</div>
+            </v-col>
+          </v-row>
+        </v-col>
+
+        <!-- 分隔線 -->
+        <v-col cols="12">
+          <v-divider color="#fff" class="border-opacity-50"></v-divider>
+        </v-col>
+
+        <v-col cols="12" style="background: ;">
+            <v-row>
+
+              <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px;padding-bottom: 0;">{{ new Date().getFullYear() }}</v-col>
+
+              <v-col cols="3" style="background: rgba(6, 50, 107,0);padding-right: 0;">
+              <span>{{ new Date().getMonth() }}</span>
+              <span  style="font-size: 0.7rem; ">月</span>
+              <span>{{  new Date().getDate()  }}</span>
+              <span style="font-size: 0.7rem; ">日</span>
+
+              </v-col>
+              <v-col cols="7" style="background: ;"></v-col>
+
+              <v-col cols="1" style="background-color: ;" class="d-flex justify-center">
+                <v-icon style=" " color="#fff ">mdi-camera</v-icon>
+              </v-col>
+              <v-col cols="1" class="d-flex justify-center">
+                <v-icon style=" " color="#fff ">mdi-dots-vertical</v-icon>
+              </v-col>
+
+            </v-row>
+          </v-col>
+      </v-row>
+
+    </v-container>
+  </template>
+
+  <!-- 電腦版 -->
+  <template v-else>
+
+    <div style="height: auto; border: #1BBCA9 0px solid; padding: 3rem; " >
+      <v-container style="max-width: 800px;">
+        <v-row class="box" style="background-color: ;padding-top: 1rem;">
+        <!-- 【左】大頭照 -->
+        <v-col cols="4" style="border: 0px solid ;" >
+          <v-row>
+
+            <v-col cols="12" class="d-flex justify-center">
+              <v-avatar size="100%" style="margin-top:0;" >
+                <v-img  :src="user.IMAGE"></v-img>
+              </v-avatar>
+            </v-col>
+          </v-row>
+        </v-col>
+
+        <!-- 【右】個人資料 -->
+        <v-col cols="8">
+
+          <v-row>
+
+            <!-- 暱稱 -->
+            <v-col cols="8" style="font-size: 1.1rem; padding-bottom: 0; " >
+                <!-- 社團名稱/屆數/成員 -->
+                <span class="me-3" >{{ user.NICK_NAME }} </span>
+            </v-col>
+                <!-- 建立動態/設定 -->
+                <v-col cols="4" class="d-flex justify-end" >
+                  <v-icon class="me-3" style="cursor: pointer;" id="post">mdi-plus-box-outline</v-icon>
+                  <v-menu activator="#post" width="150" style="text-align: center;">
+                    <v-list>
+                      <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
+                      <v-list style="font-size: 1rem;">建立動態</v-list>
+                      <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
+                      <v-list style="font-size: 1rem;">建立限動</v-list>
+                      <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
+                    </v-list>
+                  </v-menu>
+
+                  <v-icon class="me-3" style="cursor: pointer;" id="setting">mdi-menu</v-icon>
+                  <v-menu activator="#setting" width="150" style="text-align: center;" >
+                    <v-list>
+                      <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
+                      <v-list style="font-size: 1rem;">貼文收藏</v-list>
+                      <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
+                      <v-list style="font-size: 1rem;">喜歡的活動</v-list>
+                      <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
+                      <v-list style="font-size: 1rem;">限動典藏</v-list>
+                      <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
+                      <template v-if="user.IS_ADMIN">
+                        <v-list style="font-size: 1rem;" to="/admin">管理員後台</v-list>
+                        <v-divider style="margin-top: 15px;margin-bottom: 15px;"></v-divider>
+                      </template>
+                      <v-list style="font-size: 1rem; cursor: pointer;" @click="logout">登出</v-list>
+                      <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
+                    </v-list>
+                  </v-menu>
+
+                </v-col>
+
+            <!-- 學校 -->
+            <v-col cols="12"  style=" font-size: 0.9rem; padding-top: 0.6rem;"  >
+              <span style="border: 1px solid #25ECE0; padding: 3px 10px; color: #FF6868;"  >
+                <span style="margin-right: 10px; font-weight: 900; color: #25ECE0;" >{{ user.SCHOOL_NAME }}</span>
+                <span>{{ user.SCHOOL_CITY }}</span>
+              </span>
+            </v-col>
+
+            <!-- 新增社團按鈕 /  若有幹部則顯示幹部職位-->
+            <v-col cols="12" style="padding-top:1px ;">
+              <v-btn type="button" style="background-color:#1BBCA9; height: auto; padding-top: 3px; padding-bottom:3px;" > <v-icon style="margin-left: -3px;">mdi-plus</v-icon>新增社團</v-btn>
+            </v-col>
+
+            <!-- 簡介 (最多39字)-->
+            <v-col cols="12">{{user.DESCRIBE}}</v-col>
+
+            <v-col cols="12" >
+              <v-row>
+                <v-col cols="8" style="background-color: ;"></v-col>
+
+                <!-- 粉絲 -->
+                <v-col cols="2" style="background: ;">
+                  <v-row class="text-center">
+                    <v-col cols="12" style="padding: 0;">{{user.FANS.length}}</v-col>
+                    <v-col cols="12" style="padding: 0;">粉絲</v-col>
+                  </v-row>
+                </v-col>
+
+                <!-- 追蹤 -->
+                <v-col cols="2" style="background-color:;">
+                  <v-row class="text-center">
+                    <v-col cols="12" style="padding: 0;">{{user.FOLLOW.length}}</v-col>
+                    <v-col cols="12" style="padding: 0;">追蹤</v-col>
+                  </v-row>
+                </v-col>
+
+              </v-row>
+            </v-col>
+
+          </v-row>
+        </v-col>
+
+        <!-- 編輯/分享/分數 狀態按鈕 -->
+        <v-col cols="12" >
+          <v-row>
+            <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
+              <v-btn color="#444" style="font-weight: 900; width: 100%;">編輯個人檔案</v-btn>
+            </v-col>
+            <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
+              <v-btn  color="#444" style="font-weight: 900; width: 100%;">分享個人檔案</v-btn>
+            </v-col>
+            <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
+              <v-btn color="#1BBCA9" style="color: #fff; font-weight: 900;width: 100%;">榮譽分數 {{user.SCORES}} 分</v-btn>
+            </v-col>
+          </v-row>
+        </v-col>
+
+        <!-- 新增限時動態 -->
+        <v-col cols="12" style=";">
+          <v-row >
+            <!-- 每一個小圖 -->
+            <v-col  :cols="cols" style="background:" class="text-center">
+              <v-btn icon  size="large" text  color="rgba(0,0,0,0)">
+                <v-icon style="font-size: 3.8rem; border: 1px solid #ccc; border-radius: 50%;" color="#ccc ">mdi-plus</v-icon>
+              </v-btn>
+              <div class="mt-3" style="color:#ccc">新增</div>
+            </v-col>
+          </v-row>
+        </v-col>
+
+        <!-- 分隔線 -->
+        <v-col cols="12">
+          <v-divider color="#fff" class="border-opacity-50"></v-divider>
+        </v-col>
+
+        <v-col cols="12" style="background: ;">
+            <v-row>
+
+              <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px;padding-bottom: 0;">{{ new Date().getFullYear() }}</v-col>
+
+              <v-col cols="3" style="background: rgba(6, 50, 107,0);padding-right: 0;">
+              <span>{{ new Date().getMonth() }}</span>
+              <span  style="font-size: 0.7rem; ">月</span>
+              <span>{{  new Date().getDate()  }}</span>
+              <span style="font-size: 0.7rem; ">日</span>
+
+              </v-col>
+              <v-col cols="7" style="background: ;"></v-col>
+
+              <v-col cols="1" style="background-color: ;" class="d-flex justify-center">
+                <v-icon style=" " color="#fff ">mdi-camera</v-icon>
+              </v-col>
+              <v-col cols="1" class="d-flex justify-center">
+                <v-icon style=" " color="#fff ">mdi-dots-vertical</v-icon>
+              </v-col>
+
+            </v-row>
+          </v-col>
+      </v-row>
+
+    </v-container>
+    </div>
+
+  </template>
+
 </template>
 
 <script setup>
@@ -59,23 +304,72 @@ import { useRouter } from 'vue-router'
 import { useApi } from '@/composables/axios'
 import { useUserStore } from '@/store/user'
 import UserRole from '@/enums/UserRole'
+import { useSnackbar } from 'vuetify-use-dialog'
 
-const { api } = useApi()
+const { api, apiAuth } = useApi()
 const router = useRouter()
 const user = useUserStore()
+const tab = ref('')
+const createSnackbar = useSnackbar()
 
 // 判斷是否用手機
-const { xs } = useDisplay()
+const { xs, sm } = useDisplay()
 const isXs = computed(() => xs.value)
+const isSm = computed(() => sm.value)
 
-const TopNavItems = computed(() => {
-  return [
-    { to: '', text: '新增', icon: 'mdi-plus-box-outline', click: '' },
-    { to: '', text: '選單', icon: 'mdi-menu', click: '' }
-  ]
+const cols = computed(() => {
+  if (isXs.value) {
+    return 3
+  } else {
+    return 2
+  }
 })
 
-console.log(user.FANS)
+// 分享網址，但是樣式不好看先留著沒用
+const share = () => {
+  if (navigator.share) {
+    navigator.share({
+      title: document.title,
+      text: 'Check out this website:',
+      url: window.location.href
+    })
+      .then(() => console.log('Successful share'))
+      .catch((error) => console.log('Error sharing', error))
+  } else {
+    console.log('Web Share API is not supported in your browser.')
+  }
+}
+
+// 登出
+const logout = async () => {
+  try {
+    await apiAuth.delete('/users/logout')
+    user.logout()
+    createSnackbar({
+      text: '登出成功',
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'green',
+        location: 'bottom'
+      }
+    })
+
+    router.push('/')
+  } catch (error) {
+    console.log(error)
+    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+    createSnackbar({
+      text,
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'red',
+        location: 'bottom'
+      }
+    })
+  }
+}
 
 </script>
 
@@ -84,6 +378,6 @@ console.log(user.FANS)
   font-size: 1.4rem
 
 .v-container
-  padding: 24px !important
+  // padding: 24px !important
 
 </style>

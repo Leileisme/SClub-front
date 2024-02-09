@@ -36,8 +36,13 @@
               </span>
             </v-col>
 
-            <!-- 描述 -->
-            <v-col cols="12">{{user.DESCRIBE}}</v-col>
+            <!-- 新增社團 - 按鈕 -->
+            <v-col cols="12" style="padding-top:1px ;padding-bottom: 0;">
+              <!-- <v-btn type="button" style="background-color:#1BBCA9; height: auto; padding-top: 3px; padding-bottom:3px;" > <v-icon style="margin-left: -3px;">mdi-plus</v-icon>新增社團</v-btn> -->
+            </v-col>
+
+            <!-- 這邊要做迴圈 -->
+            <v-col cols="12">　</v-col>
 
             <v-col cols="12" v-if="user.ROLE === UserRole.CLUB">
               <v-row>
@@ -186,14 +191,14 @@
               <v-col cols="12" style="color: #25ECE0; padding-bottom: 5px;">主辦活動</v-col>
               <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px; padding-bottom: 0;" >{{ new Date().getFullYear() }}</v-col>
 
-              <v-col cols="3" style="background: rgba(6, 50, 107,0);padding-right: 0; ">
+              <v-col cols="2" style="background: rgba(6, 50, 107,0);padding-right: 0; ">
               <span>{{ new Date().getMonth() }}</span>
               <span  style="font-size: 0.7rem; ">月</span>
               <span>{{  new Date().getDate()  }}</span>
               <span style="font-size: 0.7rem; ">日</span>
 
               </v-col>
-              <v-col cols="7" style="background: teal;"></v-col>
+              <v-col cols="8" style="background: teal;"></v-col>
 
               <v-col cols="1" style="background-color: ;" class="d-flex justify-center">
                 <v-icon style=" " color="#fff ">mdi-camera</v-icon>
@@ -246,6 +251,7 @@
         <!-- 【左】大頭照 -->
         <v-col cols="4" style="border: 0px solid ;" >
           <v-row>
+            <!-- <v-col cols="12" ></v-col> -->
             <v-col cols="12" class="d-flex justify-center">
             <v-avatar size="100%"  >
               <v-img  :src="user.IMAGE"></v-img>
@@ -270,7 +276,6 @@
                   </span>
                 </v-col>
 
-                <!-- 建立動態/設定 -->
                 <v-col cols="4" class="d-flex justify-end" >
                   <v-icon class="me-3" style="cursor: pointer;" id="post">mdi-plus-box-outline</v-icon>
                   <v-menu activator="#post" width="150" style="text-align: center;">
@@ -287,16 +292,12 @@
                   <v-menu activator="#setting" width="150" style="text-align: center;" >
                     <v-list>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
-                      <v-list style="font-size: 1rem;">貼文收藏</v-list>
+                      <v-list style="font-size: 1rem;">收藏貼文</v-list>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
-                      <v-list style="font-size: 1rem;">喜歡的活動</v-list>
+                      <v-list style="font-size: 1rem;">喜歡活動</v-list>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
                       <v-list style="font-size: 1rem;">限動典藏</v-list>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
-                      <template v-if="user.IS_ADMIN">
-                        <v-list style="font-size: 1rem;" to="/admin">管理員後台</v-list>
-                        <v-divider style="margin-top: 15px;margin-bottom: 15px;"></v-divider>
-                      </template>
                       <v-list style="font-size: 1rem; cursor: pointer;" @click="logout">登出</v-list>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
                     </v-list>
@@ -313,8 +314,14 @@
               </span>
             </v-col>
 
-            <!-- 描述 -->
-            <v-col cols="12">{{user.DESCRIBE}}</v-col>
+            <!-- 新增社團 - 按鈕 -->
+            <v-col cols="12" style="padding-top:1px ;padding-bottom: 0;">
+              <!-- <v-btn type="button" style="background-color:#1BBCA9; height: auto; padding-top: 3px; padding-bottom:3px;" > <v-icon style="margin-left: -3px;">mdi-plus</v-icon>新增社團</v-btn> -->
+            </v-col>
+
+            <!-- 這邊要做迴圈 -->
+            <v-col cols="12">　</v-col>
+            <v-col cols="12">　</v-col>
 
             <v-col cols="12" v-if="user.ROLE === UserRole.CLUB">
               <v-row>
@@ -463,14 +470,14 @@
               <v-col cols="12" style="color: #25ECE0; padding-bottom: 5px;">主辦活動</v-col>
               <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px; padding-bottom: 0;" >{{ new Date().getFullYear() }}</v-col>
 
-              <v-col cols="3" style="background: rgba(6, 50, 107,0);padding-right: 0; ">
+              <v-col cols="2" style="background: rgba(6, 50, 107,0);padding-right: 0; ">
               <span>{{ new Date().getMonth() }}</span>
               <span  style="font-size: 0.7rem; ">月</span>
               <span>{{  new Date().getDate()  }}</span>
               <span style="font-size: 0.7rem; ">日</span>
 
               </v-col>
-              <v-col cols="7" style="background: teal;"></v-col>
+              <v-col cols="8" style="background: teal;"></v-col>
 
               <v-col cols="1" style="background-color: ;" class="d-flex justify-center">
                 <v-icon style=" " color="#fff ">mdi-camera</v-icon>

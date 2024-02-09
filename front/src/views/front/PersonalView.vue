@@ -1,7 +1,7 @@
 <template>
-  <!-- <template v-if="isXs"> -->
-    <v-app-bar>
-      <VContainer class="d-flex align-center">
+  <template v-if="isXs">
+    <v-app-bar >
+      <VContainer class="d-flex align-center" style="">
         <v-app-bar-title class="text-h5 ms-5">
           {{ user.USER_NAME}}
         </v-app-bar-title>
@@ -13,8 +13,8 @@
           </template>
 
           <!-- 建立彈出的內容 -->
-          <template v-slot:default="{ isActive }">
-            <v-card title="　" >
+          <template v-slot:default="{ isActive }" >
+            <v-card title="　" style="border-radius: 15px;">
               <v-divider style="margin-top: 15px;margin-bottom: 15px;"></v-divider>
 
               <v-card-text>
@@ -41,15 +41,15 @@
 
           <!-- 設定彈出的內容 -->
           <template v-slot:default="{ isActive }">
-            <v-card title="　">
+            <v-card title="　" style="border-radius: 15px;">
               <v-card-text>
-                  <v-list style="font-size: 1.2rem;">收藏貼文</v-list>
+                  <v-list style="font-size: 1.2rem;">貼文收藏</v-list>
                   <v-divider style="margin-top: 15px;margin-bottom: 15px;"></v-divider>
                   <v-list style="font-size: 1.2rem;">喜歡的活動</v-list>
                   <v-divider style="margin-top: 15px;margin-bottom: 15px;"></v-divider>
                   <v-list style="font-size: 1.2rem;">限動典藏</v-list>
                   <v-divider style="margin-top: 15px; margin-bottom: 15px;"></v-divider>
-                  <template v-if="user.isAdmin">
+                  <template v-if="user.IS_ADMIN">
                     <v-list style="font-size: 1.2rem;" to="/admin">管理員後台</v-list>
                     <v-divider style="margin-top: 15px;margin-bottom: 15px;"></v-divider>
                   </template>
@@ -68,8 +68,7 @@
 
       </VContainer>
     </v-app-bar>
-
-  <!-- </template> -->
+  </template>
 
   <PersonalNotClub v-if="user.ROLE !== UserRole.CLUB"></PersonalNotClub>
   <PersonalClub v-if="user.ROLE === UserRole.CLUB"></PersonalClub>

@@ -28,6 +28,7 @@ export const useUserStore = defineStore('user', () => {
   const IS_STUDENT = ref('')
   const IS_ABLE = ref('')
   const IS_ADMIN = ref('')
+  const DESCRIBE = ref('')
 
   const login = (data) => {
     if (data.TOKEN) {
@@ -53,6 +54,7 @@ export const useUserStore = defineStore('user', () => {
     IS_STUDENT.value = data.IS_STUDENT
     IS_ABLE.value = data.IS_ABLE
     IS_ADMIN.value = data.IS_ADMIN
+    DESCRIBE.value = data.DESCRIBE
   }
 
   const isLogin = computed(() => {
@@ -96,6 +98,7 @@ export const useUserStore = defineStore('user', () => {
     IS_STUDENT.value = ''
     IS_ABLE.value = ''
     IS_ADMIN.value = ''
+    DESCRIBE.value = ''
   }
 
   return {
@@ -119,6 +122,7 @@ export const useUserStore = defineStore('user', () => {
     IS_STUDENT,
     IS_ABLE,
     IS_ADMIN,
+    DESCRIBE,
     login,
     logout,
     isLogin,
