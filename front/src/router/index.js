@@ -57,8 +57,17 @@ const routes = [
           login: true,
           admin: false
         }
+      },
+      {
+        path: '/post',
+        name: 'post',
+        component: () => import('@/views/front/PostView.vue'),
+        meta: {
+          title: '學生社團網 | 動態',
+          login: true,
+          admin: false
+        }
       }
-
     ]
   },
   {

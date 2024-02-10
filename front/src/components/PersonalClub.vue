@@ -258,8 +258,10 @@
         <v-col cols="8">
           <v-row>
 
+            <!-- 使用者名稱 -->
+            <v-col cols="12" style="font-size: 1.6rem; padding-bottom: 0;color: #25ECE0;"> {{user.USER_NAME}}</v-col>
             <!-- 暱稱 -->
-            <v-col cols="12" style="font-size: 1.1rem; padding-bottom: 0; " >
+            <v-col cols="12" style="font-size: 1.1rem; padding-bottom: 0; padding-top: 0.5rem;" >
               <v-row>
                 <v-col cols="8">
                   <!-- 社團名稱/屆數/成員 -->
@@ -276,9 +278,9 @@
                   <v-menu activator="#post" width="150" style="text-align: center;">
                     <v-list>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
-                      <v-list style="font-size: 1rem;">建立動態</v-list>
+                      <v-list-item style="font-size: 1rem;">建立動態</v-list-item>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
-                      <v-list style="font-size: 1rem;">建立限動</v-list>
+                      <v-list-item style="font-size: 1rem;">建立限動</v-list-item>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
                     </v-list>
                   </v-menu>
@@ -287,17 +289,17 @@
                   <v-menu activator="#setting" width="150" style="text-align: center;" >
                     <v-list>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
-                      <v-list style="font-size: 1rem;">貼文收藏</v-list>
+                      <v-list-item style="font-size: 1rem;">貼文收藏</v-list-item>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
-                      <v-list style="font-size: 1rem;">喜歡的活動</v-list>
+                      <v-list-item style="font-size: 1rem;">喜歡的活動</v-list-item>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
-                      <v-list style="font-size: 1rem;">限動典藏</v-list>
+                      <v-list-item style="font-size: 1rem;">限動典藏</v-list-item>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
                       <template v-if="user.IS_ADMIN">
-                        <v-list style="font-size: 1rem;" to="/admin">管理員後台</v-list>
-                        <v-divider style="margin-top: 15px;margin-bottom: 15px;"></v-divider>
+                        <v-list-item style="font-size: 1rem; cursor: pointer;" to="/admin">管理員後台</v-list-item>
+                        <v-divider style="margin-top:   6px;margin-bottom: 6px;"></v-divider>
                       </template>
-                      <v-list style="font-size: 1rem; cursor: pointer;" @click="logout">登出</v-list>
+                      <v-list-item style="font-size: 1rem; cursor: pointer;" @click="logout">登出</v-list-item>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
                     </v-list>
                   </v-menu>
@@ -306,6 +308,7 @@
               </v-row>
             </v-col>
 
+            <!-- 學校 -->
             <v-col cols="12"  style=" font-size: 0.9rem; padding-top: 0.6rem;"  >
               <span style="border: 1px solid #25ECE0; padding: 3px 10px; color: #FF6868;"  >
                 <span style="margin-right: 10px; font-weight: 900; color: #25ECE0;" >{{ user.SCHOOL_NAME }}</span>
@@ -522,21 +525,21 @@
 import { useDisplay } from 'vuetify'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useApi } from '@/composables/axios'
 import { useUserStore } from '@/store/user'
-import UserRole from '@/enums/UserRole'
 import { useSnackbar } from 'vuetify-use-dialog'
+import { useApi } from '@/composables/axios'
+import logout from '@/composables/logout'
+import UserRole from '@/enums/UserRole'
 
 const { api, apiAuth } = useApi()
 const router = useRouter()
+const createSnackbar = useSnackbar()
 const user = useUserStore()
 const tab = ref('')
-const createSnackbar = useSnackbar()
 
 // 判斷是否用手機
 const { xs, sm } = useDisplay()
 const isXs = computed(() => xs.value)
-const isSm = computed(() => sm.value)
 
 const cols = computed(() => {
   if (isXs.value) {
@@ -558,37 +561,6 @@ const share = () => {
       .catch((error) => console.log('Error sharing', error))
   } else {
     console.log('Web Share API is not supported in your browser.')
-  }
-}
-
-// 登出
-const logout = async () => {
-  try {
-    await apiAuth.delete('/users/logout')
-    user.logout()
-    createSnackbar({
-      text: '登出成功',
-      showCloseButton: false,
-      snackbarProps: {
-        timeout: 2000,
-        color: 'green',
-        location: 'bottom'
-      }
-    })
-
-    router.push('/')
-  } catch (error) {
-    console.log(error)
-    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
-    createSnackbar({
-      text,
-      showCloseButton: false,
-      snackbarProps: {
-        timeout: 2000,
-        color: 'red',
-        location: 'bottom'
-      }
-    })
   }
 }
 

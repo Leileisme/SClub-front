@@ -62,7 +62,7 @@ export const useUserStore = defineStore('user', () => {
   })
 
   const isAdmin = computed(() => {
-    return ROLE.value === UserRole.ADMIN
+    return IS_ADMIN.value
   })
 
   const getProfile = async () => {

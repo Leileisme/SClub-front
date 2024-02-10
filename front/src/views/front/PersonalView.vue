@@ -14,13 +14,12 @@
 
           <!-- 建立彈出的內容 -->
           <template v-slot:default="{ isActive }" >
-            <v-card title="　" style="border-radius: 15px;">
-              <v-divider style="margin-top: 15px;margin-bottom: 15px;"></v-divider>
-
-              <v-card-text>
-                  <v-list style="font-size: 1.2rem;">建立動態</v-list>
+            <v-card style="border-radius: 15px;">
+              <v-card-text class="text-center">
+                  <v-divider style="margin-top: 30px;margin-bottom: 15px;"></v-divider>
+                  <v-list-item style="font-size: 1.2rem;">建立動態</v-list-item>
                   <v-divider style="margin-top: 15px;margin-bottom: 15px;"></v-divider>
-                  <v-list style="font-size: 1.2rem;">建立限動</v-list>
+                  <v-list-item style="font-size: 1.2rem;">建立限動</v-list-item>
                   <v-divider style="margin-top: 15px;margin-bottom: 30px;"></v-divider>
               </v-card-text>
 
@@ -41,21 +40,21 @@
 
           <!-- 設定彈出的內容 -->
           <template v-slot:default="{ isActive }">
-            <v-card title="　" style="border-radius: 15px;">
+            <v-card style="border-radius: 15px;" class="text-center">
               <v-card-text>
-                  <v-list style="font-size: 1.2rem;">貼文收藏</v-list>
+                <v-divider style="margin-top: 30px;margin-bottom: 15px;"></v-divider>
+                <v-list-item style="font-size: 1.2rem;">貼文收藏</v-list-item>
+                <v-divider style="margin-top: 15px;margin-bottom: 15px;"></v-divider>
+                <v-list-item style="font-size: 1.2rem;">喜歡的活動</v-list-item>
+                <v-divider style="margin-top: 15px;margin-bottom: 15px;"></v-divider>
+                <v-list-item style="font-size: 1.2rem;">限動典藏</v-list-item>
+                <v-divider style="margin-top: 15px; margin-bottom: 15px;"></v-divider>
+                <template v-if="user.IS_ADMIN">
+                  <v-list-item style="font-size: 1.2rem; cursor: pointer;" to="/admin" >管理員後台</v-list-item>
                   <v-divider style="margin-top: 15px;margin-bottom: 15px;"></v-divider>
-                  <v-list style="font-size: 1.2rem;">喜歡的活動</v-list>
-                  <v-divider style="margin-top: 15px;margin-bottom: 15px;"></v-divider>
-                  <v-list style="font-size: 1.2rem;">限動典藏</v-list>
-                  <v-divider style="margin-top: 15px; margin-bottom: 15px;"></v-divider>
-                  <template v-if="user.IS_ADMIN">
-                    <v-list style="font-size: 1.2rem;" to="/admin">管理員後台</v-list>
-                    <v-divider style="margin-top: 15px;margin-bottom: 15px;"></v-divider>
-                  </template>
-                  <v-list style="font-size: 1.2rem;cursor: pointer;" @click="logout" >登出</v-list>
-                  <v-divider style="margin-top: 15px;margin-bottom: 30px;"></v-divider>
-
+                </template>
+                <v-list-item style="font-size: 1.2rem;cursor: pointer;" @click="logout" >登出</v-list-item>
+                <v-divider style="margin-top: 15px;margin-bottom: 30px;"></v-divider>
               </v-card-text>
 
                 <v-spacer></v-spacer>
@@ -77,54 +76,24 @@
 
 <script setup>
 import { useDisplay } from 'vuetify'
-import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useApi } from '@/composables/axios'
+import { computed } from 'vue'
+// import { useRouter } from 'vue-router'
+// import { useApi } from '@/composables/axios'
+// import { useSnackbar } from 'vuetify-use-dialog'
 import { useUserStore } from '@/store/user'
-import { useSnackbar } from 'vuetify-use-dialog'
 import UserRole from '@/enums/UserRole'
 import PersonalNotClub from '@/components/PersonalNotClub.vue'
 import PersonalClub from '@/components/PersonalClub.vue'
+import logout from '@/composables/logout'
 
-const { api, apiAuth } = useApi()
-const router = useRouter()
+// const { api, apiAuth } = useApi()
 const user = useUserStore()
-const createSnackbar = useSnackbar()
+// const router = useRouter()
+// const createSnackbar = useSnackbar()
 
 // 判斷是否用手機
 const { xs } = useDisplay()
 const isXs = computed(() => xs.value)
-
-// 登出
-const logout = async () => {
-  try {
-    await apiAuth.delete('/users/logout')
-    user.logout()
-    createSnackbar({
-      text: '登出成功',
-      showCloseButton: false,
-      snackbarProps: {
-        timeout: 2000,
-        color: 'green',
-        location: 'bottom'
-      }
-    })
-
-    router.push('/')
-  } catch (error) {
-    console.log(error)
-    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
-    createSnackbar({
-      text,
-      showCloseButton: false,
-      snackbarProps: {
-        timeout: 2000,
-        color: 'red',
-        location: 'bottom'
-      }
-    })
-  }
-}
 
 </script>
 
