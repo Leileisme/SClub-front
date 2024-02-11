@@ -11,5 +11,6 @@ router.post('/login', auth.login, login)
 router.delete('/logout', auth.jwt, logout)
 router.patch('/extend', auth.jwt, extend)
 router.get('/profile', auth.jwt, getProfile)
+// router.get('/:USER_NAME', auth.jwt, getProfile)
 
 export default router

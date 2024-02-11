@@ -25,9 +25,8 @@ apiAuth.interceptors.response.use((res) => {
   return res
 }, (error) => {
   if (error.response) {
-    if (error.response.data.message === 'JWT過期' && error.config.url !== '/users/extend') {
+    if (error.response.data.message === 'JWT 過期' && error.config.url !== '/users/extend') {
       const user = useUserStore()
-
       // 傳送舊換新請求
       return apiAuth.patch('/users/extend')
         .then(({ data }) => {

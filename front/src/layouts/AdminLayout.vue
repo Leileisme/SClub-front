@@ -3,7 +3,7 @@
   <template v-if="isXs">
     <v-app-bar >
       <VContainer class="d-flex align-center" style="">
-        <v-btn v-bind="props" icon="mdi-chevron-left" style="font-size: 1.25rem;"  to="/personal"> </v-btn>
+        <v-btn icon="mdi-chevron-left" style="font-size: 1.25rem;"  to="/personal"> </v-btn>
         <v-app-bar-title class="text-h5  text-center">
           管理員後台
         </v-app-bar-title>

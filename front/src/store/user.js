@@ -1,3 +1,4 @@
+/* eslint-disable vue/no-ref-as-operand */
 // Utilities
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
@@ -55,6 +56,7 @@ export const useUserStore = defineStore('user', () => {
     IS_ABLE.value = data.IS_ABLE
     IS_ADMIN.value = data.IS_ADMIN
     DESCRIBE.value = data.DESCRIBE
+    console.log(USER_NAME, 'login USER_NAME')
   }
 
   const isLogin = computed(() => {
@@ -69,7 +71,10 @@ export const useUserStore = defineStore('user', () => {
     if (TOKEN.value.length === 0) return
     try {
       const { data } = await apiAuth.get('/users/profile')
+      // const { data } = await apiAuth.get('/users/' + USER_NAME)
       console.log(data, 'data getProfile')
+      console.log(USER_NAME, 'USER_NAME')
+      console.log(USER_NAME.value, 'USER_NAME.value')
 
       login(data.result)
     } catch (error) {

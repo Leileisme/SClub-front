@@ -55,7 +55,8 @@ export const jwt = (req, res, next) => {
       }
     }
     req.user = data.user
-    req.token = data.token
+    req.TOKEN = data.TOKEN
+
     next()
   })(req, res, next)
 }

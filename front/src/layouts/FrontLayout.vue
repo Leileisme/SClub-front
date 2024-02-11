@@ -99,7 +99,8 @@ const navItems = computed(() => {
     { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: user.isLogin },
     // { to: '', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show: user.isLogin },
     { to: '/post', text: '動態', icon: 'mdi-account-multiple', show: user.isLogin },
-    { to: '/personal', text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin },
+    // { to: '/personal', text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin },
+    { to: '/' + user.USER_NAME, text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin },
     { to: '', text: '票券', icon: 'mdi-ticket-confirmation-outline', show: user.isLogin },
     { to: '', text: '通知', icon: 'mdi-bell-outline', show: user.isLogin },
     { to: '', text: '訊息', icon: 'mdi-chat-processing', show: user.isLogin },
@@ -113,7 +114,9 @@ const BottomNavItems = computed(() => {
     { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: user.isLogin },
     // { to: '', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show:user.isLogin },
     { to: '/post', text: '動態', icon: 'mdi-account-multiple', show: user.isLogin },
-    { to: '/personal', text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin }
+    // { to: '/personal', text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin }
+    { to: '/' + user.USER_NAME, text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin }
+
   ]
 })
 

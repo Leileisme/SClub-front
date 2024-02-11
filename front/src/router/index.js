@@ -49,7 +49,8 @@ const routes = [
         }
       },
       {
-        path: '/personal',
+        // path: '/personal',
+        path: '/:USER_NAME',
         name: 'personal',
         component: () => import('@/views/front/PersonalView.vue'),
         meta: {
