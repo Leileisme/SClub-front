@@ -69,8 +69,9 @@
     </v-app-bar>
   </template>
 
-  <PersonalNotClub v-if="user.ROLE !== UserRole.CLUB"></PersonalNotClub>
-  <PersonalClub v-if="user.ROLE === UserRole.CLUB"></PersonalClub>
+  <!-- <NClubSelf v-if="user.ROLE !== UserRole.CLUB"></NClubSelf> -->
+  <!-- <ClubSelf v-if="user.ROLE === UserRole.CLUB"></ClubSelf> -->
+  <Club></Club>
 
 </template>
 
@@ -81,9 +82,10 @@ import { computed } from 'vue'
 // import { useApi } from '@/composables/axios'
 // import { useSnackbar } from 'vuetify-use-dialog'
 import { useUserStore } from '@/store/user'
+import ClubSelf from '@/components/ClubSelf.vue'
 import UserRole from '@/enums/UserRole'
-import PersonalNotClub from '@/components/PersonalNotClub.vue'
-import PersonalClub from '@/components/PersonalClub.vue'
+import NClubSelf from '@/components/NClubSelf.vue'
+import Club from '@/components/Club.vue'
 import logout from '@/composables/logout'
 
 // const { api, apiAuth } = useApi()

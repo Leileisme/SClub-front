@@ -6,9 +6,7 @@ export const create = async (req, res) => {
   try {
     // 這邊的 image 是我表單自訂的名字
     // req.body.IMAGE = req.file.path
-    console.log('start')
     await users.create(req.body)
-    console.log('end')
     res.status(200).json({
       success: true,
       message: ''
@@ -48,7 +46,7 @@ export const create = async (req, res) => {
 export const login = async (req, res) => {
   try {
     // jwt.sign 創造一個新的JWT，並接受三個參數 ( 物件、密鑰、選項 )
-    const TOKEN = jwt.sign({ _id: req.user.id }, process.env.JWT_SECRET, { expiresIn: '1s' })
+    const TOKEN = jwt.sign({ _id: req.user.id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
     req.user.TOKENS.push(TOKEN)
     await req.user.save()
     res.status(200).json({
@@ -122,6 +120,34 @@ export const extend = async (req, res, next) => {
     res.status(500).json({
       success: false,
       message: 'token換新的未知錯誤'
+    })
+  }
+}
+
+export const getUser = async (req, res) => {
+  try {
+    // i 是不分大小寫
+    const regex = new RegExp(req.query.search || '', 'i')
+
+    const data = await users.find({
+      $or: [
+        { USER_NAME: regex },
+        { NICK_NAME: regex }
+      ]
+    })
+
+    res.status(200).json({
+      success: true,
+      message: '',
+      result: {
+        data
+      }
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      success: false,
+      message: 'getUser 的未知錯誤'
     })
   }
 }

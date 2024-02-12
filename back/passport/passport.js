@@ -69,9 +69,8 @@ passport.use(
           throw new Error('EXPIRED')
         }
         const TOKEN = passportJWT.ExtractJwt.fromAuthHeaderAsBearerToken()(req)
-        console.log(TOKEN, 'TOKEN PASSPORT')
         const user = await users.findOne({ _id: payload._id, TOKENS: TOKEN })
-        console.log(user, 'user PASSPORT')
+
         if (!user) {
           throw new Error('JWT')
         }
@@ -84,7 +83,7 @@ passport.use(
         } else if (error.message === 'JWT') {
           return done(null, null, { message: 'JWT 無效' })
         } else {
-          return done(null, null, { message: '未知錯誤' })
+          return done(null, null, { message: 'JWT 未知錯誤' })
         }
       }
     }

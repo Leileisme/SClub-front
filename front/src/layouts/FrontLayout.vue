@@ -1,5 +1,19 @@
 <template>
   <v-layout>
+    <!-- 頂部導覽列 -->
+    <template v-if="isXs && !isPersonalRoute">
+      <v-app-bar>
+        <VContainer class="d-flex align-center">
+        <v-app-bar-title class="text-h5 ms-5">LogoHere</v-app-bar-title>
+        <template v-for="item in TopNavItems" :key="item.to" >
+          <VBtn :to="item.to" :active=false class="iconTop"><v-icon>{{ item.icon }}</v-icon></VBtn>
+        </template>
+      </VContainer>
+      </v-app-bar>
+
+    </template>
+
+    <!-- 底部導覽列 Xs -->
     <template v-if="isXs && user.isLogin">
       <v-bottom-navigation>
           <template v-for="item in BottomNavItems" :key="item.to">
@@ -72,10 +86,19 @@
 
 <script setup>
 import { useDisplay } from 'vuetify'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useUserStore } from '@/store/user'
+import { useRouter } from 'vue-router'
 
 const user = useUserStore()
+const router = useRouter()
+const isPersonalRoute = ref(router.currentRoute.value.name === 'personal')
+
+// currentRoute 是異步的
+// 使用 ref 並進行監聽
+watch(() => router.currentRoute.value.name, (newName) => {
+  isPersonalRoute.value = newName === 'personal'
+})
 
 // 判斷是否用手機
 const { sm, xs } = useDisplay()
@@ -93,6 +116,29 @@ const heigh = computed(() => {
   }
 })
 
+// xs 頂部導覽列
+const TopNavItems = computed(() => {
+  return [
+    { to: '/register', text: '票券', icon: 'mdi-ticket-confirmation-outline', show: '' },
+    { to: '/register', text: '通知', icon: 'mdi-bell-outline', show: '' },
+    { to: '/register', text: '訊息', icon: 'mdi-chat-processing', show: '' }
+  ]
+})
+
+// xs 底部導覽列
+const BottomNavItems = computed(() => {
+  return [
+    { to: '/', text: '首頁', icon: 'mdi-home', show: user.isLogin },
+    { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: user.isLogin },
+    // { to: '', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show:user.isLogin },
+    { to: '/post', text: '動態', icon: 'mdi-account-multiple', show: user.isLogin },
+    // { to: '/personal', text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin }
+    { to: '/' + user.USER_NAME, text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin }
+
+  ]
+})
+
+// 電腦版導覽列
 const navItems = computed(() => {
   return [
     { to: '/', text: '首頁', icon: 'mdi-home', show: user.isLogin },
@@ -105,18 +151,6 @@ const navItems = computed(() => {
     { to: '', text: '通知', icon: 'mdi-bell-outline', show: user.isLogin },
     { to: '', text: '訊息', icon: 'mdi-chat-processing', show: user.isLogin },
     { to: '/admin', text: '管理員後台', icon: 'mdi-account-cog-outline', show: user.IS_ADMIN }
-  ]
-})
-
-const BottomNavItems = computed(() => {
-  return [
-    { to: '/', text: '首頁', icon: 'mdi-home', show: user.isLogin },
-    { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: user.isLogin },
-    // { to: '', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show:user.isLogin },
-    { to: '/post', text: '動態', icon: 'mdi-account-multiple', show: user.isLogin },
-    // { to: '/personal', text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin }
-    { to: '/' + user.USER_NAME, text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin }
-
   ]
 })
 
