@@ -120,15 +120,11 @@
 import { useDisplay } from 'vuetify'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-// import { useApi } from '@/composables/axios'
+import { useApi } from '@/composables/axios'
 // import { useSnackbar } from 'vuetify-use-dialog'
 import { useUserStore } from '@/store/user'
-import UserRole from '@/enums/UserRole'
-import PersonalNotClub from '@/components/PersonalNotClub.vue'
-import PersonalClub from '@/components/PersonalClub.vue'
-import logout from '@/composables/logout'
 
-// const { api, apiAuth } = useApi()
+const { api, apiAuth } = useApi()
 const user = useUserStore()
 const router = useRouter()
 // const createSnackbar = useSnackbar()

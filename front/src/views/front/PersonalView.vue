@@ -69,9 +69,10 @@
     </v-app-bar>
   </template>
 
-  <!-- <NClubSelf v-if="user.ROLE !== UserRole.CLUB"></NClubSelf> -->
-  <!-- <ClubSelf v-if="user.ROLE === UserRole.CLUB"></ClubSelf> -->
-  <Club></Club>
+  <NClubSelf v-if="user.ROLE !== UserRole.CLUB"></NClubSelf>
+  <ClubSelf v-if="user.ROLE === UserRole.CLUB"></ClubSelf>
+  <!-- 未完成 -->
+  <!-- <Club></Club> -->
 
 </template>
 

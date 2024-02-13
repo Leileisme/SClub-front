@@ -93,7 +93,6 @@
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
               <v-btn color="#FF9900" style="color: #fff; font-weight: 900;width: 100%;">活躍狀態 {{user.SCORES}} 分</v-btn>
             </v-col>
-
           </v-row>
         </v-col>
 

@@ -68,6 +68,16 @@ const routes = [
           login: true,
           admin: false
         }
+      },
+      {
+        path: '/ticket',
+        name: 'ticket',
+        component: () => import('@/views/front/TicketView.vue'),
+        meta: {
+          title: '學生社團網 | 動態',
+          login: true,
+          admin: false
+        }
       }
     ]
   },

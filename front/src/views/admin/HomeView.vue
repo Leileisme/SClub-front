@@ -20,8 +20,7 @@ import { useRouter } from 'vue-router'
 
 import { useUserStore } from '@/store/user'
 import UserRole from '@/enums/UserRole'
-import PersonalNotClub from '@/components/PersonalNotClub.vue'
-import PersonalClub from '@/components/PersonalClub.vue'
+
 import logout from '@/composables/logout'
 
 // const { api, apiAuth } = useApi()

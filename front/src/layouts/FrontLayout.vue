@@ -1,7 +1,7 @@
 <template>
   <v-layout>
     <!-- 頂部導覽列 -->
-    <template v-if="isXs && !isPersonalRoute">
+    <template v-if="isXs && !isPersonalRoute && !isLoginRoute && !isRegisterRoute">
       <v-app-bar>
         <VContainer class="d-flex align-center">
         <v-app-bar-title class="text-h5 ms-5">LogoHere</v-app-bar-title>
@@ -93,11 +93,15 @@ import { useRouter } from 'vue-router'
 const user = useUserStore()
 const router = useRouter()
 const isPersonalRoute = ref(router.currentRoute.value.name === 'personal')
+const isLoginRoute = ref(router.currentRoute.value.name === 'login')
+const isRegisterRoute = ref(router.currentRoute.value.name === 'register')
 
 // currentRoute 是異步的
 // 使用 ref 並進行監聽
 watch(() => router.currentRoute.value.name, (newName) => {
   isPersonalRoute.value = newName === 'personal'
+  isLoginRoute.value = newName === 'login'
+  isRegisterRoute.value = newName === 'register'
 })
 
 // 判斷是否用手機
@@ -119,9 +123,9 @@ const heigh = computed(() => {
 // xs 頂部導覽列
 const TopNavItems = computed(() => {
   return [
-    { to: '/register', text: '票券', icon: 'mdi-ticket-confirmation-outline', show: '' },
-    { to: '/register', text: '通知', icon: 'mdi-bell-outline', show: '' },
-    { to: '/register', text: '訊息', icon: 'mdi-chat-processing', show: '' }
+    { to: '/ticket', text: '票券', icon: 'mdi-ticket-confirmation-outline', show: '' },
+    { to: '', text: '通知', icon: 'mdi-bell-outline', show: '' },
+    { to: 'r', text: '訊息', icon: 'mdi-chat-processing', show: '' }
   ]
 })
 
@@ -132,7 +136,7 @@ const BottomNavItems = computed(() => {
     { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: user.isLogin },
     // { to: '', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show:user.isLogin },
     { to: '/post', text: '動態', icon: 'mdi-account-multiple', show: user.isLogin },
-    // { to: '/personal', text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin }
+    // { to: '', text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin },
     { to: '/' + user.USER_NAME, text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin }
 
   ]
@@ -147,7 +151,7 @@ const navItems = computed(() => {
     { to: '/post', text: '動態', icon: 'mdi-account-multiple', show: user.isLogin },
     // { to: '/personal', text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin },
     { to: '/' + user.USER_NAME, text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin },
-    { to: '', text: '票券', icon: 'mdi-ticket-confirmation-outline', show: user.isLogin },
+    { to: '/ticket', text: '票券', icon: 'mdi-ticket-confirmation-outline', show: user.isLogin },
     { to: '', text: '通知', icon: 'mdi-bell-outline', show: user.isLogin },
     { to: '', text: '訊息', icon: 'mdi-chat-processing', show: user.isLogin },
     { to: '/admin', text: '管理員後台', icon: 'mdi-account-cog-outline', show: user.IS_ADMIN }
