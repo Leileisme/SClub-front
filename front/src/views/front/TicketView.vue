@@ -196,16 +196,19 @@ const emailUB = useField('emailUB', user.EMAIL_UB)
 const clubTh = useField('clubTh', user.CLUB_TH)
 // const clubCoreMember = useField('clubCoreMember', user.CLUB_CORE_MEMBER)
 const clubCategory = useField('clubCategory', user.CLUB_CATEGORY)
+const nickName = useField('nickName')
 
 // 送出表單
 const submit = handleSubmit(async (values) => {
   try {
-    await apiAuth.path('/users/edit', {
+    await apiAuth.patch('/users/edit', {
+      USER_NAME: user.USER_NAME,
       REAL_NAME: values.realName,
       EMAIL_UB: values.emailUB,
       CLUB_TH: values.clubTh,
       // CLUB_CORE_MEMBER: values.clubCoreMember,
-      CLUB_CATEGORY: values.clubCategory
+      CLUB_CATEGORY: values.clubCategory,
+      NICK_NAME: nickName.value.value || values.realName
     })
 
     createSnackbar({

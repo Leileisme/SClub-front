@@ -85,7 +85,8 @@
         <v-col cols="12" >
           <v-row>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
-              <v-btn color="#444" style="font-weight: 900; width: 100%;">編輯社團檔案</v-btn>
+              <!-- <v-btn color="#444" style="font-weight: 900; width: 100%;">編輯社團檔案</v-btn> -->
+              <EditClub></EditClub>
             </v-col>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
               <v-btn  color="#444" style="font-weight: 900; width: 100%;">分享社團檔案</v-btn>
@@ -363,8 +364,9 @@
         <!-- 編輯/分享/分數 狀態按鈕 -->
         <v-col cols="12" >
           <v-row>
-            <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
-              <v-btn color="#444" style="font-weight: 900; width: 100%;">編輯社團檔案</v-btn>
+            <v-col cols="4" style="padding-left: 4px; padding-right:4px ;" >
+              <!-- <v-btn color="#444" style="font-weight: 900; width: 100%;">編輯社團檔案</v-btn> -->
+              <EditClub></EditClub>
             </v-col>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
               <v-btn  color="#444" style="font-weight: 900; width: 100%;">分享社團檔案</v-btn>
@@ -529,6 +531,7 @@ import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
 import logout from '@/composables/logout'
 import UserRole from '@/enums/UserRole'
+import EditClub from '@/components/EditClub.vue'
 
 const { api, apiAuth } = useApi()
 const router = useRouter()
