@@ -34,7 +34,7 @@
 
             <!-- 新增社團按鈕 /  若有幹部則顯示幹部職位-->
             <v-col cols="12" style="padding-top:1px ;">
-              <v-btn type="button" style="background-color:#1BBCA9; height: auto; padding-top: 3px; padding-bottom:3px;" > <v-icon style="margin-left: -3px;">mdi-plus</v-icon>新增社團</v-btn>
+              <v-btn type="button" style="background-color:#444; height: auto; padding-top: 3px; padding-bottom:3px;" > 無社團</v-btn>
             </v-col>
 
             <!-- 簡介 (最多39字)-->
@@ -388,7 +388,7 @@ onMounted(async () => {
     routeUser.value.GO_EVENT = data.result.GO_EVENT
     routeUser.value.BE_MARK = data.result.BE_MARK
 
-    document.title = `學生社團 | ${routeUser.value.NICK_NAME}`
+    document.title = `學生社團 | ${routeUser.value.NICK_NAME}（${routeUser.value.USER_NAME}）`
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'

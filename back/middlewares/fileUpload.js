@@ -46,6 +46,9 @@ export default (req, res, next) => {
         success: false,
         message: 'fileUpload未知錯誤'
       })
+      // 這裡有動 2/15
+    } else if (req.file && req.file.path.includes('https://source.boringavatars.com/beam/120/')) {
+      next()
     } else {
       next()
     }

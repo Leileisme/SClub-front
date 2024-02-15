@@ -15,6 +15,7 @@ export const useUserStore = defineStore('user', () => {
   const ROLE = ref('')
   const SCHOOL_NAME = ref('')
   const SCHOOL_CITY = ref('')
+  const REAL_NAME = ref('')
   const USER_NAME = ref('')
   const NICK_NAME = ref('')
   const CLUB_TH = ref('')
@@ -41,6 +42,7 @@ export const useUserStore = defineStore('user', () => {
     ROLE.value = data.ROLE
     SCHOOL_NAME.value = data.SCHOOL_NAME
     SCHOOL_CITY.value = data.SCHOOL_CITY
+    REAL_NAME.value = data.REAL_NAME
     USER_NAME.value = data.USER_NAME
     NICK_NAME.value = data.NICK_NAME
     CLUB_TH.value = data.CLUB_TH
@@ -72,10 +74,6 @@ export const useUserStore = defineStore('user', () => {
     if (TOKEN.value.length === 0) return
     try {
       const { data } = await apiAuth.get('/users/profile')
-      // const { data } = await apiAuth.get('/users/' + USER_NAME)
-      console.log(data, 'data getProfile')
-      console.log(USER_NAME, 'USER_NAME')
-      console.log(USER_NAME.value, 'USER_NAME.value')
 
       login(data.result)
     } catch (error) {
@@ -89,6 +87,7 @@ export const useUserStore = defineStore('user', () => {
     ROLE.value = ''
     SCHOOL_NAME.value = ''
     SCHOOL_CITY.value = ''
+    REAL_NAME.value = ''
     USER_NAME.value = ''
     NICK_NAME.value = ''
     CLUB_TH.value = ''
@@ -113,6 +112,7 @@ export const useUserStore = defineStore('user', () => {
     ROLE,
     SCHOOL_NAME,
     SCHOOL_CITY,
+    REAL_NAME,
     USER_NAME,
     NICK_NAME,
     CLUB_TH,

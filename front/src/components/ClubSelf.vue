@@ -613,7 +613,7 @@ onMounted(async () => {
     routeUser.value.GO_EVENT = data.result.GO_EVENT
     routeUser.value.BE_MARK = data.result.BE_MARK
 
-    document.title = `學生社團 | ${routeUser.value.NICK_NAME}`
+    document.title = `學生社團 | ${routeUser.value.NICK_NAME}（${routeUser.value.USER_NAME}）`
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'

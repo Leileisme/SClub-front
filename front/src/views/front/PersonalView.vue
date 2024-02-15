@@ -70,10 +70,8 @@
     </v-app-bar>
   </template>
 
-  <NClubSelf v-if="user.ROLE !== UserRole.CLUB"></NClubSelf>
-  <ClubSelf v-if="user.ROLE === UserRole.CLUB"></ClubSelf>
-  <!-- 未完成 -->
-  <!-- <Club></Club> -->
+  <NClubSelf v-if="routeUser.ROLE !== UserRole.CLUB"></NClubSelf>
+  <ClubSelf v-else></ClubSelf>
 
 </template>
 
@@ -84,8 +82,8 @@ import { useRouter, useRoute } from 'vue-router'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useUserStore } from '@/store/user'
-import ClubSelf from '@/components/ClubSelf.vue'
 import UserRole from '@/enums/UserRole'
+import ClubSelf from '@/components/ClubSelf.vue'
 import NClubSelf from '@/components/NClubSelf.vue'
 import SettingsMenu from '@/components/SettingsMenu.vue'
 
@@ -156,7 +154,7 @@ onMounted(async () => {
     routeUser.value.GO_EVENT = data.result.GO_EVENT
     routeUser.value.BE_MARK = data.result.BE_MARK
 
-    document.title = `學生社團 | ${routeUser.value.NICK_NAME}`
+    document.title = `學生社團 | ${routeUser.value.NICK_NAME}（${routeUser.value.USER_NAME}）`
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
