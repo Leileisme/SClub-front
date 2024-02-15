@@ -45,7 +45,7 @@
                   <v-col cols="12">
                     <!-- 這個判斷方式也可以直接寫在 template 裡面，EX: 信箱 -->
                     <v-select
-                      v-model="role.value.value"
+                      v-model.number="role.value.value"
                       :items="type.selected ==='個人' ? roleItems.items : type.selected ==='團體' ? group.items : []"
                       item-title="text"
                       item-value="value"
@@ -93,7 +93,7 @@
                       density="comfortable">
                     </v-text-field>
                     <!-- 學號 -->
-                    <v-text-field v-if="role.value.value === 1"
+                    <v-text-field v-if="role.value.value === UseRole.STUDENT"
                       v-model="studentNo.value.value"
                       :error-messages="studentNo.errorMessage.value"
                       label="學號"

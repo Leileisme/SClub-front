@@ -174,8 +174,10 @@ export const getUser = async (req, res) => {
         { USER_NAME: regex },
         { NICK_NAME: regex }
       ]
-    })
+    }).limit(10)
+    // 限制回傳的數量
 
+    console.log(data, 'data getUser')
     res.status(200).json({
       success: true,
       message: '',
@@ -188,6 +190,25 @@ export const getUser = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'getUser 的未知錯誤'
+    })
+  }
+}
+
+export const getUserName = async (req, res) => {
+  try {
+    console.log(req.params)
+    const result = await users.findOne({ USER_NAME: req.params.USER_NAME })
+    if (!result) throw new Error('NOT FOUND')
+    res.status(200).json({
+      success: true,
+      message: '',
+      result
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      success: false,
+      message: 'getUserName 的未知錯誤'
     })
   }
 }

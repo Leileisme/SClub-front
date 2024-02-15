@@ -21,7 +21,7 @@
   <v-menu activator="#searchBtn" >
     <v-list>
       <!-- 搜尋有符合 -->
-      <template v-if="searchResults.length>0">
+      <template v-if="searchResults.length > 0">
         <v-list-item
         v-for="(item) in searchResults"
         :key="item.id"

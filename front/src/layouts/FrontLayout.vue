@@ -79,7 +79,8 @@
 
     <!-- 路由 main -->
     <v-main class="d-flex justify-center " :style="heigh">
-      <RouterView :key="$route.path" ></RouterView>
+      <!-- 綁定路徑:id -->
+      <RouterView :key="$route.fullPath" ></RouterView>
     </v-main>
   </v-layout>
 </template>

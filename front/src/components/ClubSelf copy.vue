@@ -85,10 +85,11 @@
         <v-col cols="12" >
           <v-row>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
-              <v-btn color="#1BBCA9" style="font-weight: 900; width: 100%;">追蹤</v-btn>
+              <!-- <v-btn color="#444" style="font-weight: 900; width: 100%;">編輯社團檔案</v-btn> -->
+              <EditClub></EditClub>
             </v-col>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
-              <v-btn  color="#444" style="font-weight: 900; width: 100%;">發送訊息</v-btn>
+              <v-btn  color="#444" style="font-weight: 900; width: 100%;">分享社團檔案</v-btn>
             </v-col>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
               <v-btn color="#FF9900" style="color: #fff; font-weight: 900;width: 100%;">活躍狀態 {{user.SCORES}} 分</v-btn>
@@ -96,7 +97,6 @@
           </v-row>
         </v-col>
 
-        <!-- 如果這邊是空的，就要隱藏 -->
         <!-- 分隔線 -->
         <v-col cols="12">
           <v-divider color="#fff" class="border-opacity-50"></v-divider>
@@ -108,7 +108,6 @@
               <v-btn type="button" style="background-color:#1BBCA9; height: auto; padding-top: 3px; padding-bottom:3px;" > <v-icon style="margin-left: -3px;">mdi-plus</v-icon>新增活動</v-btn>
         </v-col>
 
-        <!-- 如果這邊是空的，就要隱藏 -->
         <!-- 分隔線 -->
         <v-col cols="12">
           <v-divider color="#fff" class="border-opacity-50"></v-divider>
@@ -288,7 +287,7 @@
 
                   <v-icon class="me-3" style="cursor: pointer;" id="setting">mdi-menu</v-icon>
                   <v-menu activator="#setting" width="150" style="text-align: center;" >
-                    <v-list>
+                    <!-- <v-list>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
                       <v-list-item style="font-size: 1rem;">貼文收藏</v-list-item>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
@@ -302,6 +301,9 @@
                       </template>
                       <v-list-item style="font-size: 1rem; cursor: pointer;" @click="logout">登出</v-list-item>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
+                    </v-list> -->
+                    <v-list>
+                      <SettingsMenu></SettingsMenu>
                     </v-list>
                   </v-menu>
 
@@ -365,8 +367,9 @@
         <!-- 編輯/分享/分數 狀態按鈕 -->
         <v-col cols="12" >
           <v-row>
-            <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
-              <v-btn color="#444" style="font-weight: 900; width: 100%;">編輯社團檔案</v-btn>
+            <v-col cols="4" style="padding-left: 4px; padding-right:4px ;" >
+              <!-- <v-btn color="#444" style="font-weight: 900; width: 100%;">編輯社團檔案</v-btn> -->
+              <EditClub></EditClub>
             </v-col>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
               <v-btn  color="#444" style="font-weight: 900; width: 100%;">分享社團檔案</v-btn>
@@ -524,22 +527,24 @@
 
 <script setup>
 import { useDisplay } from 'vuetify'
-import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/store/user'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
-import logout from '@/composables/logout'
 import UserRole from '@/enums/UserRole'
+import EditClub from '@/components/EditClub.vue'
+import SettingsMenu from '@/components/SettingsMenu.vue'
 
 const { api, apiAuth } = useApi()
 const router = useRouter()
+const route = useRoute()
 const createSnackbar = useSnackbar()
 const user = useUserStore()
 const tab = ref('')
 
 // 判斷是否用手機
-const { xs, sm } = useDisplay()
+const { xs } = useDisplay()
 const isXs = computed(() => xs.value)
 
 const cols = computed(() => {
@@ -550,20 +555,69 @@ const cols = computed(() => {
   }
 })
 
-// 分享網址，但是樣式不好看先留著沒用
-const share = () => {
-  if (navigator.share) {
-    navigator.share({
-      title: document.title,
-      text: 'Check out this website:',
-      url: window.location.href
+const routeUser = ref({
+  EMAIL: (''),
+  ROLE: (''),
+  SCHOOL_NAME: (''),
+  SCHOOL_CITY: (''),
+  USER_NAME: (''),
+  NICK_NAME: (''),
+  CLUB_TH: (''),
+  CLUB_CATEGORY: (''),
+  IMAGE: (''),
+  TICKET_CART: ([]),
+  SCORES: (''),
+  NOTIFY: ([]),
+  KEEP_POST: ([]),
+  KEEP_EVENT: ([]),
+  FANS: ([]),
+  FOLLOW: ([]),
+  IS_STUDENT: (''),
+  IS_ABLE: (''),
+  IS_ADMIN: (''),
+  DESCRIBE: ('')
+})
+
+onMounted(async () => {
+  try {
+    const { data } = await apiAuth.get('/users/' + route.params.USER_NAME)
+    routeUser.value.EMAIL = data.EMAIL
+    routeUser.value.ROLE = data.ROLE
+    routeUser.value.SCHOOL_NAME = data.SCHOOL_NAME
+    routeUser.value.SCHOOL_CITY = data.SCHOOL_CITY
+    routeUser.value.USER_NAME = data.USER_NAME
+    routeUser.value.NICK_NAME = data.NICK_NAME
+    routeUser.value.CLUB_TH = data.CLUB_TH
+    routeUser.value.CLUB_CATEGORY = data.CLUB_CATEGORY
+    routeUser.value.IMAGE = data.IMAGE
+    routeUser.value.TICKET_CART = data.TICKET_CART
+    routeUser.value.SCORES = data.SCORES
+    routeUser.value.NOTIFY = data.NOTIFY
+    routeUser.value.KEEP_POST = data.KEEP_POST
+    routeUser.value.KEEP_EVENT = data.KEEP_EVENT
+    routeUser.value.FANS = data.FANS
+    routeUser.value.FOLLOW = data.FOLLOW
+    routeUser.value.IS_STUDENT = data.IS_STUDENT
+    routeUser.value.IS_ABLE = data.IS_ABLE
+    routeUser.value.IS_ADMIN = data.IS_ADMIN
+    routeUser.value.DESCRIBE = data.DESCRIBE
+
+    document.title = `學生社團 | ${routeUser.value.NICK_NAME}`
+  } catch (error) {
+    console.log(error)
+    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+    createSnackbar({
+      text,
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'red',
+        location: 'bottom'
+      }
     })
-      .then(() => console.log('Successful share'))
-      .catch((error) => console.log('Error sharing', error))
-  } else {
-    console.log('Web Share API is not supported in your browser.')
+    router.push('/')
   }
-}
+})
 
 </script>
 

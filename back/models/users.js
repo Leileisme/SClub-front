@@ -352,7 +352,7 @@ const schema = new Schema({
   // 31.貼文
   MAKE_POST: {
     type: [ObjectId],
-    ref: 'events'
+    ref: 'posts'
   },
   // 32.參與活動
   GO_EVENT: {
@@ -368,6 +368,11 @@ const schema = new Schema({
   DESCRIBE: {
     type: String,
     maxlength: [50, '「使用者描述」長度不符']
+  },
+  // 35.限時動態
+  MAKE_TIME_POST: {
+    type: [ObjectId],
+    ref: 'timePosts'
   }
 },
 {

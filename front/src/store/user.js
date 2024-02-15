@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import UserRole from '@/enums/UserRole'
 import { useApi } from '@/composables/axios'
+import { useSnackbar } from 'vuetify-use-dialog'
 
 // 原本 app.js 預設是 元件，改為 setup
 export const useUserStore = defineStore('user', () => {

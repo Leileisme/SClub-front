@@ -53,6 +53,38 @@
                 variant="outlined">
               </v-select>
             </v-col>
+            <!-- 幹部 -->
+            <pre>
+              {{  errors }}
+            </pre>
+            <v-col cols="12" style="padding-top: 0; padding-bottom: 0;" v-for="(field, idx) in clubCoreMember.fields.value" :key="field.key">
+              <v-row>
+                <v-col cols="4">
+                  <v-text-field
+                    v-if="user.ROLE === 3"
+                    v-model="field.value.ROLE"
+                    :error-messages="errors[`clubCoreMember[${idx}].ROLE`]"
+                    label="幹部職稱"
+                    variant="outlined"
+                    density="compact">
+                    </v-text-field>
+                </v-col>
+                <v-col cols="5">
+                  <v-text-field
+                    v-if="user.ROLE === 3"
+                    v-model="field.value.USER"
+                    :error-messages="errors[`clubCoreMember[${idx}].USER`]"
+                    label="用戶名稱"
+                    variant="outlined"
+                    density="compact">
+                  </v-text-field>
+                </v-col>
+                <v-col cols="3">
+                  <v-btn v-if="idx === 0" icon="mdi-plus" @click="addClubMemberField"></v-btn>
+                  <v-btn v-else icon="mdi-minus" @click="removeClubMemberField(idx)"></v-btn>
+                </v-col>
+              </v-row>
+            </v-col>
             <v-col cols="12" style="padding-top: 0; padding-bottom: 0;">
               <!-- 備用信箱 -->
                 <v-text-field
@@ -90,7 +122,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useForm, useField } from 'vee-validate'
+import { useForm, useField, useFieldArray } from 'vee-validate'
 import validator from 'validator'
 import * as yup from 'yup'
 import { useSnackbar } from 'vuetify-use-dialog'
@@ -134,13 +166,16 @@ const schema = yup.object({
     .typeError('社團屆數必須是數字'),
 
   // 社團幹部
-  // clubCoreMember: yup
-  //   .object().shape({
-  //     value: yup.object().shape({
-  //       USER: yup.string(),
-  //       ROLE: yup.string()
-  //     })
-  //   }),
+  clubCoreMember: yup
+    .array(
+      yup.object({
+        USER: yup.string().required('使用者名稱必填'),
+        ROLE: yup.string().required('幹部職稱必填')
+      })
+    )
+    .test('role', '必須要有社長和副社長', value => {
+      return value.filter(item => item.ROLE === '社長').length === 1 && value.filter(item => item.ROLE === '副社長').length === 1
+    }),
 
   // 社團類別
   clubCategory: yup
@@ -151,15 +186,28 @@ const schema = yup.object({
 })
 
 // useForm建立一個表單
-const { handleSubmit, isSubmitting } = useForm({ validationSchema: schema, initialValues: { emailUB: '' } })
+const { handleSubmit, isSubmitting, errors } = useForm({
+  validationSchema: schema,
+  initialValues: {
+    emailUB: '',
+    clubCoreMember: [{ USER: '', ROLE: '社長' }, { USER: '', ROLE: '副社長' }]
+  }
+})
 
 // useField建立表單的欄位
 const realName = useField('realName', user.REAL_NAME)
 const emailUB = useField('emailUB', user.EMAIL_UB)
 const clubTh = useField('clubTh', user.CLUB_TH)
-// const clubCoreMember = useField('clubCoreMember', user.CLUB_CORE_MEMBER)
+const clubCoreMember = useFieldArray('clubCoreMember')
 const clubCategory = useField('clubCategory', user.CLUB_CATEGORY)
 const nickName = useField('nickName')
+const addClubMemberField = () => {
+  clubCoreMember.push({ USER: '', ROLE: '' })
+}
+
+const removeClubMemberField = (idx) => {
+  clubCoreMember.remove(idx)
+}
 
 // 送出表單
 const submit = handleSubmit(async (values) => {

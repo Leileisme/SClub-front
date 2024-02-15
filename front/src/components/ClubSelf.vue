@@ -8,7 +8,7 @@
             <!-- <v-col cols="12" ></v-col> -->
             <v-col cols="12" class="d-flex justify-center">
             <v-avatar size="100%" style="margin-top: 0.8rem;" >
-              <v-img  :src="user.IMAGE"></v-img>
+              <v-img  :src="routeUser.IMAGE"></v-img>
             </v-avatar>
           </v-col>
           </v-row>
@@ -16,14 +16,12 @@
 
         <!-- 【右】個人資料 -->
         <v-col cols="8">
-
           <v-row>
-
             <!-- 暱稱 -->
             <v-col cols="12" style="font-size: 1.1rem; padding-bottom: 0; " >
                 <!-- 社團名稱/屆數/成員 -->
-                <span class="me-3" >{{ user.NICK_NAME }}</span>
-                <span class="me-3" style="font-size: 1.05rem;">第{{ user.CLUB_TH }}屆</span>
+                <span class="me-3" >{{ routeUser.NICK_NAME }}</span>
+                <span class="me-3" style="font-size: 1.05rem;">第{{ routeUser.CLUB_TH }}屆</span>
                 <span>
                   <v-btn color="#FF9900" style="min-width: 0; width: 42px;color: #fff; font-weight: 900;  height: auto; padding-top: 2px; padding-bottom:3px; "  class="align-center">成員</v-btn>
                 </span>
@@ -31,22 +29,22 @@
 
             <v-col cols="12"  style=" font-size: 0.9rem; padding-top: 0.6rem;"  >
               <span style="border: 1px solid #25ECE0; padding: 3px 10px; color: #FF6868;"  >
-                <span style="margin-right: 10px; font-weight: 900; color: #25ECE0;" >{{ user.SCHOOL_NAME }}</span>
-                <span>{{ user.SCHOOL_CITY }}</span>
+                <span style="margin-right: 10px; font-weight: 900; color: #25ECE0;" >{{ routeUser.SCHOOL_NAME }}</span>
+                <span>{{ routeUser.SCHOOL_CITY }}</span>
               </span>
             </v-col>
 
             <!-- 描述 -->
-            <v-col cols="12">{{user.DESCRIBE}}</v-col>
+            <v-col cols="12">{{routeUser.DESCRIBE}}</v-col>
 
-            <v-col cols="12" v-if="user.ROLE === UserRole.CLUB">
+            <v-col cols="12">
               <v-row>
                 <v-col cols="4" style="background-color: ;"></v-col>
 
-                  <!-- 活動 -->
+                  <!-- 貼文 -->
                 <v-col cols="2" style="background: ;">
                   <v-row class="text-center">
-                    <v-col cols="12" style="padding: 0;">{{user.FANS.length}}</v-col>
+                    <v-col cols="12" style="padding: 0;">{{routeUser.FANS.length}}</v-col>
                     <v-col cols="12" style="padding: 0;">貼文</v-col>
                   </v-row>
                 </v-col>
@@ -54,7 +52,7 @@
                 <!-- 活動 -->
                 <v-col cols="2" style="background: ;">
                   <v-row class="text-center">
-                    <v-col cols="12" style="padding: 0;">{{user.FANS.length}}</v-col>
+                    <v-col cols="12" style="padding: 0;">{{routeUser.FANS.length}}</v-col>
                     <v-col cols="12" style="padding: 0;">活動</v-col>
                   </v-row>
                 </v-col>
@@ -62,7 +60,7 @@
                 <!-- 粉絲 -->
                 <v-col cols="2" style="background: ;">
                   <v-row class="text-center">
-                    <v-col cols="12" style="padding: 0;">{{user.FANS.length}}</v-col>
+                    <v-col cols="12" style="padding: 0;">{{routeUser.FANS.length}}</v-col>
                     <v-col cols="12" style="padding: 0;">粉絲</v-col>
                   </v-row>
                 </v-col>
@@ -70,14 +68,13 @@
                 <!-- 追蹤 -->
                 <v-col cols="2" style="background-color:;">
                   <v-row class="text-center">
-                    <v-col cols="12" style="padding: 0;">{{user.FOLLOW.length}}</v-col>
+                    <v-col cols="12" style="padding: 0;">{{routeUser.FOLLOW.length}}</v-col>
                     <v-col cols="12" style="padding: 0;">追蹤</v-col>
                   </v-row>
                 </v-col>
 
               </v-row>
             </v-col>
-
           </v-row>
         </v-col>
 
@@ -86,13 +83,15 @@
           <v-row>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
               <!-- <v-btn color="#444" style="font-weight: 900; width: 100%;">編輯社團檔案</v-btn> -->
-              <EditClub></EditClub>
+              <EditClub v-if="user.USER_NAME === routeUser.USER_NAME"></EditClub>
+              <v-btn v-else color="#1BBCA9" style="font-weight: 900; width: 100%;">追蹤</v-btn>
             </v-col>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
-              <v-btn  color="#444" style="font-weight: 900; width: 100%;">分享社團檔案</v-btn>
+              <v-btn v-if="user.USER_NAME === routeUser.USER_NAME" color="#444" style="font-weight: 900; width: 100%;">分享社團檔案</v-btn>
+              <v-btn v-else color="#444" style="font-weight: 900; width: 100%;">發送訊息</v-btn>
             </v-col>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
-              <v-btn color="#FF9900" style="color: #fff; font-weight: 900;width: 100%;">活躍狀態 {{user.SCORES}} 分</v-btn>
+              <v-btn color="#FF9900" style="color: #fff; font-weight: 900;width: 100%;">活躍狀態 {{routeUser.SCORES}} 分</v-btn>
             </v-col>
           </v-row>
         </v-col>
@@ -103,19 +102,18 @@
         </v-col>
 
         <!-- 活動 -->
-        <v-col cols="12" style="color: #25ECE0; padding-bottom: 5px;">活動</v-col>
-        <v-col cols="12" style="padding-top: 0;">
-              <v-btn type="button" style="background-color:#1BBCA9; height: auto; padding-top: 3px; padding-bottom:3px;" > <v-icon style="margin-left: -3px;">mdi-plus</v-icon>新增活動</v-btn>
+        <v-col v-if="routeUser.USER_NAME === user.USER_NAME || routeUser.MAKE_EVENT.length !== 0" cols="12" style="color: #25ECE0; padding-bottom: 5px;">活動</v-col>
+        <v-col v-if="routeUser.USER_NAME === user.USER_NAME" cols="12" style="padding-top: 0;">
+          <v-btn type="button" style="background-color:#1BBCA9; height: auto; padding-top: 3px; padding-bottom:3px;" > <v-icon style="margin-left: -3px;">mdi-plus</v-icon>新增活動</v-btn>
         </v-col>
 
         <!-- 分隔線 -->
-        <v-col cols="12">
+        <v-col v-if="routeUser.USER_NAME === user.USER_NAME || routeUser.MAKE_EVENT.length !== 0" cols="12" >
           <v-divider color="#fff" class="border-opacity-50"></v-divider>
         </v-col>
 
         <!-- 新增限時動態 -->
-        <v-col cols="12" style=";">
-
+        <v-col v-if="routeUser.USER_NAME === user.USER_NAME || routeUser.MAKE_EVENT.length !== 0" cols="12" style=";">
           <v-row >
             <!-- 每一個小圖 -->
             <v-col cols="3" style="background:" class="text-center">
@@ -125,15 +123,13 @@
               <div class="mt-3" style="color:#ccc">新增</div>
             </v-col>
           </v-row>
-
         </v-col>
 
         <!-- 動態//活動 -->
         <v-col cols="12" >
           <v-tabs
             v-model="tab"
-            align-tabs="start"
-          >
+            align-tabs="start">
             <v-tab value="one" class="rounded-ts-xl me-2" style="border:  1.8px rgba(204,204,204,0.5) solid; min-width: 80px;">動態</v-tab>
             <v-tab value="two" class="rounded-ts-xl" style="border:  1.8px rgba(204,204,204,0.5) solid;min-width: 80px;">活動</v-tab>
           </v-tabs>
@@ -248,7 +244,7 @@
           <v-row>
             <v-col cols="12" class="d-flex justify-center">
             <v-avatar size="100%"  >
-              <v-img  :src="user.IMAGE"></v-img>
+              <v-img  :src="routeUser.IMAGE"></v-img>
             </v-avatar>
           </v-col>
           </v-row>
@@ -259,14 +255,14 @@
           <v-row>
 
             <!-- 使用者名稱 -->
-            <v-col cols="12" style="font-size: 1.6rem; padding-bottom: 0;color: #25ECE0;"> {{user.USER_NAME}}</v-col>
+            <v-col cols="12" style="font-size: 1.6rem; padding-bottom: 0;color: #25ECE0;"> {{routeUser.USER_NAME}}</v-col>
             <!-- 暱稱 -->
             <v-col cols="12" style="font-size: 1.1rem; padding-bottom: 0; padding-top: 0.5rem;" >
               <v-row>
                 <v-col cols="8">
                   <!-- 社團名稱/屆數/成員 -->
-                  <span class="me-3" >{{ user.NICK_NAME }}</span>
-                  <span class="me-3" style="font-size: 1.05rem;">第{{ user.CLUB_TH }}屆</span>
+                  <span class="me-3" >{{ routeUser.NICK_NAME }}</span>
+                  <span class="me-3" style="font-size: 1.05rem;">第{{ routeUser.CLUB_TH }}屆</span>
                   <span>
                     <v-btn color="#FF9900" style="min-width: 0; width: 42px;color: #fff; font-weight: 900;  height: auto; padding-top: 2px; padding-bottom:3px; "  class="align-center">成員</v-btn>
                   </span>
@@ -274,8 +270,8 @@
 
                 <!-- 建立動態/設定 -->
                 <v-col cols="4" class="d-flex justify-end" >
-                  <v-icon class="me-3" style="cursor: pointer;" id="post">mdi-plus-box-outline</v-icon>
-                  <v-menu activator="#post" width="150" style="text-align: center;">
+                  <v-icon  v-if="routeUser.USER_NAME === user.USER_NAME" class="me-3" style="cursor: pointer;" id="post">mdi-plus-box-outline</v-icon>
+                  <v-menu  v-if="routeUser.USER_NAME === user.USER_NAME" activator="#post" width="150" style="text-align: center;">
                     <v-list>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
                       <v-list-item style="font-size: 1rem;">建立動態</v-list-item>
@@ -287,7 +283,7 @@
 
                   <v-icon class="me-3" style="cursor: pointer;" id="setting">mdi-menu</v-icon>
                   <v-menu activator="#setting" width="150" style="text-align: center;" >
-                    <v-list>
+                    <!-- <v-list>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
                       <v-list-item style="font-size: 1rem;">貼文收藏</v-list-item>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
@@ -301,6 +297,9 @@
                       </template>
                       <v-list-item style="font-size: 1rem; cursor: pointer;" @click="logout">登出</v-list-item>
                       <v-divider style="margin-top: 6px;margin-bottom: 6px;"></v-divider>
+                    </v-list> -->
+                    <v-list>
+                      <SettingsMenu></SettingsMenu>
                     </v-list>
                   </v-menu>
 
@@ -311,22 +310,22 @@
             <!-- 學校 -->
             <v-col cols="12"  style=" font-size: 0.9rem; padding-top: 0.6rem;"  >
               <span style="border: 1px solid #25ECE0; padding: 3px 10px; color: #FF6868;"  >
-                <span style="margin-right: 10px; font-weight: 900; color: #25ECE0;" >{{ user.SCHOOL_NAME }}</span>
-                <span>{{ user.SCHOOL_CITY }}</span>
+                <span style="margin-right: 10px; font-weight: 900; color: #25ECE0;" >{{ routeUser.SCHOOL_NAME }}</span>
+                <span>{{ routeUser.SCHOOL_CITY }}</span>
               </span>
             </v-col>
 
             <!-- 描述 -->
-            <v-col cols="12">{{user.DESCRIBE}}</v-col>
+            <v-col cols="12">{{routeUser.DESCRIBE}}</v-col>
 
-            <v-col cols="12" v-if="user.ROLE === UserRole.CLUB">
+            <v-col cols="12" v-if="routeUser.ROLE === UserRole.CLUB">
               <v-row>
                 <v-col cols="4" style="background-color: ;"></v-col>
 
                   <!-- 活動 -->
                 <v-col cols="2" style="background: ;">
                   <v-row class="text-center">
-                    <v-col cols="12" style="padding: 0;">{{user.FANS.length}}</v-col>
+                    <v-col cols="12" style="padding: 0;">{{routeUser.FANS.length}}</v-col>
                     <v-col cols="12" style="padding: 0;">貼文</v-col>
                   </v-row>
                 </v-col>
@@ -334,7 +333,7 @@
                 <!-- 活動 -->
                 <v-col cols="2" style="background: ;">
                   <v-row class="text-center">
-                    <v-col cols="12" style="padding: 0;">{{user.FANS.length}}</v-col>
+                    <v-col cols="12" style="padding: 0;">{{routeUser.FANS.length}}</v-col>
                     <v-col cols="12" style="padding: 0;">活動</v-col>
                   </v-row>
                 </v-col>
@@ -342,7 +341,7 @@
                 <!-- 粉絲 -->
                 <v-col cols="2" style="background: ;">
                   <v-row class="text-center">
-                    <v-col cols="12" style="padding: 0;">{{user.FANS.length}}</v-col>
+                    <v-col cols="12" style="padding: 0;">{{routeUser.FANS.length}}</v-col>
                     <v-col cols="12" style="padding: 0;">粉絲</v-col>
                   </v-row>
                 </v-col>
@@ -350,7 +349,7 @@
                 <!-- 追蹤 -->
                 <v-col cols="2" style="background-color:;">
                   <v-row class="text-center">
-                    <v-col cols="12" style="padding: 0;">{{user.FOLLOW.length}}</v-col>
+                    <v-col cols="12" style="padding: 0;">{{routeUser.FOLLOW.length}}</v-col>
                     <v-col cols="12" style="padding: 0;">追蹤</v-col>
                   </v-row>
                 </v-col>
@@ -365,14 +364,15 @@
         <v-col cols="12" >
           <v-row>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;" >
-              <!-- <v-btn color="#444" style="font-weight: 900; width: 100%;">編輯社團檔案</v-btn> -->
-              <EditClub></EditClub>
+              <EditClub v-if="user.USER_NAME === routeUser.USER_NAME"></EditClub>
+              <v-btn v-else color="#1BBCA9" style="font-weight: 900; width: 100%;">追蹤</v-btn>
             </v-col>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
-              <v-btn  color="#444" style="font-weight: 900; width: 100%;">分享社團檔案</v-btn>
+              <v-btn v-if="user.USER_NAME === routeUser.USER_NAME" color="#444" style="font-weight: 900; width: 100%;">分享社團檔案</v-btn>
+              <v-btn v-else color="#444" style="font-weight: 900; width: 100%;">發送訊息</v-btn>
             </v-col>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
-              <v-btn color="#FF9900" style="color: #fff; font-weight: 900;width: 100%;">活躍狀態 {{user.SCORES}} 分</v-btn>
+              <v-btn color="#FF9900" style="color: #fff; font-weight: 900;width: 100%;">活躍狀態 {{routeUser.SCORES}} 分</v-btn>
             </v-col>
 
           </v-row>
@@ -384,18 +384,18 @@
         </v-col>
 
         <!-- 活動 -->
-        <v-col cols="12" style="color: #25ECE0; padding-bottom: 5px;">活動</v-col>
-        <v-col cols="12" style="padding-top: 0;">
+        <v-col v-if="routeUser.USER_NAME === user.USER_NAME || routeUser.MAKE_EVENT.length !== 0" cols="12" style="color: #25ECE0; padding-bottom: 5px;">活動</v-col>
+        <v-col v-if="routeUser.USER_NAME === user.USER_NAME" cols="12" style="padding-top: 0;">
               <v-btn type="button" style="background-color:#1BBCA9; height: auto; padding-top: 3px; padding-bottom:3px;" > <v-icon style="margin-left: -3px;">mdi-plus</v-icon>新增活動</v-btn>
         </v-col>
 
         <!-- 分隔線 -->
-        <v-col cols="12">
+        <v-col v-if="routeUser.USER_NAME === user.USER_NAME || routeUser.MAKE_EVENT.length !== 0" cols="12">
           <v-divider color="#fff" class="border-opacity-50"></v-divider>
         </v-col>
 
         <!-- 新增限時動態 -->
-        <v-col cols="12" style=";">
+        <v-col v-if="routeUser.USER_NAME === user.USER_NAME || routeUser.MAKE_EVENT.length !== 0" cols="12" style=";">
 
           <v-row >
             <!-- 每一個小圖 -->
@@ -524,23 +524,28 @@
 
 <script setup>
 import { useDisplay } from 'vuetify'
-import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/store/user'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
-import logout from '@/composables/logout'
 import UserRole from '@/enums/UserRole'
 import EditClub from '@/components/EditClub.vue'
+import SettingsMenu from '@/components/SettingsMenu.vue'
 
-const { api, apiAuth } = useApi()
+// 抓不到資料欸??
+// import { useRouteUser } from '@/composables/routeUser'
+// const { routeUser } = useRouteUser()
+
+const { apiAuth } = useApi()
 const router = useRouter()
+const route = useRoute()
 const createSnackbar = useSnackbar()
 const user = useUserStore()
 const tab = ref('')
 
 // 判斷是否用手機
-const { xs, sm } = useDisplay()
+const { xs } = useDisplay()
 const isXs = computed(() => xs.value)
 
 const cols = computed(() => {
@@ -551,20 +556,79 @@ const cols = computed(() => {
   }
 })
 
-// 分享網址，但是樣式不好看先留著沒用
-const share = () => {
-  if (navigator.share) {
-    navigator.share({
-      title: document.title,
-      text: 'Check out this website:',
-      url: window.location.href
+const routeUser = ref({
+  EMAIL: (''),
+  ROLE: (''),
+  SCHOOL_NAME: (''),
+  SCHOOL_CITY: (''),
+  USER_NAME: (''),
+  NICK_NAME: (''),
+  CLUB_TH: (''),
+  CLUB_CATEGORY: (''),
+  IMAGE: (''),
+  TICKET_CART: ([]),
+  SCORES: (''),
+  NOTIFY: ([]),
+  KEEP_POST: ([]),
+  KEEP_EVENT: ([]),
+  FANS: ([]),
+  FOLLOW: ([]),
+  IS_STUDENT: (''),
+  IS_ABLE: (''),
+  IS_ADMIN: (''),
+  DESCRIBE: (''),
+  MAKE_EVENT: ([]),
+  MAKE_POST: ([]),
+  MAKE_TIME_POST: ([]),
+  GO_EVENT: ([]),
+  BE_MARK: ([])
+})
+
+onMounted(async () => {
+  try {
+    const { data } = await apiAuth.get('/users/' + route.params.USER_NAME)
+    routeUser.value.EMAIL = data.result.EMAIL
+    routeUser.value.ROLE = data.result.ROLE
+    routeUser.value.SCHOOL_NAME = data.result.SCHOOL_NAME
+    routeUser.value.SCHOOL_CITY = data.result.SCHOOL_CITY
+    routeUser.value.USER_NAME = data.result.USER_NAME
+    routeUser.value.NICK_NAME = data.result.NICK_NAME
+    routeUser.value.CLUB_TH = data.result.CLUB_TH
+    routeUser.value.CLUB_CATEGORY = data.result.CLUB_CATEGORY
+    routeUser.value.IMAGE = data.result.IMAGE
+    routeUser.value.TICKET_CART = data.result.TICKET_CART
+    routeUser.value.SCORES = data.result.SCORES
+    routeUser.value.NOTIFY = data.result.NOTIFY
+    routeUser.value.KEEP_POST = data.result.KEEP_POST
+    routeUser.value.KEEP_EVENT = data.result.KEEP_EVENT
+    routeUser.value.FANS = data.result.FANS
+    routeUser.value.FOLLOW = data.result.FOLLOW
+    routeUser.value.IS_STUDENT = data.result.IS_STUDENT
+    routeUser.value.IS_ABLE = data.result.IS_ABLE
+    routeUser.value.IS_ADMIN = data.result.IS_ADMIN
+    routeUser.value.DESCRIBE = data.result.DESCRIBE
+    routeUser.value.MAKE_EVENT = data.result.MAKE_EVENT
+    routeUser.value.MAKE_POST = data.result.MAKE_POST
+    routeUser.value.MAKE_TIME_POST = data.result.MAKE_TIME_POST
+    routeUser.value.GO_EVENT = data.result.GO_EVENT
+    routeUser.value.BE_MARK = data.result.BE_MARK
+
+    document.title = `學生社團 | ${routeUser.value.NICK_NAME}`
+  } catch (error) {
+    console.log(error)
+    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+    createSnackbar({
+      text,
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'red',
+        location: 'bottom'
+      }
     })
-      .then(() => console.log('Successful share'))
-      .catch((error) => console.log('Error sharing', error))
-  } else {
-    console.log('Web Share API is not supported in your browser.')
+    router.push('/')
   }
-}
+})
 
 </script>
 
