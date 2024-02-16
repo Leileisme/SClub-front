@@ -3,11 +3,11 @@
     <v-container >
       <v-row class="box" style="background-color: ;padding-top: 1rem;">
         <!-- 【左】大頭照 -->
-        <v-col cols="4" style="border: 0px solid ;" >
+        <v-col cols="4" style="border: 0px red solid ;" >
           <v-row>
             <!-- <v-col cols="12" ></v-col> -->
-            <v-col cols="12" class="d-flex justify-center">
-            <v-avatar size="100%" style="margin-top: 0.8rem;" >
+            <v-col cols="12" class="d-flex justify-center" style="padding-top:1.2rem">
+            <v-avatar size="100%" style="margin-top: ;" >
               <v-img  :src="routeUser.IMAGE"></v-img>
             </v-avatar>
           </v-col>
@@ -83,7 +83,8 @@
           <v-row>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
               <!-- <v-btn color="#444" style="font-weight: 900; width: 100%;">編輯社團檔案</v-btn> -->
-              <EditClub v-if="user.USER_NAME === routeUser.USER_NAME"></EditClub>
+              <!-- 元件傳出一個觸發事件，並在這裡執行get的function -->
+              <EditClub v-if="user.USER_NAME === routeUser.USER_NAME" @update-user="get"></EditClub>
               <v-btn v-else color="#1BBCA9" style="font-weight: 900; width: 100%;">追蹤</v-btn>
             </v-col>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
@@ -364,7 +365,7 @@
         <v-col cols="12" >
           <v-row>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;" >
-              <EditClub v-if="user.USER_NAME === routeUser.USER_NAME"></EditClub>
+              <EditClub v-if="user.USER_NAME === routeUser.USER_NAME" @update-user="get"></EditClub>
               <v-btn v-else color="#1BBCA9" style="font-weight: 900; width: 100%;">追蹤</v-btn>
             </v-col>
             <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
@@ -584,7 +585,7 @@ const routeUser = ref({
   BE_MARK: ([])
 })
 
-onMounted(async () => {
+const get = async () => {
   try {
     const { data } = await apiAuth.get('/users/' + route.params.USER_NAME)
     routeUser.value.EMAIL = data.result.EMAIL
@@ -628,7 +629,11 @@ onMounted(async () => {
     })
     router.push('/')
   }
-})
+}
+
+onMounted(
+  () => { get() }
+)
 
 </script>
 

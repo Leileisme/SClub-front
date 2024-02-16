@@ -1,5 +1,4 @@
 import 'dotenv/config'
-import texts from './models/texts.js'
 import users from './models/users.js'
 import mongoose from 'mongoose'
 
@@ -26,11 +25,11 @@ const data = [
     IS_STUDENT: true
   }]
 
-export const test = async () => {
-  console.log('start')
-  await users.create(data)
-  console.log('end')
-}
+// export const test = async () => {
+//   console.log('start')
+//   await users.create(data)
+//   console.log('end')
+// }
 // const data2 = [
 //   {
 //     EMAIL: '1111@gmail.com'
@@ -46,4 +45,12 @@ export const test = async () => {
 //   }
 // }
 
-test().catch(err => console.error(err))
+// test().catch(err => console.error(err))
+
+const test = async () => {
+  const aaa = await users.find({
+    'CLUB_CORE_MEMBER.USER': '65cedc0264587b4fbab6205c'
+  })
+  console.log(aaa)
+}
+test()

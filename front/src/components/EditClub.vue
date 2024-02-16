@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog">
+  <v-dialog v-model="dialog" @keydown.esc="closeDialog">
     <template v-slot:activator="{ props }">
       <v-btn color="#444" style="font-weight: 900; width: 100%;" dark v-bind="props">編輯社團檔案</v-btn>
     </template>
@@ -68,6 +68,7 @@
             </v-col>
             <!-- 幹部 -->
             <!-- <pre>  {{  errors }} </pre> -->
+
             <v-col cols="12" style="padding-top: 0; padding-bottom: 0;">
               <v-list-subheader>必須有 社長 與 副社長</v-list-subheader>
             </v-col>
@@ -90,17 +91,75 @@
                     :error-messages="errors[`clubCoreMember[${idx}].USER`]"
                     label="用戶名稱"
                     variant="outlined"
-                    density="compact">
+                    density="compact"
+                    @input="searchData(idx)"
+                    :id="'clubCoreMember_user' + idx">
                   </v-text-field>
+
+                  <v-menu :activator="'#clubCoreMember_user' + idx" >
+                    <v-list>
+                      <!-- 搜尋有符合 -->
+                      <template v-if="field.value.USER">
+                        <v-list-item
+                        v-for="(item) in search"
+                        :key="item.USER_NAME"
+                        @click="selectUserName(item.USER_NAME, idx)"
+                        >
+                        <!-- xs 手機版 搜尋清單 -->
+                        <template v-if="isXs">
+                          <v-row  style="margin: 5px; ">
+                            <v-col cols="4" class="justify-center align-center" style="padding: 8px;">
+                              <v-avatar size="100%"  >
+                                <v-img :src="item.IMAGE"></v-img>
+                              </v-avatar>
+                            </v-col>
+                            <v-col cols="8"  class="justify-center align-center">
+                              <v-row >
+                                <v-col cols="12" style="padding: 0; margin: 0;font-size: 1.1rem;color: #25ECE0;"  >{{ item.USER_NAME }}</v-col>
+                                <v-col cols="12" style="padding: 0;margin: 0; font-size: 0.8rem;color: #cccccc;">{{ item.NICK_NAME }}</v-col>
+                              </v-row>
+                            </v-col>
+                          </v-row>
+                        </template>
+
+                        <template v-else>
+                          <v-row  style="margin: 5px; ">
+                            <v-col cols="4" class="justify-center align-center"  style="padding: 8px; ">
+                              <v-avatar size="100%"  >
+                              <v-img :src="item.IMAGE"></v-img>
+                            </v-avatar>
+                            </v-col>
+                            <v-col cols="8"  class="justify-center align-center">
+                              <v-row >
+                                <v-col cols="12" style="padding: 0; margin: 0;font-size: 1.1rem;color: #25ECE0;"  >{{ item.USER_NAME }}</v-col>
+                                <v-col cols="12" style="padding: 0;margin: 0; font-size: 0.8rem;color: #cccccc;">{{ item.NICK_NAME }}</v-col>
+                              </v-row>
+                            </v-col>
+                          </v-row>
+                        </template>
+
+                        <v-divider></v-divider>
+                      </v-list-item>
+                    </template>
+
+                    <!-- 無搜尋符合 -->
+                    <template v-else>
+                      <v-list-item>
+                        <v-list-item-title>無搜尋結果</v-list-item-title>
+                      </v-list-item>
+                    </template>
+                    </v-list>
+                  </v-menu>
                 </v-col>
+
                 <v-col cols="1" style="justify-content: start; align-items: center; ">
                   <v-btn v-if="idx === 0" icon="mdi-plus" @click="addClubMemberField" style="font-size: 1.2rem; width: auto; height: auto;" ></v-btn>
                   <v-btn v-else icon="mdi-minus" @click="removeClubMemberField(idx)" style="font-size: 1.2rem; width: auto; height: auto;"></v-btn>
                 </v-col>
               </v-row>
             </v-col>
+            <!-- 備用信箱 -->
             <v-col cols="12" style="padding-top: 10px; padding-bottom: 0;">
-              <!-- 備用信箱 -->
                 <v-text-field
                   v-model="emailUB.value.value"
                   :error-messages="emailUB.errorMessage.value"
@@ -109,8 +168,10 @@
                   label="備用信箱"
                   variant="outlined">
                 </v-text-field>
+              </v-col>
                 <!-- 簡介 -->
-                <v-textarea
+                <v-col cols="12">
+                  <v-textarea
                   v-model="describe.value.value"
                   :error-messages="describe.errorMessage.value"
                   maxlength="50"
@@ -118,8 +179,8 @@
                   label="社團簡介"
                   variant="outlined">
                 </v-textarea>
-            </v-col>
-            <!-- 按鈕 -->
+              </v-col>
+              <!-- 按鈕 -->
             <v-col cols="4"  style="padding-top: 0; ">
               <v-btn type="button"
                 block class=" rounded-lg"
@@ -144,18 +205,21 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useForm, useField, useFieldArray } from 'vee-validate'
 import validator from 'validator'
 import * as yup from 'yup'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
 import { useUserStore } from '@/store/user'
+import { useDisplay } from 'vuetify'
 
 const { apiAuth } = useApi()
-
 const createSnackbar = useSnackbar()
 const user = useUserStore()
+const { xs } = useDisplay()
+const isXs = computed(() => xs.value)
+const emit = defineEmits(['updateUser'])
 
 //  選單開關
 const dialog = ref(false)
@@ -165,6 +229,7 @@ const closeDialog = () => {
   resetForm()
   fileAgent.value.deleteFileRecord()
 }
+
 const fileRecords = ref([])
 const rawFileRecords = ref([])
 // 為了能讓VueFileAgent能透過ref找到元件，然後在onMounted時設定fileAgent的值
@@ -172,6 +237,38 @@ const fileAgent = ref(null)
 
 const clubItems = {
   items: ['學術', '學藝', '音樂', '康樂', '服務', '體育', '康輔', '聯誼', '其他']
+}
+const search = ref('')
+
+// 搜尋使用者id
+const searchData = async (idx) => {
+  try {
+    const { data } = await apiAuth.get('/users/getUser', {
+      params: {
+        search: clubCoreMember.fields.value[idx].value.USER,
+        role: 1
+      }
+    })
+
+    search.value = data.result.data
+  } catch (error) {
+    console.log(error)
+    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+    createSnackbar({
+      text,
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'red',
+        location: 'bottom'
+      }
+    })
+  }
+}
+
+// 選好USER_NAME後，將USER_NAME放入field.value.USER
+const selectUserName = (value, idx) => {
+  clubCoreMember.fields.value[idx].value.USER = value
 }
 
 // 定義註冊表單的資料格式
@@ -203,7 +300,7 @@ const schema = yup.object({
     .array(
       yup.object({
         USER: yup.string().required('用戶名稱必填'),
-        ROLE: yup.string().required('幹部職稱必填')
+        ROLE: yup.string().required('幹部職稱必填').max(5, '「幹部職稱」長度不符').min(2, '「幹部職稱」長度不符')
       })
     )
     .test('role', '必須要有社長和副社長', value => {
@@ -232,22 +329,34 @@ const { handleSubmit, isSubmitting, errors, resetForm } = useForm({
     clubTh: user.CLUB_TH,
     clubCategory: user.CLUB_CATEGORY,
     // 2/15 有動
-    clubCoreMember: [{ USER: user.CLUB_CATEGORY[0].USER, ROLE: '社長' }, { USER: user.CLUB_CATEGORY[1].USER, ROLE: '副社長' }],
+    // clubCoreMember: [{ USER: user.CLUB_CATEGORY[0].USER, ROLE: '社長' }, { USER: user.CLUB_CATEGORY[1].USER, ROLE: '副社長' }],
+    clubCoreMember: user.CLUB_CORE_MEMBER,
     describe: user.DESCRIBE
   }
 })
 
+// const { data } = await apiAuth.get('/users/getUser', {
+//   params: {
+//     search: search.value,
+//     role: '3'
+//   }
+// })
+// const memberUSER = data.result.data.USER_NAME
+
+console.log(user.CLUB_CORE_MEMBER, 'user.CLUB_CORE_MEMBER')
+
+
 // useField建立表單的欄位
 const realName = useField('realName')
+const nickName = useField('nickName')
 const emailUB = useField('emailUB')
 const clubTh = useField('clubTh')
 const clubCoreMember = useFieldArray('clubCoreMember')
 const clubCategory = useField('clubCategory')
-const nickName = useField('nickName')
+const describe = useField('describe')
 const addClubMemberField = () => {
   clubCoreMember.push({ USER: '', ROLE: '' })
 }
-const describe = useField('describe')
 
 const removeClubMemberField = (idx) => {
   clubCoreMember.remove(idx)
@@ -258,13 +367,18 @@ const submit = handleSubmit(async (values) => {
   if (fileRecords.value[0]?.error) return
   try {
     const fd = new FormData()
-    for (const key in values) {
-      fd.append(key, values[key])
-    }
-    // 待確認
+
     fd.append('USER_NAME', user.USER_NAME)
+    fd.append('REAL_NAME', values.realName)
     fd.append('NICK_NAME', nickName.value.value || values.realName)
-    fd.append('IMAGE', 'https://source.boringavatars.com/beam/120/' + user.EMAIL)
+    fd.append('EMAIL_UB', values.emailUB)
+    fd.append('CLUB_TH', values.clubTh)
+    fd.append('CLUB_CATEGORY', values.clubCategory)
+    for (const idx in values.clubCoreMember) {
+      fd.append(`CLUB_CORE_MEMBER[${idx}][USER]`, values.clubCoreMember[idx].USER)
+      fd.append(`CLUB_CORE_MEMBER[${idx}][ROLE]`, values.clubCoreMember[idx].ROLE)
+    }
+    fd.append('DESCRIBE', values.describe)
 
     if (fileRecords.value.length > 0) {
       fd.append('IMAGE', fileRecords.value[0].file)
@@ -284,7 +398,9 @@ const submit = handleSubmit(async (values) => {
       }
     })
 
-    dialog.value = false
+    // 元件觸發事件，告訴外面要更新
+    emit('updateUser')
+    closeDialog()
   } catch (error) {
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
     createSnackbar({

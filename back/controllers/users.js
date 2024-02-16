@@ -1,6 +1,7 @@
 import users from '../models/users.js'
 import jwt from 'jsonwebtoken'
 import validator from 'validator'
+import { trusted } from 'mongoose'
 
 export const create = async (req, res) => {
   try {
@@ -45,6 +46,8 @@ export const create = async (req, res) => {
 // 回傳的資料以後可以看看要不要增加
 export const login = async (req, res) => {
   try {
+    const CLUB_CORE_MEMBER = await users.findById(req.user._id, 'CLUB_CORE_MEMBER').populate('CLUB_CORE_MEMBER.USER', 'USER_NAME')
+
     // jwt.sign 創造一個新的JWT，並接受三個參數 ( 物件、密鑰、選項 )
     const TOKEN = jwt.sign({ _id: req.user.id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
     req.user.TOKENS.push(TOKEN)
@@ -76,7 +79,8 @@ export const login = async (req, res) => {
         IS_ADMIN: req.user.IS_ADMIN,
         MAKE_EVENT: req.user.MAKE_EVENT,
         MAKE_POST: req.user.MAKE_POST,
-        DESCRIBE: req.user.DESCRIBE
+        DESCRIBE: req.user.DESCRIBE,
+        CLUB_CORE_MEMBER: CLUB_CORE_MEMBER.CLUB_CORE_MEMBER
       }
     })
   } catch (error) {
@@ -126,8 +130,10 @@ export const extend = async (req, res, next) => {
 }
 
 // pinai 只存 JWT ，登入後執行 getProfile 取個人資料 放本地
-export const getProfile = (req, res) => {
+export const getProfile = async (req, res) => {
   try {
+    const CLUB_CORE_MEMBER = await users.findById(req.user._id, 'CLUB_CORE_MEMBER').populate('CLUB_CORE_MEMBER.USER', 'USER_NAME')
+
     res.status(200).json({
       success: true,
       massage: '',
@@ -154,7 +160,9 @@ export const getProfile = (req, res) => {
         IS_ADMIN: req.user.IS_ADMIN,
         MAKE_EVENT: req.user.MAKE_EVENT,
         MAKE_POST: req.user.MAKE_POST,
-        DESCRIBE: req.user.DESCRIBE
+        DESCRIBE: req.user.DESCRIBE,
+        CLUB_CORE_MEMBER: CLUB_CORE_MEMBER.CLUB_CORE_MEMBER
+
       }
     })
   } catch (error) {
@@ -171,12 +179,16 @@ export const getUser = async (req, res) => {
     // i 是不分大小寫
     const regex = new RegExp(req.query.search || '', 'i')
 
+    const role = req.query.role ? req.query.role.split(',').map(v => parseInt(v)) : [1, 2, 3]
     const data = await users.find({
       $or: [
         { USER_NAME: regex },
         { NICK_NAME: regex }
-      ]
-    }).limit(10)
+      ],
+      ROLE: trusted({ $in: role })
+    },
+    { USER_NAME: 1, NICK_NAME: 1, IMAGE: 1, ROLE: 1 }
+    ).limit(10)
     // 限制回傳的數量
 
     console.log(data, 'data getUser')
@@ -199,12 +211,32 @@ export const getUser = async (req, res) => {
 export const getUserName = async (req, res) => {
   try {
     console.log(req.params)
-    const result = await users.findOne({ USER_NAME: req.params.USER_NAME })
+    // .lean() 轉成純 JS 變數
+    const result = await users.findOne({ USER_NAME: req.params.USER_NAME }).lean()
     if (!result) throw new Error('NOT FOUND')
+    // 找使用者在哪些社團是幹部
+    let clubs = await users.find(
+      // CLUB_CORE_MEMBER 陣列裡的 USER 是現在要找的使用者 id
+      {
+        'CLUB_CORE_MEMBER.USER': result._id
+      },
+      // 只取 NICK_NAME 和 CLUB_CORE_MEMBER 欄位
+      'NICK_NAME CLUB_CORE_MEMBER'
+    ).lean()
+    // 找出來的社團只取名稱和幹部職位
+    clubs = clubs.map(club => {
+      return {
+        NICK_NAME: club.NICK_NAME,
+        ROLE: club.CLUB_CORE_MEMBER.find(member => member.USER.toString() === result._id.toString()).ROLE
+      }
+    })
     res.status(200).json({
       success: true,
       message: '',
-      result
+      result: {
+        ...result,
+        IS_CORE_MEMBER: clubs
+      }
     })
   } catch (error) {
     console.log(error)
@@ -218,7 +250,17 @@ export const getUserName = async (req, res) => {
 export const edit = async (req, res) => {
   try {
     req.body.IMAGE = req.file?.path
+    if (!req.body.IMAGE) {
+      req.body.IMAGE = 'https://source.boringavatars.com/beam/120/' + req.user.EMAIL
+    }
 
+    for (const idx in req.body.CLUB_CORE_MEMBER) {
+      req.body.CLUB_CORE_MEMBER[idx].CONFIRM = 'false'
+      req.body.CLUB_CORE_MEMBER[idx].CONFIRM_USER = null
+      const user = await users.findOne({ USER_NAME: req.body.CLUB_CORE_MEMBER[idx].USER }).orFail(new Error('NOT FOUND'))
+      req.body.CLUB_CORE_MEMBER[idx].USER = user._id
+    }
+    console.log(req.body)
     // findOneAndUpdate用於找到並更新 MongoDB 中的特定文件
     // 三個參數(尋找資料的key,更新的資料,選項)
     await users.findOneAndUpdate({ USER_NAME: req.body.USER_NAME }, req.body, { runValidators: true }).orFail(new Error('NOT FOUND'))
@@ -226,6 +268,7 @@ export const edit = async (req, res) => {
     res.status(200).json({
       success: true,
       message: ''
+
     })
   } catch (error) {
     console.log(error)

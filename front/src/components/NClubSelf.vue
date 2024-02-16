@@ -6,8 +6,8 @@
         <v-col cols="4" style="border: 0px solid ;" >
           <v-row>
             <!-- <v-col cols="12" ></v-col> -->
-            <v-col cols="12" class="d-flex justify-center">
-            <v-avatar size="100%" style="margin-top: 0.8rem;" >
+            <v-col cols="12" class="d-flex justify-center" style="padding-top: 1.2rem;">
+            <v-avatar size="100%"  >
               <v-img  :src="routeUser.IMAGE"></v-img>
             </v-avatar>
           </v-col>

@@ -32,6 +32,7 @@ export const useUserStore = defineStore('user', () => {
   const IS_ABLE = ref('')
   const IS_ADMIN = ref('')
   const DESCRIBE = ref('')
+  const CLUB_CORE_MEMBER = ref([])
 
   const login = (data) => {
     if (data.TOKEN) {
@@ -59,7 +60,9 @@ export const useUserStore = defineStore('user', () => {
     IS_ABLE.value = data.IS_ABLE
     IS_ADMIN.value = data.IS_ADMIN
     DESCRIBE.value = data.DESCRIBE
+    CLUB_CORE_MEMBER.value = data.CLUB_CORE_MEMBER
     console.log(USER_NAME, 'login USER_NAME')
+    console.log(CLUB_CORE_MEMBER, 'login CLUB_CORE_MEMBER')
   }
 
   const isLogin = computed(() => {
@@ -104,6 +107,7 @@ export const useUserStore = defineStore('user', () => {
     IS_ABLE.value = ''
     IS_ADMIN.value = ''
     DESCRIBE.value = ''
+    CLUB_CORE_MEMBER.value = ''
   }
 
   return {

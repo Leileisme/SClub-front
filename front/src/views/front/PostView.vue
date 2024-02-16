@@ -94,7 +94,8 @@ const searchData = async () => {
   try {
     const { data } = await apiAuth.get('/users/getUser', {
       params: {
-        search: search.value
+        search: search.value,
+        role: '1,2,3'
       }
     })
     searchResults.value = data.result.data

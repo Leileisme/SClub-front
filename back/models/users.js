@@ -12,9 +12,11 @@ const memberSchema = new Schema({
     type: ObjectId,
     ref: 'users'
   },
-  // 2.幹部名稱
+  // 2.幹部職稱
   ROLE: {
-    type: String
+    type: String,
+    maxlength: [5, '「幹部職稱」長度不符'],
+    minlength: [2, '「幹部職稱」長度不符']
   },
   // 3.確認狀態(功能先不用，key先存)
   CONFIRM: {
@@ -24,7 +26,8 @@ const memberSchema = new Schema({
   // 4.確認中的使用者(功能先不用，key先存)
   CONFIRM_USER: {
     type: ObjectId,
-    ref: 'users'
+    ref: 'users',
+    default: null
   }
 })
 
@@ -252,9 +255,13 @@ const schema = new Schema({
     ]
   },
   // 15.幹部
-  CLUB_SQUAD_LEADER: {
+  CLUB_CORE_MEMBER: {
     type: [memberSchema],
-    default: [{ USER: null, ROLE: '社長', CONFIRM: 'false', CONFIRM_USER: null }, { USER: null, ROLE: '副社長', CONFIRM: 'false', CONFIRM_USER: null }]
+    default: function () {
+      if (this.ROLE === UserRole.CLUB) {
+        return [{ USER: null, ROLE: '社長', CONFIRM: 'false', CONFIRM_USER: null }, { USER: null, ROLE: '副社長', CONFIRM: 'false', CONFIRM_USER: null }]
+      } else return []
+    }
   },
   // 16.社團類別
   CLUB_CATEGORY: {
