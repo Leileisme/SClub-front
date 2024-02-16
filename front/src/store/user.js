@@ -133,6 +133,7 @@ export const useUserStore = defineStore('user', () => {
     IS_ABLE,
     IS_ADMIN,
     DESCRIBE,
+    CLUB_CORE_MEMBER,
     login,
     logout,
     isLogin,

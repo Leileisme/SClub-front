@@ -5,7 +5,7 @@ import UserRole from '../enums/UserRole.js'
 import NotifyType from '../enums/NotifyType.js'
 import IsAble from '../enums/IsAble.js'
 
-// // 幹部
+// 幹部
 const memberSchema = new Schema({
   // 1.使用者id
   USER: {
@@ -31,7 +31,7 @@ const memberSchema = new Schema({
   }
 })
 
-// // 票券
+// 票券
 const ticketCartSchema = new Schema({
   // 1.活動ID
   EVENT: {
@@ -44,7 +44,7 @@ const ticketCartSchema = new Schema({
   }
 })
 
-// // 通知
+// 通知
 const notifySchema = new Schema({
   // 1.通知類別
   TYPE: {

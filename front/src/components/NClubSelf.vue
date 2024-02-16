@@ -32,9 +32,11 @@
               </span>
             </v-col>
 
-            <!-- 新增社團按鈕 /  若有幹部則顯示幹部職位-->
-            <v-col cols="12" style="padding-top:1px ;">
-              <v-btn type="button" style="background-color:#444; height: auto; padding-top: 3px; padding-bottom:3px;" > 無社團</v-btn>
+            <!-- 幹部職位 / 畢業生 -->
+            <ClubMember></ClubMember>
+
+            <v-col cols="12" style="padding-top:1px ;"  v-if="routeUser.ROLE === UserRole.NOT_STUDENT ">
+              <v-btn type="button" style="background-color:#444; height: auto; padding-top: 3px; padding-bottom:3px;" >畢業生</v-btn>
             </v-col>
 
             <!-- 簡介 (最多39字)-->
@@ -188,10 +190,8 @@
               </span>
             </v-col>
 
-            <!-- 新增社團按鈕 /  若有幹部則顯示幹部職位-->
-            <v-col cols="12" style="padding-top:1px ;">
-              <v-btn type="button" style="background-color:#1BBCA9; height: auto; padding-top: 3px; padding-bottom:3px;" > <v-icon style="margin-left: -3px;">mdi-plus</v-icon>新增社團</v-btn>
-            </v-col>
+            <!-- 幹部職位 / 畢業生 -->
+            <ClubMember></ClubMember>
 
             <!-- 簡介 (最多39字)-->
             <v-col cols="12">{{routeUser.DESCRIBE}}</v-col>
@@ -296,7 +296,9 @@ import { useRouter, useRoute } from 'vue-router'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useUserStore } from '@/store/user'
+import UserRole from '@/enums/UserRole'
 import SettingsMenu from '@/components/SettingsMenu.vue'
+import ClubMember from '@/components/ClubMember.vue'
 
 const { apiAuth } = useApi()
 const router = useRouter()
@@ -356,7 +358,8 @@ const routeUser = ref({
   MAKE_POST: ([]),
   MAKE_TIME_POST: ([]),
   GO_EVENT: ([]),
-  BE_MARK: ([])
+  BE_MARK: ([]),
+  IS_CORE_MEMBER: ([])
 })
 
 onMounted(async () => {
@@ -387,6 +390,7 @@ onMounted(async () => {
     routeUser.value.MAKE_TIME_POST = data.result.MAKE_TIME_POST
     routeUser.value.GO_EVENT = data.result.GO_EVENT
     routeUser.value.BE_MARK = data.result.BE_MARK
+    routeUser.value.IS_CORE_MEMBER = data.result.IS_CORE_MEMBER
 
     document.title = `學生社團 | ${routeUser.value.NICK_NAME}（${routeUser.value.USER_NAME}）`
   } catch (error) {
@@ -404,6 +408,9 @@ onMounted(async () => {
     router.push('/')
   }
 })
+
+console.log(routeUser.value, 'routeUser.value.IS_CORE_MEMBER')
+
 </script>
 
 <style lang="sass" scoped>

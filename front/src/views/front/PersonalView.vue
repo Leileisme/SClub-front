@@ -122,7 +122,8 @@ const routeUser = ref({
   MAKE_POST: ([]),
   MAKE_TIME_POST: ([]),
   GO_EVENT: ([]),
-  BE_MARK: ([])
+  BE_MARK: ([]),
+  IS_CORE_MEMBER: ([])
 })
 
 onMounted(async () => {
@@ -153,6 +154,7 @@ onMounted(async () => {
     routeUser.value.MAKE_TIME_POST = data.result.MAKE_TIME_POST
     routeUser.value.GO_EVENT = data.result.GO_EVENT
     routeUser.value.BE_MARK = data.result.BE_MARK
+    routeUser.value.IS_CORE_MEMBER = data.result.IS_CORE_MEMBER
 
     document.title = `學生社團 | ${routeUser.value.NICK_NAME}（${routeUser.value.USER_NAME}）`
   } catch (error) {

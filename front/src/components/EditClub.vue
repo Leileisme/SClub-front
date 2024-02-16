@@ -3,6 +3,7 @@
     <template v-slot:activator="{ props }">
       <v-btn color="#444" style="font-weight: 900; width: 100%;" dark v-bind="props">編輯社團檔案</v-btn>
     </template>
+
     <v-card  style="border-radius: 15px; max-width: 400px;margin: auto; width: 100%;">
       <!-- 標題 -->
       <v-toolbar dark color="#333">
@@ -70,9 +71,10 @@
             <!-- <pre>  {{  errors }} </pre> -->
 
             <v-col cols="12" style="padding-top: 0; padding-bottom: 0;">
-              <v-list-subheader>必須有 社長 與 副社長</v-list-subheader>
+              <v-list-subheader style="color: #FF8484;">{{ errors.clubCoreMember }}</v-list-subheader>
             </v-col>
-            <v-col cols="12" style="padding-top: 5px; padding-bottom: 0;" v-for="(field, idx) in clubCoreMember.fields.value" :key="field.key">
+
+            <v-col cols="12" style="padding-top: 0px; padding-bottom: 0;" v-for="(field, idx) in clubCoreMember.fields.value" :key="field.key">
               <v-row>
                 <v-col cols="5">
                   <v-text-field
@@ -305,6 +307,13 @@ const schema = yup.object({
     )
     .test('role', '必須要有社長和副社長', value => {
       return value.filter(item => item.ROLE === '社長').length === 1 && value.filter(item => item.ROLE === '副社長').length === 1
+    }
+    )
+    .test('user', '幹部不可重複', value => {
+      // 新的陣列將由原始陣列中每個元素的 USER 屬性的值組成
+      const user = value.map(item => item.USER)
+      // Set 是一種只能包含唯一值的數據結構
+      return new Set(user).size === user.length
     }),
 
   // 社團類別
@@ -320,6 +329,18 @@ const schema = yup.object({
     .max(50, '社團類別不符')
 })
 
+//  將表單預設值放進去前，先抓到clubCoreMember要的值
+const CoreMember = ref([])
+
+for (const idx in user.CLUB_CORE_MEMBER) {
+  CoreMember.value.push({ USER: user.CLUB_CORE_MEMBER[idx].USER.USER_NAME, ROLE: user.CLUB_CORE_MEMBER[idx].ROLE })
+}
+
+console.log(schema, 'schema')
+console.log(user.CLUB_CORE_MEMBER[0].USER.USER_NAME, '2')
+console.log(schema.fields.clubCoreMember.tests[0].OPTIONS.message)
+console.log(schema.fields.clubCoreMember.tests[1].OPTIONS.message)
+
 // useForm建立一個表單
 const { handleSubmit, isSubmitting, errors, resetForm } = useForm({
   validationSchema: schema,
@@ -328,23 +349,10 @@ const { handleSubmit, isSubmitting, errors, resetForm } = useForm({
     emailUB: user.EMAIL_UB,
     clubTh: user.CLUB_TH,
     clubCategory: user.CLUB_CATEGORY,
-    // 2/15 有動
-    // clubCoreMember: [{ USER: user.CLUB_CATEGORY[0].USER, ROLE: '社長' }, { USER: user.CLUB_CATEGORY[1].USER, ROLE: '副社長' }],
-    clubCoreMember: user.CLUB_CORE_MEMBER,
+    clubCoreMember: CoreMember.value,
     describe: user.DESCRIBE
   }
 })
-
-// const { data } = await apiAuth.get('/users/getUser', {
-//   params: {
-//     search: search.value,
-//     role: '3'
-//   }
-// })
-// const memberUSER = data.result.data.USER_NAME
-
-console.log(user.CLUB_CORE_MEMBER, 'user.CLUB_CORE_MEMBER')
-
 
 // useField建立表單的欄位
 const realName = useField('realName')

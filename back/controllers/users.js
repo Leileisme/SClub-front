@@ -132,8 +132,10 @@ export const extend = async (req, res, next) => {
 // pinai 只存 JWT ，登入後執行 getProfile 取個人資料 放本地
 export const getProfile = async (req, res) => {
   try {
-    const CLUB_CORE_MEMBER = await users.findById(req.user._id, 'CLUB_CORE_MEMBER').populate('CLUB_CORE_MEMBER.USER', 'USER_NAME')
+    // .findById( 使用者_id, 要關聯的欄位 ).populate ( 要關聯的欄位的_id且有ref , 透過ref取得ref關聯的欄位 )
+    // 因為 models 裡的 CLUB_CORE_MEMBER.USER 有 ref: 'users'，所以可以直接取 USER_NAME
 
+    const CLUB_CORE_MEMBER = await users.findById(req.user._id, 'CLUB_CORE_MEMBER').populate('CLUB_CORE_MEMBER.USER', 'USER_NAME')
     res.status(200).json({
       success: true,
       massage: '',
@@ -220,14 +222,15 @@ export const getUserName = async (req, res) => {
       {
         'CLUB_CORE_MEMBER.USER': result._id
       },
-      // 只取 NICK_NAME 和 CLUB_CORE_MEMBER 欄位
-      'NICK_NAME CLUB_CORE_MEMBER'
+      // 只取 NICK_NAME 和 CLUB_CORE_MEMBER 、CLUB_TH 欄位
+      'NICK_NAME CLUB_CORE_MEMBER CLUB_TH'
     ).lean()
     // 找出來的社團只取名稱和幹部職位
     clubs = clubs.map(club => {
       return {
         NICK_NAME: club.NICK_NAME,
-        ROLE: club.CLUB_CORE_MEMBER.find(member => member.USER.toString() === result._id.toString()).ROLE
+        ROLE: club.CLUB_CORE_MEMBER.find(member => member.USER.toString() === result._id.toString()).ROLE,
+        CLUB_TH: club.CLUB_TH
       }
     })
     res.status(200).json({
