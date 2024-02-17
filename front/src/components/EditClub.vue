@@ -14,6 +14,7 @@
         <v-spacer></v-spacer>
         <v-toolbar-items></v-toolbar-items>
       </v-toolbar>
+
       <!-- 表單清單 -->
       <v-container>
         <v-form :disabled=" isSubmitting" @submit.prevent="submit">
@@ -70,12 +71,15 @@
             <!-- 幹部 -->
             <!-- <pre>  {{  errors }} </pre> -->
 
+            <!-- 幹部-錯誤訊息 -->
             <v-col cols="12" style="padding-top: 0; padding-bottom: 0;">
               <v-list-subheader style="color: #FF8484;">{{ errors.clubCoreMember }}</v-list-subheader>
             </v-col>
 
+            <!-- 幹部 -->
             <v-col cols="12" style="padding-top: 0px; padding-bottom: 0;" v-for="(field, idx) in clubCoreMember.fields.value" :key="field.key">
               <v-row>
+                <!-- 幹部職稱 -->
                 <v-col cols="5">
                   <v-text-field
                     v-if="user.ROLE === 3"
@@ -86,6 +90,7 @@
                     density="compact">
                     </v-text-field>
                 </v-col>
+                <!-- 幹部 用戶名稱 -->
                 <v-col cols="5">
                   <v-text-field
                     v-if="user.ROLE === 3"
@@ -98,6 +103,7 @@
                     :id="'clubCoreMember_user' + idx">
                   </v-text-field>
 
+                  <!-- 搜尋的id -->
                   <v-menu :activator="'#clubCoreMember_user' + idx" >
                     <v-list>
                       <!-- 搜尋有符合 -->
@@ -107,8 +113,7 @@
                         :key="item.USER_NAME"
                         @click="selectUserName(item.USER_NAME, idx)"
                         >
-                        <!-- xs 手機版 搜尋清單 -->
-                        <template v-if="isXs">
+                        <!-- 搜尋清單 -->
                           <v-row  style="margin: 5px; ">
                             <v-col cols="4" class="justify-center align-center" style="padding: 8px;">
                               <v-avatar size="100%"  >
@@ -122,23 +127,6 @@
                               </v-row>
                             </v-col>
                           </v-row>
-                        </template>
-
-                        <template v-else>
-                          <v-row  style="margin: 5px; ">
-                            <v-col cols="4" class="justify-center align-center"  style="padding: 8px; ">
-                              <v-avatar size="100%"  >
-                              <v-img :src="item.IMAGE"></v-img>
-                            </v-avatar>
-                            </v-col>
-                            <v-col cols="8"  class="justify-center align-center">
-                              <v-row >
-                                <v-col cols="12" style="padding: 0; margin: 0;font-size: 1.1rem;color: #25ECE0;"  >{{ item.USER_NAME }}</v-col>
-                                <v-col cols="12" style="padding: 0;margin: 0; font-size: 0.8rem;color: #cccccc;">{{ item.NICK_NAME }}</v-col>
-                              </v-row>
-                            </v-col>
-                          </v-row>
-                        </template>
 
                         <v-divider></v-divider>
                       </v-list-item>
@@ -221,6 +209,7 @@ const createSnackbar = useSnackbar()
 const user = useUserStore()
 const { xs } = useDisplay()
 const isXs = computed(() => xs.value)
+// 給元件外部使用
 const emit = defineEmits(['updateUser'])
 
 //  選單開關
@@ -232,9 +221,23 @@ const closeDialog = () => {
   fileAgent.value.deleteFileRecord()
 }
 
+// 幹部：選好USER_NAME後，放入field.value.USER
+const selectUserName = (value, idx) => {
+  clubCoreMember.fields.value[idx].value.USER = value
+}
+//  將表單預設值放進去前，先抓到clubCoreMember要的值
+const CoreMember = ref([])
+
+for (const idx in user.CLUB_CORE_MEMBER) {
+  CoreMember.value.push({ USER: user.CLUB_CORE_MEMBER[idx].USER.USER_NAME, ROLE: user.CLUB_CORE_MEMBER[idx].ROLE })
+}
+
+// IMAGE 的 v-model
 const fileRecords = ref([])
 const rawFileRecords = ref([])
-// 為了能讓VueFileAgent能透過ref找到元件，然後在onMounted時設定fileAgent的值
+
+// 為了能讓VueFileAgent能透過ref找到元件
+// 然後在onMounted時設定fileAgent的值
 const fileAgent = ref(null)
 
 const clubItems = {
@@ -268,25 +271,20 @@ const searchData = async (idx) => {
   }
 }
 
-// 選好USER_NAME後，將USER_NAME放入field.value.USER
-const selectUserName = (value, idx) => {
-  clubCoreMember.fields.value[idx].value.USER = value
-}
-
-// 定義註冊表單的資料格式
+// 1.定義表單資料格式
 const schema = yup.object({
   // 姓名/社團名
   realName: yup
     .string()
-    .required('姓名/社團名必填')
-    .max(6, '姓名/社團名長度不符'),
+    .required('「姓名/社團名」必填')
+    .max(6, '「姓名/社團名」長度不符'),
 
   // 備用信箱
   emailUB: yup
     .string()
-    .max(40, '備用信箱長度不符')
+    .max(40, '「備用信箱」長度不符')
     .test(
-      'isEmail', '備用信箱格式錯誤',
+      'isEmail', '「備用信箱」格式錯誤',
       (value) => {
         return value ? validator.isEmail(value) : true
       }
@@ -294,15 +292,15 @@ const schema = yup.object({
   // 社團屆數
   clubTh: yup
     .number()
-    .required('社團屆數必填')
-    .typeError('社團屆數必須是數字'),
+    .required('「社團屆數」必填')
+    .typeError('「社團屆數」必須是數字'),
 
   // 社團幹部
   clubCoreMember: yup
     .array(
       yup.object({
-        USER: yup.string().required('用戶名稱必填'),
-        ROLE: yup.string().required('幹部職稱必填').max(5, '「幹部職稱」長度不符').min(2, '「幹部職稱」長度不符')
+        USER: yup.string().required('「用戶名稱」必填'),
+        ROLE: yup.string().required('「幹部職稱」必填').max(5, '「幹部職稱」長度不符').min(2, '「幹部職稱」長度不符')
       })
     )
     .test('role', '必須要有社長和副社長', value => {
@@ -319,29 +317,17 @@ const schema = yup.object({
   // 社團類別
   clubCategory: yup
     .string()
-    .required('社團類別必填')
-    .min(2, '社團類別不符')
-    .max(2, '社團類別不符'),
+    .required('「社團類別」必填')
+    .min(2, '「社團類別」不符')
+    .max(2, '「社團類別」不符'),
 
   // 社團簡介
   describe: yup
     .string()
-    .max(50, '社團類別不符')
+    .max(50, '「社團類別」不符')
 })
 
-//  將表單預設值放進去前，先抓到clubCoreMember要的值
-const CoreMember = ref([])
-
-for (const idx in user.CLUB_CORE_MEMBER) {
-  CoreMember.value.push({ USER: user.CLUB_CORE_MEMBER[idx].USER.USER_NAME, ROLE: user.CLUB_CORE_MEMBER[idx].ROLE })
-}
-
-console.log(schema, 'schema')
-console.log(user.CLUB_CORE_MEMBER[0].USER.USER_NAME, '2')
-console.log(schema.fields.clubCoreMember.tests[0].OPTIONS.message)
-console.log(schema.fields.clubCoreMember.tests[1].OPTIONS.message)
-
-// useForm建立一個表單
+// 2.useForm建立一個表單(可設預設值)
 const { handleSubmit, isSubmitting, errors, resetForm } = useForm({
   validationSchema: schema,
   initialValues: {
@@ -354,7 +340,7 @@ const { handleSubmit, isSubmitting, errors, resetForm } = useForm({
   }
 })
 
-// useField建立表單的欄位
+// 3.useField建立表單的欄位
 const realName = useField('realName')
 const nickName = useField('nickName')
 const emailUB = useField('emailUB')
@@ -370,7 +356,7 @@ const removeClubMemberField = (idx) => {
   clubCoreMember.remove(idx)
 }
 
-// 送出表單
+// 4.送出表單
 const submit = handleSubmit(async (values) => {
   if (fileRecords.value[0]?.error) return
   try {
@@ -391,8 +377,6 @@ const submit = handleSubmit(async (values) => {
     if (fileRecords.value.length > 0) {
       fd.append('IMAGE', fileRecords.value[0].file)
     }
-
-    console.log(fileRecords.value, 'IMAGE')
 
     await apiAuth.patch('/users/edit', fd)
 
