@@ -1,9 +1,8 @@
 <template>
-  票券
+票
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
-const tab = ref('')
 </script>

@@ -3,7 +3,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import routerUsers from './routes/users.js'
-// import routerEvents from './routes/events.js'
+import routerEvents from './routes/events.js'
 import mongoSanitize from 'express-mongo-sanitize'
 import './passport/passport.js'
 
@@ -48,6 +48,7 @@ app.use((_, rep, res, next) => {
 
 // 所有請求路徑
 app.use('/users', routerUsers)
+app.use('/events', routerEvents)
 // app.use('./events', routerEvents)
 // 處理請求路徑錯誤
 // * 代表任意路徑

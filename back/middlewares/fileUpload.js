@@ -30,6 +30,7 @@ export default (req, res, next) => {
   fileUpload.single('IMAGE')(req, res, (error) => {
     // instanceof： 是JS運算子，用於測試一個物件是否是另一個物件的實例
     if (error instanceof multer.MulterError) {
+      console.log(error, 'fileUpload上傳錯誤')
       let message = '上傳錯誤'
       if (error.code === 'LIMIT_FILE_SIZE') {
         message = '檔案太大'

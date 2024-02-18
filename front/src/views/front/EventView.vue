@@ -19,7 +19,6 @@
       <!--新增活動表單  -->
       <v-container>
         <v-form :disabled="isSubmitting" @submit.prevent="submit">
-
           <v-row>
             <!-- 活動圖片 -->
             <v-col cols="12">
@@ -49,18 +48,18 @@
                 ></v-text-field>
             </v-col>
 
-            <!-- 活動日期/時間 -->
-            <v-col cols="8" style="padding-top: 0px; padding-bottom: 0;">
+            <!-- 活動日期 -->
+            <v-col cols="6" style="padding-top: 0px; padding-bottom: 0;">
               <v-menu  v-model="menu" :close-on-content-click="false" :nudge-right="40" transition="scale-transition" min-width="290px" class="d-flex align-center justify-center">
                       <template v-slot:activator="{ attrs }">
                         <v-text-field
                           :model-value="dateText"
-                          :error-messages="date.errorMessage"
+                          :error-messages="date.errorMessage.value"
                           variant="outlined"
                           label="活動日期" prepend-icon="mdi-calendar" readonly v-bind="attrs" @click="menu = !menu">
                         </v-text-field>
                       </template>
-                      <v-date-picker  type="date" v-model="date.value.value" no-time no-title @input="menu = false">
+                      <v-date-picker  type="date" v-model="date.value.value" :min="minDate" no-time no-title @input="menu = false">
                         <template v-slot:actions>
                           <v-btn  style="background-color: #1BBCA9; color: rgb(255, 255, 255); font-weight: 900;" @click="menu = false">確定</v-btn>
                         </template>
@@ -68,25 +67,31 @@
                     </v-menu>
             </v-col>
 
-            <v-col cols="4" style="padding-top: 0px; padding-bottom: 0;">
-              <v-menu
-                v-model="menuTime"
-                :close-on-content-click="false"
-                transition="scale-transition"
-                offset-y
-              >
-              <template v-slot:activator="{ on }">
-                <v-text-field
-                  v-model="timeText"
-                  label="活動時間"
-                  prepend-icon="mdi-clock-time-four-outline"
-                  readonly
-                  v-on="on"
-                ></v-text-field>
-              </template>
-            <v-time-picker v-model="time" full-width></v-time-picker>
-          </v-menu>
-        </v-col>
+            <!-- 開始時間 -->
+            <v-col cols="3" style="padding-top: 0px; padding-bottom: 0;">
+              <v-text-field
+                v-model="startTime.value.value"
+                :error-messages="startTime.errorMessage.value"
+                minlength="4"
+                maxlength="4"
+                counter
+                variant="outlined"
+                label="開始時間(EX:1900)"  >
+            </v-text-field>
+            </v-col>
+
+            <!-- 結束時間 -->
+            <v-col cols="3" style="padding-top: 0px; padding-bottom: 0;">
+              <v-text-field
+                v-model="endTime.value.value"
+                :error-messages="endTime.errorMessage.value"
+                minlength="4"
+                maxlength="4"
+                counter
+                variant="outlined"
+                label="結束時間(EX:2230)"  >
+            </v-text-field>
+            </v-col>
 
             <!-- 活動縣市 -->
             <v-col cols="4" style="padding-top: 0px; padding-bottom: 0;">
@@ -152,7 +157,7 @@
             <v-col cols="6" style="padding-top: 0px; padding-bottom: 0;">
               <v-text-field
                 v-model="preSale.value.value"
-                label="預售票"
+                label="預售票(張)"
                 maxlength="4"
                 :error-messages="preSale.errorMessage.value"
                 counter
@@ -165,7 +170,7 @@
               <v-text-field
                 v-model="onSiteSale.value.value"
                 :error-messages="onSiteSale.errorMessage.value"
-                label="現場票"
+                label="現場票(張)"
                 maxlength="4"
                 counter
                 variant="outlined"
@@ -185,34 +190,19 @@
               </v-text-field>
             </v-col>
 
-            <!-- 協辦單位 - 資料欄 -->
-            <v-col cols="7" style="padding-top: 0px; padding-bottom: 0;">
-              <v-combobox
-                v-model="coOrganizer.fields.value"
-                :error-messages="coOrganizer.errorMessage"
-                label="協辦單位 (輸入或右邊搜尋)"
-                editable="false"
-                counter
-                multiple
-                variant="outlined"
-                chips
-                deletable-chips
-                >
-              </v-combobox>
-            </v-col>
-
             <!-- 協辦單位 - 搜尋 -->
-              <v-col cols="5" style="padding-top: 0px; padding-bottom: 0;">
-              <v-text-field
-                v-model="searchRef"
-                label="搜尋 使用者名稱"
-                counter
-                variant="outlined"
-                @input="searchCoOrganizer()"
-                id="searchId"
-                prepend-inner-icon="mdi-account-search"
-                >
-              </v-text-field>
+              <v-col cols="12" style="padding-top: 0px; padding-bottom: 0;">
+                <v-combobox
+                  v-model="searchRef"
+                  label="協辦單位"
+                  counter
+                  variant="outlined"
+                  @input="searchCoOrganizer()"
+                  id="searchId"
+                  prepend-inner-icon="mdi-account-search"
+                  deletable-chips
+                  >
+                </v-combobox>
 
               <!-- 搜尋的id -->
               <v-menu activator="#searchId" >
@@ -222,7 +212,7 @@
                     <v-list-item
                     v-for="(item) in search"
                     :key="item.USER_NAME"
-                    @click="selectUserName(item.USER_NAME)"
+                    @click="selectUserName(item.USER_NAME,item._id)"
                     >
                     <!-- 搜尋清單 -->
                       <v-row  style="margin: 5px; ">
@@ -249,6 +239,18 @@
                 </template>
                 </v-list>
               </v-menu>
+            </v-col>
+
+            <!-- 協但單位 - 資料欄 -->
+            <v-col cols="12" style="padding-top: 0px; padding-bottom: 22px;">
+              <v-card variant="outlined" class="d-flex align-center" style="height: 56px;">
+                <v-card-subtitle>協辦單位</v-card-subtitle>
+                <v-card-item>
+                  <v-chip v-for="(item, idx) in coOrganizerItem.fields.value" :key="idx"  closable @click:close="removeSelectedItem(idx)"   >
+                      {{ item }}
+                  </v-chip>
+                </v-card-item>
+              </v-card>
             </v-col>
 
             <!-- 活動內容 -->
@@ -284,7 +286,7 @@
             </v-col>
             <v-col cols="4" style="padding-top: 0;padding-bottom: 30px; ">
               <v-btn type="submit"
-                block class=" rounded-lg "
+                block class="rounded-lg "
                 style="background-color: #1BBCA9;height: 60px; font-weight: 900;">
                 確定
               </v-btn>
@@ -306,6 +308,7 @@ import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
 import { useUserStore } from '@/store/user'
 import { useDisplay } from 'vuetify'
+import EventDate from '@/components/EventDate.vue'
 
 const { apiAuth } = useApi()
 const createSnackbar = useSnackbar()
@@ -331,15 +334,11 @@ const closeDialog = () => {
   fileAgent.value.deleteFileRecord()
 }
 
-// 日期+時間
-const dateTime = ref('')
 // 註冊 - 日曆/轉換日期格式
 const menu = ref(false)
-const menuTime = ref(false)
-const time = ref(null)
-const timeText = ref('')
 // 日期格式轉換
 const dateText = computed(() => date.value.value ? new Date(date.value.value).toLocaleDateString().substring(0, 10) : '')
+const minDate = new Date()
 
 const fileRecords = ref([])
 const rawFileRecords = ref([])
@@ -353,10 +352,20 @@ const isEditClick = () => {
   submit()
 }
 
+// 協辦單位
 const search = ref('')
 const searchRef = ref('')
-console.log(searchRef.value)
-console.log('search', search.value)
+const removeSelectedItem = (idx) => {
+  coOrganizer.fields.value.splice(idx, 1)
+  coOrganizerItem.fields.value.splice(idx, 1)
+}
+
+// 選好USER_NAME後，放入表單
+const selectUserName = (USER_NAME, _id) => {
+  coOrganizer.fields.value.push(_id)
+  coOrganizerItem.fields.value.push(USER_NAME)
+  searchRef.value = ''
+}
 
 // 搜尋使用者id
 const searchCoOrganizer = async () => {
@@ -384,12 +393,6 @@ const searchCoOrganizer = async () => {
   }
 }
 
-// 選好USER_NAME後，放入表單
-const selectUserName = (value) => {
-  coOrganizer.fields.value.push(value)
-  searchRef.value = ''
-}
-
 // 1.定義表單的料格式
 const schema = yup.object({
   // 1.活動名稱
@@ -403,6 +406,19 @@ const schema = yup.object({
   date: yup
     .string()
     .required('「活動日期」必填'),
+
+  // 2.活動時間
+  startTime: yup
+    .number()
+    .typeError('必須是數字')
+    .required('「活動時間」必填'),
+
+  // 2.活動時間
+  endTime: yup
+    .number()
+    .typeError('必須是數字')
+    .required('「活動時間」必填')
+    .max(2359, '「活動時間」長度不符'),
 
   // 3.活動縣市
   city: yup
@@ -463,15 +479,21 @@ const schema = yup.object({
     .min(50, '「活動內容」長度不符')
     .max(1000, '「活動內容」長度不符'),
 
-  // 13.主辦單位
-  host: yup
-    .string()
-    .required('「主辦單位」必填'),
-
   // 14.協辦單位
   coOrganizer: yup
     .array().of(yup.string())
-    .oneOf([yup.ref('coOrganizer')], '協辦單位重複'),
+    .test('is-unique', '協辦單位重複', function (value) {
+      if (!value || !value.length) return true // 如果數組為空，唯一值
+      const uniqueValues = new Set(value) // 使用 Set 數據結構，它只允許唯一值
+      return uniqueValues.size === value.length
+    }),
+  coOrganizerItem: yup
+    .array().of(yup.string())
+    .test('is-unique', '協辦單位重複', function (value) {
+      if (!value || !value.length) return true // 如果數組為空，唯一值
+      const uniqueValues = new Set(value) // 使用 Set 數據結構，它只允許唯一值
+      return uniqueValues.size === value.length
+    }),
 
   // 19.草稿
   isEdit: yup
@@ -486,6 +508,8 @@ const { handleSubmit, isSubmitting, resetForm } = useForm({ validationSchema: sc
 // 3.useField建立表單的欄位
 const title = useField('title')
 const date = useField('date')
+const startTime = useField('startTime')
+const endTime = useField('endTime')
 const city = useField('city')
 const add = useField('add')
 const addRemark = useField('addRemark')
@@ -495,19 +519,13 @@ const preSale = useField('preSale')
 const onSiteSale = useField('onSiteSale')
 const scoreValues = useField('scoreValues')
 const description = useField('description')
-const host = useField('host')
 const coOrganizer = useFieldArray('coOrganizer', {
-  value: [],
-  errorMessage: []
+  value: []
 })
 
-const addCoOrganizerField = () => {
-  coOrganizer.push('')
-}
-
-const removeCoOrganizerField = (idx) => {
-  coOrganizer.remove(idx)
-}
+const coOrganizerItem = useFieldArray('coOrganizerItem', {
+  value: []
+})
 const isEdit = useField('isEdit')
 
 // 4.送出表單
@@ -515,29 +533,36 @@ const submit = handleSubmit(async (values) => {
   if (fileRecords.value[0]?.error) return
 
   try {
+    console.log('values', values)
+    console.log('category.value.value', category.value.value)
     const fd = new FormData()
+    const dateValue = date.value.value ? new Date(date.value.value).toLocaleDateString().substring(0, 10) : date.value.value
+    const timeValue = startTime.value.value + ' ' + endTime.value.value
     fd.append('TITLE', title.value.value)
-    fd.append('DATE', date.value.value + ' ' + dateTime.value)
+    fd.append('DATE', dateValue + ' ' + timeValue)
     fd.append('CITY', city.value.value)
     fd.append('ADD', add.value.value)
-    fd.append('ADD_REMARK', addRemark.value.value)
     fd.append('IS_PUBLIC', isPublic.value.value)
-    fd.append('CATEGORY', JSON.stringify(category.value.value))
+    fd.append('CATEGORY', category.value.value)
     fd.append('PRE_SALE', preSale.value.value)
     fd.append('ON_SITE_SALE', onSiteSale.value.value)
     fd.append('SCORE_VALUES', scoreValues.value.value)
     fd.append('DESCRIPTION', description.value.value)
-    fd.append('HOST', host.value.value)
-    fd.append('CO_ORGANIZER', JSON.stringify(coOrganizer.fields.value))
+    fd.append('HOST', user._id)
     fd.append('IS_EDIT', isEdit.value.value)
+    fd.append('IMAGE', fileRecords.value[0].file)
 
-    if (fileRecords.value.length > 0) {
-      fd.append('image', fileRecords.value[0].file)
+    if (coOrganizer.fields.value.length > 0) {
+      fd.append('CO_ORGANIZER', coOrganizer.fields.value)
+    }
+
+    if (addRemark.value.value) {
+      fd.append('ADD_REMARK', addRemark.value.value)
     }
 
     await apiAuth.post('/events', fd)
     createSnackbar({
-      text: '編輯成功',
+      text: '新增成功',
       showCloseButton: false,
       snackbarProps: {
         timeout: 2000,

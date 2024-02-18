@@ -10,10 +10,12 @@
   "dependencies": {
     "@boindil/vue-file-agent-next": "^1.0.5",
     "@mdi/font": "7.0.96",
+    "@popperjs/core": "^2.11.8",
     "axios": "^1.6.7",
     "pinia": "^2.0.23",
     "pinia-plugin-persistedstate": "^3.2.1",
     "roboto-fontface": "*",
+    "v-calendar": "^3.1.2",
     "validator": "^13.11.0",
     "vee-validate": "^4.12.5",
     "vue": "^3.2.0",

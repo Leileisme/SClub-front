@@ -21,8 +21,6 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/user'
 import UserRole from '@/enums/UserRole'
 
-import logout from '@/composables/logout'
-
 // const { api, apiAuth } = useApi()
 const user = useUserStore()
 const router = useRouter()

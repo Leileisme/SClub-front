@@ -3,10 +3,14 @@ import validator from 'validator'
 
 export const create = async (req, res) => {
   try {
-    const data = { ...req.body, Image: req.file.path }
-    const result = await events.create(data)
+    const category = req.body.CATEGORY.split(',')
+    const coOrganizer = req.body.CO_ORGANIZER ? req.body.CO_ORGANIZER.split(',') : null
+    const data = coOrganizer
+      ? { ...req.body, IMAGE: req.file.path, CATEGORY: category, CO_ORGANIZER: coOrganizer }
+      : { ...req.body, IMAGE: req.file.path, CATEGORY: category }
 
-    res.status(200).jsov({
+    const result = await events.create(data)
+    res.status(200).json({
       success: true,
       message: '',
       result

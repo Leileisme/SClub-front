@@ -80,7 +80,8 @@ export const login = async (req, res) => {
         MAKE_EVENT: req.user.MAKE_EVENT,
         MAKE_POST: req.user.MAKE_POST,
         DESCRIBE: req.user.DESCRIBE,
-        CLUB_CORE_MEMBER: CLUB_CORE_MEMBER.CLUB_CORE_MEMBER
+        CLUB_CORE_MEMBER: CLUB_CORE_MEMBER.CLUB_CORE_MEMBER,
+        _id: req.user._id
       }
     })
   } catch (error) {
@@ -163,10 +164,11 @@ export const getProfile = async (req, res) => {
         MAKE_EVENT: req.user.MAKE_EVENT,
         MAKE_POST: req.user.MAKE_POST,
         DESCRIBE: req.user.DESCRIBE,
-        CLUB_CORE_MEMBER: CLUB_CORE_MEMBER.CLUB_CORE_MEMBER
-
+        CLUB_CORE_MEMBER: CLUB_CORE_MEMBER.CLUB_CORE_MEMBER,
+        _id: req.user._id
       }
     })
+    console.log(req.user._id, 'req.user._id getProfile')
   } catch (error) {
     console.log(error, 'users getProfile controller')
     res.status(500).json({
