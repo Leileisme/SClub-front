@@ -1,4 +1,5 @@
 import users from '../models/users.js'
+import events from '../models/events.js'
 import jwt from 'jsonwebtoken'
 import validator from 'validator'
 import { trusted } from 'mongoose'
@@ -47,7 +48,8 @@ export const create = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const CLUB_CORE_MEMBER = await users.findById(req.user._id, 'CLUB_CORE_MEMBER').populate('CLUB_CORE_MEMBER.USER', 'USER_NAME')
-
+    const EVENTS = await events.find({ HOST: req.user._id }, '_id')
+    const EVENTS_ID = EVENTS.map(e => e._id)
     // jwt.sign 創造一個新的JWT，並接受三個參數 ( 物件、密鑰、選項 )
     const TOKEN = jwt.sign({ _id: req.user.id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
     req.user.TOKENS.push(TOKEN)
@@ -81,7 +83,8 @@ export const login = async (req, res) => {
         MAKE_POST: req.user.MAKE_POST,
         DESCRIBE: req.user.DESCRIBE,
         CLUB_CORE_MEMBER: CLUB_CORE_MEMBER.CLUB_CORE_MEMBER,
-        _id: req.user._id
+        _id: req.user._id,
+        EVENTS_ID
       }
     })
   } catch (error) {
@@ -137,6 +140,8 @@ export const getProfile = async (req, res) => {
     // 因為 models 裡的 CLUB_CORE_MEMBER.USER 有 ref: 'users'，所以可以直接取 USER_NAME
 
     const CLUB_CORE_MEMBER = await users.findById(req.user._id, 'CLUB_CORE_MEMBER').populate('CLUB_CORE_MEMBER.USER', 'USER_NAME')
+    const EVENTS = await events.find({ HOST: req.user._id }, '_id')
+    const EVENTS_ID = EVENTS.map(e => e._id)
     res.status(200).json({
       success: true,
       massage: '',
@@ -165,7 +170,8 @@ export const getProfile = async (req, res) => {
         MAKE_POST: req.user.MAKE_POST,
         DESCRIBE: req.user.DESCRIBE,
         CLUB_CORE_MEMBER: CLUB_CORE_MEMBER.CLUB_CORE_MEMBER,
-        _id: req.user._id
+        _id: req.user._id,
+        EVENTS_ID
       }
     })
     console.log(req.user._id, 'req.user._id getProfile')

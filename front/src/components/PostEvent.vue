@@ -1,0 +1,216 @@
+<template>
+  <template v-if="routeUser.ROLE === UserRole.CLUB">
+    <!-- 動態//活動 -->
+    <v-col cols="12" >
+      <v-tabs
+        v-model="tab"
+        align-tabs="start">
+        <v-tab value="one" class="rounded-ts-xl me-2" style="border:  1.8px rgba(204,204,204,0.5) solid; min-width: 80px;">動態</v-tab>
+        <v-tab value="two" class="rounded-ts-xl" style="border:  1.8px rgba(204,204,204,0.5) solid;min-width: 80px;">活動</v-tab>
+      </v-tabs>
+      <v-divider color="#fff" class="border-opacity-50"></v-divider>
+    </v-col>
+
+    <!-- 動態貼文 -->
+    <v-window v-model="tab" style="width: 100%; " >
+      <v-window-item value="one">
+        <v-col cols="12" >
+        <v-row >
+          <v-col
+            v-for="n in 9"
+            :key="n"
+            class="d-flex child-flex"
+            cols="4"
+            style="padding: 2px;"
+          >
+            <v-img
+              :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
+              :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
+              aspect-ratio="1"
+              cover
+              class="bg-grey-lighten-2"
+            >
+              <template v-slot:placeholder>
+                <v-row class="fill-height ma-0" justify="center">
+                  <v-progress-circular indeterminate color="grey-lighten-5"></v-progress-circular>
+                </v-row>
+              </template>
+            </v-img>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-window-item>
+
+    <!-- 活動 -->
+      <v-window-item value="two">
+        <v-col cols="12">
+          <v-row>
+            <!-- 主辦活動 -->
+            <v-col cols="12" style="color: #25ECE0; padding-bottom: 5px;">主辦活動</v-col>
+            <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px; padding-bottom: 0;" >{{ new Date().getFullYear() }}</v-col>
+
+            <v-col cols="3" style="background: rgba(6, 50, 107,0);padding-right: 0; ">
+            <span>{{ new Date().getMonth() }}</span>
+            <span  style="font-size: 0.7rem; ">月</span>
+            <span>{{  new Date().getDate()  }}</span>
+            <span style="font-size: 0.7rem; ">日</span>
+            </v-col>
+
+            <v-col cols="7" ></v-col>
+
+            <v-col cols="1"  class="d-flex justify-center">
+              <v-icon style=" " color="#fff ">mdi-camera</v-icon>
+            </v-col>
+            <v-col cols="1" class="d-flex justify-center">
+              <v-icon style=" " color="#fff ">mdi-dots-vertical</v-icon>
+            </v-col>
+
+            <!-- 分隔線 -->
+            <v-col cols="12">
+              <v-divider color="#fff" class="border-opacity-50"></v-divider>
+            </v-col>
+
+            <!-- 活動紀錄 -->
+            <v-col cols="12" style="color: #25ECE0; padding-bottom: 5px;">活動紀錄</v-col>
+            <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px;padding-bottom: 0;">{{ new Date().getFullYear() }}</v-col>
+            <v-col cols="2" style="background: rgba(6, 50, 107,0);padding-right: 0;">
+              <span>{{ new Date().getMonth() }}</span>
+              <span  style="font-size: 0.7rem; ">月</span>
+              <span>{{  new Date().getDate()  }}</span>
+              <span style="font-size: 0.7rem; ">日</span>
+            </v-col>
+            <v-col cols="8" ></v-col>
+            <v-col cols="1" class="d-flex justify-center">
+              <v-icon style=" " color="#fff ">mdi-camera</v-icon>
+            </v-col>
+            <v-col cols="1" class="d-flex justify-center">
+              <v-icon style=" " color="#fff ">mdi-dots-vertical</v-icon>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-window-item>
+    </v-window>
+  </template>
+
+  <template v-else>
+    <v-col cols="12">
+            <v-row>
+              <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px;padding-bottom: 0;">{{ new Date().getFullYear() }}</v-col>
+              <v-col cols="3" style="background: rgba(6, 50, 107,0);padding-right: 0;">
+              <span>{{ new Date().getMonth() }}</span>
+              <span  style="font-size: 0.7rem; ">月</span>
+              <span>{{  new Date().getDate()  }}</span>
+              <span style="font-size: 0.7rem; ">日</span>
+              </v-col>
+              <v-col cols="7" ></v-col>
+
+              <v-col cols="1" class="d-flex justify-center">
+                <v-icon style=" " color="#fff ">mdi-camera</v-icon>
+              </v-col>
+              <v-col cols="1" class="d-flex justify-center">
+                <v-icon style=" " color="#fff ">mdi-dots-vertical</v-icon>
+              </v-col>
+            </v-row>
+          </v-col>
+  </template>
+</template>
+
+<script setup>
+import { computed, ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useUserStore } from '@/store/user'
+import { useSnackbar } from 'vuetify-use-dialog'
+import { useApi } from '@/composables/axios'
+import UserRole from '@/enums/UserRole'
+
+const { apiAuth } = useApi()
+const router = useRouter()
+const route = useRoute()
+const createSnackbar = useSnackbar()
+const user = useUserStore()
+const tab = ref('')
+
+const routeUser = ref({
+  EMAIL: (''),
+  ROLE: (''),
+  SCHOOL_NAME: (''),
+  SCHOOL_CITY: (''),
+  USER_NAME: (''),
+  NICK_NAME: (''),
+  CLUB_TH: (''),
+  CLUB_CATEGORY: (''),
+  IMAGE: (''),
+  TICKET_CART: ([]),
+  SCORES: (''),
+  NOTIFY: ([]),
+  KEEP_POST: ([]),
+  KEEP_EVENT: ([]),
+  FANS: ([]),
+  FOLLOW: ([]),
+  IS_STUDENT: (''),
+  IS_ABLE: (''),
+  IS_ADMIN: (''),
+  DESCRIBE: (''),
+  MAKE_EVENT: ([]),
+  MAKE_POST: ([]),
+  MAKE_TIME_POST: ([]),
+  GO_EVENT: ([]),
+  BE_MARK: ([]),
+  IS_CORE_MEMBER: ([])
+})
+
+const get = async () => {
+  try {
+    const { data } = await apiAuth.get('/users/' + route.params.USER_NAME)
+    routeUser.value.EMAIL = data.result.EMAIL
+    routeUser.value.ROLE = data.result.ROLE
+    routeUser.value.SCHOOL_NAME = data.result.SCHOOL_NAME
+    routeUser.value.SCHOOL_CITY = data.result.SCHOOL_CITY
+    routeUser.value.USER_NAME = data.result.USER_NAME
+    routeUser.value.NICK_NAME = data.result.NICK_NAME
+    routeUser.value.CLUB_TH = data.result.CLUB_TH
+    routeUser.value.CLUB_CATEGORY = data.result.CLUB_CATEGORY
+    routeUser.value.IMAGE = data.result.IMAGE
+    routeUser.value.TICKET_CART = data.result.TICKET_CART
+    routeUser.value.SCORES = data.result.SCORES
+    routeUser.value.NOTIFY = data.result.NOTIFY
+    routeUser.value.KEEP_POST = data.result.KEEP_POST
+    routeUser.value.KEEP_EVENT = data.result.KEEP_EVENT
+    routeUser.value.FANS = data.result.FANS
+    routeUser.value.FOLLOW = data.result.FOLLOW
+    routeUser.value.IS_STUDENT = data.result.IS_STUDENT
+    routeUser.value.IS_ABLE = data.result.IS_ABLE
+    routeUser.value.IS_ADMIN = data.result.IS_ADMIN
+    routeUser.value.DESCRIBE = data.result.DESCRIBE
+    routeUser.value.MAKE_EVENT = data.result.MAKE_EVENT
+    routeUser.value.MAKE_POST = data.result.MAKE_POST
+    routeUser.value.MAKE_TIME_POST = data.result.MAKE_TIME_POST
+    routeUser.value.GO_EVENT = data.result.GO_EVENT
+    routeUser.value.BE_MARK = data.result.BE_MARK
+    routeUser.value.IS_CORE_MEMBER = data.result.IS_CORE_MEMBER
+
+    document.title = `學生社團 | ${routeUser.value.NICK_NAME}（${routeUser.value.USER_NAME}）`
+  } catch (error) {
+    console.log(error)
+    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+    createSnackbar({
+      text,
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'red',
+        location: 'bottom'
+      }
+    })
+    router.push('/')
+  }
+}
+
+onMounted(
+  () => { get() }
+)
+
+</script>
+
+<style lang="sass" scoped>
+</style>

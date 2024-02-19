@@ -1,87 +1,42 @@
 <template>
-  <template v-if="isXs">
-    <v-app-bar >
-      <VContainer class="d-flex align-center" style="">
-        <v-app-bar-title class="text-h5 ms-5">
-          {{routeUser.USER_NAME}}
-        </v-app-bar-title>
-
-        <!-- 【建立】 動態/限時動態 -->
-        <v-dialog max-width="400px"  v-if="routeUser.USER_NAME === user.USER_NAME">
-          <template v-slot:activator="{ props }" >
-            <v-btn v-bind="props" icon="mdi-plus-box-outline" style="font-size: 1.25rem;"> </v-btn>
-          </template>
-
-          <!-- 建立彈出的內容 -->
-          <template v-slot:default="{ isActive }" >
-            <v-card style="border-radius: 15px;">
-              <v-card-text class="text-center">
-                <AddMenu is-mobile></AddMenu>
-              </v-card-text>
-
-                <v-spacer></v-spacer>
-                <v-btn text="Close Dialog" :flat="true" @click="isActive.value = false"  style="position: absolute; right: 0; top: 0;">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-
-            </v-card>
-          </template>
-        </v-dialog>
-
-        <!-- 【設定】 -->
-        <v-dialog max-width="400px">
-          <template v-slot:activator="{ props }">
-            <v-btn v-bind="props" icon="mdi-menu" style="font-size: 1.25rem;"> </v-btn>
-          </template>
-
-          <!-- 設定彈出的內容 -->
-          <template v-slot:default="{ isActive }">
-            <v-card style="border-radius: 15px;" class="text-center">
-              <v-card-text>
-                <SettingsMenu  v-if="routeUser.USER_NAME === user.USER_NAME" is-mobile></SettingsMenu>
-                <SettingsMenuOther v-else is-mobile></SettingsMenuOther>
-              </v-card-text>
-
-                <v-spacer></v-spacer>
-                <v-btn text="Close Dialog" :flat="true" @click="isActive.value = false"  style="position: absolute; right: 0; top: 0;">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-            </v-card>
-          </template>
-        </v-dialog>
-
-      </VContainer>
-    </v-app-bar>
-  </template>
-
-  <NPersonalClub v-if="routeUser.ROLE !== UserRole.CLUB"></NPersonalClub>
-  <PersonalClub v-else></PersonalClub>
-
+  <v-col v-if="routeUser.USER_NAME === user.USER_NAME || routeUser.MAKE_EVENT.length !== 0" cols="12" >
+    <v-row >
+      <!-- 每一個小圖 -->
+      <v-col :cols="cols"  class="text-center">
+        <v-btn icon  size="large" text  color="rgba(0,0,0,0)">
+          <v-icon style="font-size: 3.8rem; border: 1px solid #ccc; border-radius: 50%;" color="#ccc ">mdi-plus</v-icon>
+        </v-btn>
+        <div class="mt-3" style="color:#ccc;"  >新增</div>
+      </v-col>
+    </v-row>
+  </v-col>
 </template>
 
 <script setup>
 import { useDisplay } from 'vuetify'
 import { computed, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { useApi } from '@/composables/axios'
-import { useSnackbar } from 'vuetify-use-dialog'
 import { useUserStore } from '@/store/user'
-import UserRole from '@/enums/UserRole'
-import PersonalClub from '@/components/PersonalClub.vue'
-import NPersonalClub from '@/components/NPersonalClub.vue'
-import SettingsMenu from '@/components/SettingsMenu.vue'
-import SettingsMenuOther from '@/components/SettingsMenuOther.vue'
-import AddMenu from '@/components/AddMenu.vue'
+import { useSnackbar } from 'vuetify-use-dialog'
+import { useApi } from '@/composables/axios'
 
 const { apiAuth } = useApi()
-const user = useUserStore()
 const router = useRouter()
 const route = useRoute()
 const createSnackbar = useSnackbar()
+const user = useUserStore()
 
 // 判斷是否用手機
 const { xs } = useDisplay()
 const isXs = computed(() => xs.value)
+
+const cols = computed(() => {
+  if (isXs.value) {
+    return 3
+  } else {
+    return 2
+  }
+})
 
 const routeUser = ref({
   EMAIL: (''),
@@ -112,7 +67,7 @@ const routeUser = ref({
   IS_CORE_MEMBER: ([])
 })
 
-onMounted(async () => {
+const get = async () => {
   try {
     const { data } = await apiAuth.get('/users/' + route.params.USER_NAME)
     routeUser.value.EMAIL = data.result.EMAIL
@@ -157,14 +112,13 @@ onMounted(async () => {
     })
     router.push('/')
   }
-})
+}
+
+onMounted(
+  () => { get() }
+)
+
 </script>
 
 <style lang="sass" scoped>
-.iconTop
-  font-size: 1.4rem
-
-.v-container
-  padding: 24px !important
-
 </style>

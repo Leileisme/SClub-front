@@ -1,7 +1,7 @@
 <template>
   <v-layout>
     <!-- 頂部導覽列 -->
-    <template v-if="isXs && !isPersonalRoute && !isLoginRoute && !isRegisterRoute">
+    <template v-if="isXs && !isPersonalRoute && !isLoginRoute && !isRegisterRoute && !isEventRoute">
       <v-app-bar>
         <VContainer class="d-flex align-center">
         <v-app-bar-title class="text-h5 ms-5">LogoHere</v-app-bar-title>
@@ -96,6 +96,7 @@ const router = useRouter()
 const isPersonalRoute = ref(router.currentRoute.value.name === 'personal')
 const isLoginRoute = ref(router.currentRoute.value.name === 'login')
 const isRegisterRoute = ref(router.currentRoute.value.name === 'register')
+const isEventRoute = ref(router.currentRoute.value.name === 'event')
 
 // currentRoute 是異步的
 // 使用 ref 並進行監聽
@@ -103,6 +104,7 @@ watch(() => router.currentRoute.value.name, (newName) => {
   isPersonalRoute.value = newName === 'personal'
   isLoginRoute.value = newName === 'login'
   isRegisterRoute.value = newName === 'register'
+  isEventRoute.value = newName === 'event'
 })
 
 // 判斷是否用手機
@@ -126,7 +128,7 @@ const TopNavItems = computed(() => {
   return [
     { to: '/ticket', text: '票券', icon: 'mdi-ticket-confirmation-outline', show: '' },
     { to: '', text: '通知', icon: 'mdi-bell-outline', show: '' },
-    { to: 'r', text: '訊息', icon: 'mdi-chat-processing', show: '' }
+    { to: '', text: '訊息', icon: 'mdi-chat-processing', show: '' }
   ]
 })
 

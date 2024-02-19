@@ -33,3 +33,37 @@ export const create = async (req, res) => {
     }
   }
 }
+
+export const getEvent = async (req, res) => {
+  try {
+    if (!validator.isMongoId(req.params.id)) throw new Error('ID')
+
+    const result = await events.findById(req.params.id)
+
+    if (!result) throw new Error('NOT FOUND')
+
+    res.status(200).json({
+      success: true,
+      message: '',
+      result
+    })
+  } catch (error) {
+    console.log(error, 'events controllers 的 error')
+    if (error.name === 'CastError' || error.message === 'ID') {
+      res.status(400).json({
+        success: false,
+        message: 'ID 格式錯誤'
+      })
+    } else if (error.message === 'NOT FOUND') {
+      res.status(404).json({
+        success: false,
+        message: '查無商品'
+      })
+    } else {
+      res.status(500).json({
+        success: false,
+        message: '未知錯誤'
+      })
+    }
+  }
+}

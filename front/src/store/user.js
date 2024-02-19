@@ -34,6 +34,7 @@ export const useUserStore = defineStore('user', () => {
   const DESCRIBE = ref('')
   const CLUB_CORE_MEMBER = ref([])
   const _id = ref('')
+  const EVENTS_ID = ref([])
 
   const login = (data) => {
     if (data.TOKEN) {
@@ -63,6 +64,7 @@ export const useUserStore = defineStore('user', () => {
     DESCRIBE.value = data.DESCRIBE
     CLUB_CORE_MEMBER.value = data.CLUB_CORE_MEMBER
     _id.value = data._id
+    EVENTS_ID.value = data.EVENTS_ID
     console.log(_id, 'login _id')
     console.log(USER_NAME, 'login USER_NAME')
     console.log(CLUB_CORE_MEMBER, 'login CLUB_CORE_MEMBER')
@@ -112,7 +114,7 @@ export const useUserStore = defineStore('user', () => {
     DESCRIBE.value = ''
     CLUB_CORE_MEMBER.value = ''
     _id.value = ''
-
+    EVENTS_ID.value = ''
   }
 
   return {
@@ -140,6 +142,7 @@ export const useUserStore = defineStore('user', () => {
     DESCRIBE,
     CLUB_CORE_MEMBER,
     _id,
+    EVENTS_ID,
     login,
     logout,
     isLogin,

@@ -1,87 +1,69 @@
 <template>
-  <template v-if="isXs">
-    <v-app-bar >
-      <VContainer class="d-flex align-center" style="">
-        <v-app-bar-title class="text-h5 ms-5">
-          {{routeUser.USER_NAME}}
-        </v-app-bar-title>
+  <v-col cols="12">
+    <v-row v-if="routeUser.ROLE === UserRole.CLUB">
+      <v-col cols="4" style="background-color: ;"></v-col>
+        <!-- 貼文 -->
+      <v-col cols="2" style="background: ;">
+        <v-row class="text-center">
+          <v-col cols="12" style="padding: 0;">{{routeUser.FANS.length}}</v-col>
+          <v-col cols="12" style="padding: 0;">貼文</v-col>
+        </v-row>
+      </v-col>
+      <!-- 活動 -->
+      <v-col cols="2" style="background: ;">
+        <v-row class="text-center">
+          <v-col cols="12" style="padding: 0;">{{routeUser.FANS.length}}</v-col>
+          <v-col cols="12" style="padding: 0;">活動</v-col>
+        </v-row>
+      </v-col>
+      <!-- 粉絲 -->
+      <v-col cols="2" style="background: ;">
+        <v-row class="text-center">
+          <v-col cols="12" style="padding: 0;">{{routeUser.FANS.length}}</v-col>
+          <v-col cols="12" style="padding: 0;">粉絲</v-col>
+        </v-row>
+      </v-col>
+      <!-- 追蹤 -->
+      <v-col cols="2" style="background-color:;">
+        <v-row class="text-center">
+          <v-col cols="12" style="padding: 0;">{{routeUser.FOLLOW.length}}</v-col>
+          <v-col cols="12" style="padding: 0;">追蹤</v-col>
+        </v-row>
+      </v-col>
+    </v-row>
 
-        <!-- 【建立】 動態/限時動態 -->
-        <v-dialog max-width="400px"  v-if="routeUser.USER_NAME === user.USER_NAME">
-          <template v-slot:activator="{ props }" >
-            <v-btn v-bind="props" icon="mdi-plus-box-outline" style="font-size: 1.25rem;"> </v-btn>
-          </template>
-
-          <!-- 建立彈出的內容 -->
-          <template v-slot:default="{ isActive }" >
-            <v-card style="border-radius: 15px;">
-              <v-card-text class="text-center">
-                <AddMenu is-mobile></AddMenu>
-              </v-card-text>
-
-                <v-spacer></v-spacer>
-                <v-btn text="Close Dialog" :flat="true" @click="isActive.value = false"  style="position: absolute; right: 0; top: 0;">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-
-            </v-card>
-          </template>
-        </v-dialog>
-
-        <!-- 【設定】 -->
-        <v-dialog max-width="400px">
-          <template v-slot:activator="{ props }">
-            <v-btn v-bind="props" icon="mdi-menu" style="font-size: 1.25rem;"> </v-btn>
-          </template>
-
-          <!-- 設定彈出的內容 -->
-          <template v-slot:default="{ isActive }">
-            <v-card style="border-radius: 15px;" class="text-center">
-              <v-card-text>
-                <SettingsMenu  v-if="routeUser.USER_NAME === user.USER_NAME" is-mobile></SettingsMenu>
-                <SettingsMenuOther v-else is-mobile></SettingsMenuOther>
-              </v-card-text>
-
-                <v-spacer></v-spacer>
-                <v-btn text="Close Dialog" :flat="true" @click="isActive.value = false"  style="position: absolute; right: 0; top: 0;">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-            </v-card>
-          </template>
-        </v-dialog>
-
-      </VContainer>
-    </v-app-bar>
-  </template>
-
-  <NPersonalClub v-if="routeUser.ROLE !== UserRole.CLUB"></NPersonalClub>
-  <PersonalClub v-else></PersonalClub>
-
+    <v-row v-else>
+      <v-col cols="8" style="background-color: ;"></v-col>
+      <!-- 粉絲 -->
+      <v-col cols="2" style="background: ;">
+        <v-row class="text-center">
+          <v-col cols="12" style="padding: 0;">{{routeUser.FANS.length}}</v-col>
+          <v-col cols="12" style="padding: 0;">粉絲</v-col>
+        </v-row>
+      </v-col>
+      <!-- 追蹤 -->
+      <v-col cols="2" style="background-color:;">
+        <v-row class="text-center">
+          <v-col cols="12" style="padding: 0;">{{routeUser.FOLLOW.length}}</v-col>
+          <v-col cols="12" style="padding: 0;">追蹤</v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+  </v-col>
 </template>
 
 <script setup>
-import { useDisplay } from 'vuetify'
 import { computed, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
-import { useUserStore } from '@/store/user'
+
 import UserRole from '@/enums/UserRole'
-import PersonalClub from '@/components/PersonalClub.vue'
-import NPersonalClub from '@/components/NPersonalClub.vue'
-import SettingsMenu from '@/components/SettingsMenu.vue'
-import SettingsMenuOther from '@/components/SettingsMenuOther.vue'
-import AddMenu from '@/components/AddMenu.vue'
 
 const { apiAuth } = useApi()
-const user = useUserStore()
 const router = useRouter()
 const route = useRoute()
 const createSnackbar = useSnackbar()
-
-// 判斷是否用手機
-const { xs } = useDisplay()
-const isXs = computed(() => xs.value)
 
 const routeUser = ref({
   EMAIL: (''),
@@ -161,10 +143,4 @@ onMounted(async () => {
 </script>
 
 <style lang="sass" scoped>
-.iconTop
-  font-size: 1.4rem
-
-.v-container
-  padding: 24px !important
-
 </style>

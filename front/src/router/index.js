@@ -48,6 +48,16 @@ const routes = [
           admin: false
         }
       },
+      // {
+      //   path: '/event/:id',
+      //   name: 'eventDetail',
+      //   component: () => import('@/views/front/EventDetailView.vue'),
+      //   meta: {
+      //     title: '學生社團網 | 活動',
+      //     login: true,
+      //     admin: false
+      //   }
+      // },
       {
         // path: '/personal',
         path: '/:USER_NAME',
