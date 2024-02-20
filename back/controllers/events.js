@@ -67,7 +67,9 @@ export const getEventById = async (req, res) => {
   try {
     if (!validator.isMongoId(req.params.id)) throw new Error('ID')
 
+    const HOST_USER = await events.findById(req.params.id, 'HOST').populate('HOST', 'NICK_NAME CLUB_TH IMAGE DESCRIPTION')
     const result = await events.findById(req.params.id)
+    result.HOST = HOST_USER.HOST
 
     if (!result) throw new Error('NOT FOUND')
 

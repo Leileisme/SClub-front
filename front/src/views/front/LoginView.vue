@@ -36,6 +36,7 @@
                   type="email"
                   maxlength="40"
                   counter
+                  color="#25ECE0"
                   variant="outlined">
                 </v-text-field>
               </v-col>
@@ -49,6 +50,7 @@
                   counter
                   label="密碼"
                   variant="outlined"
+                  color="#25ECE0"
                   :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
                   :type="visible ? 'text' : 'password'"
                   @click:append-inner="visible = !visible">

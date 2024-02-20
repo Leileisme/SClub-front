@@ -37,6 +37,7 @@
                       item-value="value"
                       label="註冊單位"
                       variant="outlined"
+                      color="#25ECE0"
                       @update:model-value="role.value.value = undefined">
                     </v-select>
                   </v-col>
@@ -51,6 +52,7 @@
                       item-value="value"
                       label="註冊身分"
                       variant="outlined"
+                      color="#25ECE0"
                       :disabled="!type.selected"
                       :error-messages="role.errorMessage.value">
                     </v-select>
@@ -90,6 +92,7 @@
                       maxlength="40"
                       counter
                       variant="outlined"
+                      color="#25ECE0"
                       density="comfortable">
                     </v-text-field>
                     <!-- 學號 -->
@@ -100,6 +103,7 @@
                       maxlength="20"
                       counter
                       variant="outlined"
+                      color="#25ECE0"
                       density="comfortable">
                     </v-text-field>
                     <!-- 密碼 -->
@@ -112,6 +116,7 @@
                       label="密碼"
                       variant="outlined"
                       density="comfortable"
+                      color="#25ECE0"
                       :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
                       :type="visible ? 'text' : 'password'"
                       @click:append-inner="visible = !visible">
@@ -127,6 +132,7 @@
                       :type="visibleConfirm ? 'text' : 'password'"
                       @click:append-inner="visibleConfirm = !visibleConfirm"
                       label="確認密碼"
+                      color="#25ECE0"
                       variant="outlined"
                       density="comfortable">
                     </v-text-field>
@@ -165,6 +171,7 @@
                       :error-messages="schoolName.errorMessage.value"
                       maxlength="20"
                       counter
+                      color="#25ECE0"
                       label="學校"
                       variant="outlined"
                       density="compact">
@@ -175,6 +182,7 @@
                       :error-messages="schoolCity.errorMessage.value"
                       :items="schoolCityItems.items"
                       density="compact"
+                      color="#25ECE0"
                       label="學校縣市"
                       variant="outlined">
                     </v-select>
@@ -185,6 +193,7 @@
                       :error-messages="realName.errorMessage.value"
                       maxlength="6"
                       counter
+                      color="#25ECE0"
                       variant="outlined"
                       density="compact">
                     </v-text-field>
@@ -194,6 +203,7 @@
                       :error-messages="UserName.errorMessage.value"
                       maxlength="12"
                       counter
+                      color="#25ECE0"
                       label="用戶名稱"
                       variant="outlined"
                       density="compact">
@@ -205,6 +215,7 @@
                       :error-messages="nickName.errorMessage.value"
                       maxlength="6"
                       counter
+                      color="#25ECE0"
                       label="檔案暱稱"
                       variant="outlined"
                       density="compact">
@@ -217,12 +228,13 @@
                           :error-messages="BDAY.errorMessage.value"
                           density="compact"
                           variant="outlined"
+                          color="#25ECE0"
                           label="出生日期" prepend-icon="mdi-calendar" readonly v-bind="attrs" @click="menu = !menu">
                         </v-text-field>
                       </template>
-                      <v-date-picker  type="date" v-model="BDAY.value.value" no-time no-title @input="menu = false">
+                      <v-date-picker  type="date" color="#25ECE0"  :max="maxDate" v-model="BDAY.value.value" no-time no-title @input="menu = false">
                         <template v-slot:actions>
-                          <v-btn  style="background-color: #1BBCA9; color: rgb(255, 255, 255); font-weight: 900;" @click="menu = false">確定</v-btn>
+                          <v-btn  style="background-color: #25ECE0; color: rgb(0, 0, 0); font-weight: 900;" @click="menu = false">確定</v-btn>
                         </template>
                       </v-date-picker>
                     </v-menu>
@@ -234,6 +246,7 @@
                       :items="genderValue.items"
                       density="compact"
                       label="性別"
+                      color="#25ECE0"
                       variant="outlined">
                     </v-select>
                     <!-- 手機 -->
@@ -246,6 +259,7 @@
                       prefix="09"
                       variant="outlined"
                       counter
+                      color="#25ECE0"
                       density="compact">
                     </v-text-field>
                     <!-- 年級 -->
@@ -258,6 +272,7 @@
                       maxlength="2"
                       counter
                       label="年級"
+                      color="#25ECE0"
                       variant="outlined"
                       density="compact">
                     </v-select>
@@ -268,6 +283,7 @@
                       ::error-messages="clubCategory.errorMessage.value"
                       :items="clubItems.items"
                       label="社團類別"
+                      color="#25ECE0"
                       variant="outlined"
                       density="compact">
                     </v-select>
@@ -278,6 +294,7 @@
                       :error-messages="clubTh.errorMessage.value"
                       maxlength="3"
                       counter
+                      color="#25ECE0"
                       label="社團屆數"
                       variant="outlined"
                       density="compact">
@@ -312,6 +329,7 @@
                     :error-messages="emailUB.errorMessage.value"
                     maxlength="40"
                     counter
+                    color="#25ECE0"
                     label="備用信箱"
                     variant="outlined"
                     density="compact">
@@ -431,6 +449,8 @@ const studentGradeItems = ['高一', '高二', '高三', '大一', '大二', '�
 
 // 註冊 - 日曆/轉換日期格式
 const menu = ref(false)
+
+const maxDate = new Date()
 
 // 1.定義註冊表單的資料格式
 const schemaOne = yup.object({

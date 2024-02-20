@@ -167,7 +167,8 @@ export const schema = new Schema({
   },
   // 18.觸及人數
   REACH: {
-    type: Number
+    type: Number,
+    default: 0
   },
   // 19.草稿
   IS_EDIT: {

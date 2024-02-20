@@ -31,6 +31,7 @@
                 :max-files="1"
                 max-size="1MB"
                 ref="fileAgent"
+                color="#25ECE0"
                 ></VueFileAgent>
             </v-col>
             <!-- 姓名/社團名稱 -->
@@ -42,6 +43,7 @@
                 maxlength="6"
                 counter
                 variant="outlined"
+                color="#25ECE0"
                 >
               </v-text-field>
             </v-col>
@@ -53,6 +55,7 @@
                 :error-messages="clubTh.errorMessage.value"
                 maxlength="3"
                 counter
+                color="#25ECE0"
                 label="社團屆數"
                 variant="outlined">
               </v-text-field>
@@ -65,6 +68,7 @@
                 ::error-messages="clubCategory.errorMessage.value"
                 :items="clubItems.items"
                 label="社團類別"
+                color="#25ECE0"
                 variant="outlined">
               </v-select>
             </v-col>
@@ -87,6 +91,7 @@
                     :error-messages="errors[`clubCoreMember[${idx}].ROLE`]"
                     label="幹部職稱"
                     variant="outlined"
+                    color="#25ECE0"
                     density="compact">
                     </v-text-field>
                 </v-col>
@@ -99,6 +104,7 @@
                     label="用戶名稱"
                     variant="outlined"
                     density="compact"
+                    color="#25ECE0"
                     @input="searchData(idx)"
                     :id="'clubCoreMember_user' + idx">
                   </v-text-field>
@@ -148,6 +154,7 @@
                 </v-col>
               </v-row>
             </v-col>
+
             <!-- 備用信箱 -->
             <v-col cols="12" style="padding-top: 10px; padding-bottom: 0;">
                 <v-text-field
@@ -156,6 +163,7 @@
                   maxlength="40"
                   counter
                   label="備用信箱"
+                  color="#25ECE0"
                   variant="outlined">
                 </v-text-field>
               </v-col>
@@ -167,6 +175,7 @@
                   maxlength="50"
                   counter
                   label="社團簡介"
+                  color="#25ECE0"
                   variant="outlined">
                 </v-textarea>
               </v-col>

@@ -57,7 +57,7 @@
                 <span class="me-1" style="font-size: 0.7rem;">日</span>
                 </v-col>
 
-                <v-col cols="7" @click="$router.push(`/event/${item._id}`)" style="cursor: pointer;">{{ item.TITLE }}</v-col>
+                <v-col cols="7" @click="$router.push(`/event/${item._id}`)" style="cursor: pointer;" class="title">{{ item.TITLE }}</v-col>
 
                 <v-col cols="1"  class="d-flex justify-center">
                   <v-icon style=" " color="#fff ">mdi-camera</v-icon>
@@ -89,25 +89,10 @@
   </template>
 
   <template v-else>
+    <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px; padding-bottom: 0;" >{{ new Date().getFullYear() }}</v-col>
     <v-col cols="12">
-            <v-row>
-              <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px;padding-bottom: 0;">{{ new Date().getFullYear() }}</v-col>
-              <v-col cols="3" style="background: rgba(6, 50, 107,0);padding-right: 0;">
-              <span>{{ new Date().getMonth() }}</span>
-              <span  style="font-size: 0.7rem; ">月</span>
-              <span>{{  new Date().getDate()  }}</span>
-              <span style="font-size: 0.7rem; ">日</span>
-              </v-col>
-              <v-col cols="7" ></v-col>
-
-              <v-col cols="1" class="d-flex justify-center">
-                <v-icon style=" " color="#fff ">mdi-camera</v-icon>
-              </v-col>
-              <v-col cols="1" class="d-flex justify-center">
-                <v-icon style=" " color="#fff ">mdi-dots-vertical</v-icon>
-              </v-col>
-            </v-row>
-          </v-col>
+      <div style="font-size: 1.3rem;color: #ccc;">目前無活動參加紀錄</div>
+    </v-col>
   </template>
 </template>
 
@@ -259,5 +244,9 @@ onMounted(async () => {
 
 </script>
 
-<style lang="sass" scoped>
+<style scoped>
+.title:hover{
+color: #25ECE0;
+text-shadow: #25ECE0 0px 0px 1.2px;
+  }
 </style>

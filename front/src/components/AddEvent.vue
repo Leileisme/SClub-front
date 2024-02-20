@@ -32,6 +32,7 @@
                 help-text="選擇檔案或拖曳到這裡"
                 :max-files="1"
                 max-size="1MB"
+                color="#25ECE0"
                 ref="fileAgent">
               </VueFileAgent>
             </v-col>
@@ -45,6 +46,7 @@
                 minlength="3"
                 maxlength="20"
                 counter
+                color="#25ECE0"
                 variant="outlined"
                 ></v-text-field>
             </v-col>
@@ -56,13 +58,14 @@
                         <v-text-field
                           :model-value="dateText"
                           :error-messages="date.errorMessage.value"
+                          color="#25ECE0"
                           variant="outlined"
                           label="活動日期" prepend-icon="mdi-calendar" readonly v-bind="attrs" @click="menu = !menu">
                         </v-text-field>
                       </template>
-                      <v-date-picker  type="date" v-model="date.value.value" :min="minDate" no-time no-title @input="menu = false">
+                      <v-date-picker  type="date" color="#25ECE0" v-model="date.value.value" :min="minDate" no-time no-title @input="menu = false">
                         <template v-slot:actions>
-                          <v-btn  style="background-color: #1BBCA9; color: rgb(255, 255, 255); font-weight: 900;" @click="menu = false">確定</v-btn>
+                          <v-btn  style="background-color: #25ECE0; color: rgb(0, 0, 0); font-weight: 900;" @click="menu = false">確定</v-btn>
                         </template>
                       </v-date-picker>
                     </v-menu>
@@ -77,6 +80,7 @@
                 maxlength="4"
                 counter
                 variant="outlined"
+                color="#25ECE0"
                 label="開始時間(EX:1900)"  >
             </v-text-field>
             </v-col>
@@ -89,6 +93,7 @@
                 minlength="4"
                 maxlength="4"
                 counter
+                color="#25ECE0"
                 variant="outlined"
                 label="結束時間(EX:2230)"  >
             </v-text-field>
@@ -102,6 +107,7 @@
                 :items="cityItems"
                 label="地址(縣市)"
                 variant="outlined"
+                color="#25ECE0"
                 ></v-select>
             </v-col>
 
@@ -114,6 +120,7 @@
                 maxlength="40"
                 counter
                 variant="outlined"
+                color="#25ECE0"
                 ></v-text-field>
             </v-col>
 
@@ -126,6 +133,7 @@
                 maxlength="30"
                 counter
                 variant="outlined"
+                color="#25ECE0"
                 ></v-text-field>
             </v-col>
 
@@ -137,6 +145,7 @@
                 :items="isPublicItems"
                 label="誰可參加"
                 variant="outlined"
+                color="#25ECE0"
                 ></v-select>
             </v-col>
 
@@ -151,6 +160,8 @@
                 chips
                 label="活動分類"
                 variant="outlined"
+                color="#25ECE0"
+                class="custom-chips"
                 ></v-select>
             </v-col>
 
@@ -162,6 +173,7 @@
                 maxlength="4"
                 :error-messages="preSale.errorMessage.value"
                 counter
+                color="#25ECE0"
                 variant="outlined"
                 ></v-text-field>
               </v-col>
@@ -174,6 +186,7 @@
                 label="現場票(張)"
                 maxlength="4"
                 counter
+                color="#25ECE0"
                 variant="outlined"
                 ></v-text-field>
             </v-col>
@@ -186,6 +199,7 @@
                 label="取票資格(取票人榮譽分數門檻，0-100分)"
                 maxlength="3"
                 counter
+                color="#25ECE0"
                 variant="outlined"
                 >
               </v-text-field>
@@ -202,6 +216,7 @@
                   id="searchId"
                   prepend-inner-icon="mdi-account-search"
                   deletable-chips
+                  color="#25ECE0"
                   >
                 </v-combobox>
 
@@ -244,7 +259,7 @@
 
             <!-- 協但單位 - 資料欄 -->
             <v-col cols="12" style="padding-top: 0px; padding-bottom: 22px;">
-              <v-card variant="outlined" class="d-flex align-center" style="height: 56px;">
+              <v-card variant="outlined" class="d-flex align-center" style="height: 56px;" >
                 <v-card-subtitle>協辦單位</v-card-subtitle>
                 <v-card-item>
                   <v-chip v-for="(item, idx) in coOrganizerItem.fields.value" :key="idx"  closable @click:close="removeSelectedItem(idx)"   >
@@ -264,6 +279,7 @@
                 maxlength="1000"
                 rows="6"
                 counter
+                color="#25ECE0"
                 variant="outlined"
                 ></v-textarea>
             </v-col>
@@ -621,4 +637,10 @@ const submit = handleSubmit(async (values) => {
   }
 })
 </script>
-```
+<style scoped>
+::v-deep .custom-chips .v-chip {
+  border-radius: 4px !important;
+  color:#25ECE0 ;
+  font-size: 0.9rem;
+}
+</style>
