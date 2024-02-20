@@ -1,19 +1,20 @@
 <template>
   <template v-if="routeUser.ROLE === UserRole.CLUB">
-    <!-- 動態//活動 -->
+    <!-- 動態/活動 -->
     <v-col cols="12" >
       <v-tabs
         v-model="tab"
         align-tabs="start">
-        <v-tab value="one" class="rounded-ts-xl me-2" style="border:  1.8px rgba(204,204,204,0.5) solid; min-width: 80px;">動態</v-tab>
-        <v-tab value="two" class="rounded-ts-xl" style="border:  1.8px rgba(204,204,204,0.5) solid;min-width: 80px;">活動</v-tab>
+        <v-tab value="one" class="rounded-ts-xl me-2" style="border:1.8px rgba(204,204,204,0.5) solid; min-width: 80px;">動態</v-tab>
+        <v-tab value="two" class="rounded-ts-xl me-2" style="border:1.8px rgba(204,204,204,0.5) solid;min-width: 80px;">主辦活動</v-tab>
+        <v-tab value="three" class="rounded-ts-xl" style="border:1.8px rgba(204,204,204,0.5) solid;min-width: 80px;">活動紀錄</v-tab>
       </v-tabs>
       <v-divider color="#fff" class="border-opacity-50"></v-divider>
     </v-col>
 
-    <!-- 動態貼文 -->
-    <v-window v-model="tab" style="width: 100%; " >
-      <v-window-item value="one">
+    <v-window v-model="tab" style="width:100%; " >
+      <!-- 貼文 -->
+      <!-- <v-window-item value="one">
         <v-col cols="12" >
         <v-row >
           <v-col
@@ -39,54 +40,49 @@
           </v-col>
         </v-row>
       </v-col>
-    </v-window-item>
+      </v-window-item> -->
 
     <!-- 活動 -->
       <v-window-item value="two">
         <v-col cols="12">
           <v-row>
             <!-- 主辦活動 -->
-            <v-col cols="12" style="color: #25ECE0; padding-bottom: 5px;">主辦活動</v-col>
             <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px; padding-bottom: 0;" >{{ new Date().getFullYear() }}</v-col>
+            <template v-if="routeUser.EVENTS_ID.length !== 0">
+              <template v-for="item in routeEvent" :key="item._id" >
+                <v-col cols="3" style="background: rgba(6, 50, 107,0);padding-right: 0;">
+                <span class="me-1">{{ item.dateParts.month }}</span>
+                <span class="me-1"  style="font-size: 0.7rem;">月</span>
+                <span class="me-1">{{ item.dateParts.day }}</span>
+                <span class="me-1" style="font-size: 0.7rem;">日</span>
+                </v-col>
 
-            <v-col cols="3" style="background: rgba(6, 50, 107,0);padding-right: 0; ">
-            <span>{{ new Date().getMonth() }}</span>
-            <span  style="font-size: 0.7rem; ">月</span>
-            <span>{{  new Date().getDate()  }}</span>
-            <span style="font-size: 0.7rem; ">日</span>
-            </v-col>
+                <v-col cols="7" @click="$router.push(`/event/${item._id}`)" style="cursor: pointer;">{{ item.TITLE }}</v-col>
 
-            <v-col cols="7" ></v-col>
+                <v-col cols="1"  class="d-flex justify-center">
+                  <v-icon style=" " color="#fff ">mdi-camera</v-icon>
+                </v-col>
+                <v-col cols="1" class="d-flex justify-center" style="cursor: pointer;">
+                  <EventMenu v-if="isXs" isMobile ></EventMenu>
+                  <EventMenu v-else ></EventMenu>
 
-            <v-col cols="1"  class="d-flex justify-center">
-              <v-icon style=" " color="#fff ">mdi-camera</v-icon>
-            </v-col>
-            <v-col cols="1" class="d-flex justify-center">
-              <v-icon style=" " color="#fff ">mdi-dots-vertical</v-icon>
-            </v-col>
+                </v-col>
+              </template>
+            </template>
 
-            <!-- 分隔線 -->
-            <v-col cols="12">
-              <v-divider color="#fff" class="border-opacity-50"></v-divider>
-            </v-col>
-
-            <!-- 活動紀錄 -->
-            <v-col cols="12" style="color: #25ECE0; padding-bottom: 5px;">活動紀錄</v-col>
-            <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px;padding-bottom: 0;">{{ new Date().getFullYear() }}</v-col>
-            <v-col cols="2" style="background: rgba(6, 50, 107,0);padding-right: 0;">
-              <span>{{ new Date().getMonth() }}</span>
-              <span  style="font-size: 0.7rem; ">月</span>
-              <span>{{  new Date().getDate()  }}</span>
-              <span style="font-size: 0.7rem; ">日</span>
-            </v-col>
-            <v-col cols="8" ></v-col>
-            <v-col cols="1" class="d-flex justify-center">
-              <v-icon style=" " color="#fff ">mdi-camera</v-icon>
-            </v-col>
-            <v-col cols="1" class="d-flex justify-center">
-              <v-icon style=" " color="#fff ">mdi-dots-vertical</v-icon>
+            <v-col cols="12" v-else>
+              <AddEvent v-if="routeUser.USER_NAME === user.USER_NAME"></AddEvent>
+              <div v-else style="font-size: 1.3rem;color: #ccc;">目前無活動</div>
             </v-col>
           </v-row>
+        </v-col>
+      </v-window-item>
+
+        <!-- 活動 -->
+        <v-window-item value="three">
+        <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px; padding-bottom: 0;" >{{ new Date().getFullYear() }}</v-col>
+        <v-col cols="12">
+          <div style="font-size: 1.3rem;color: #ccc;">目前無活動參加紀錄</div>
         </v-col>
       </v-window-item>
     </v-window>
@@ -116,12 +112,15 @@
 </template>
 
 <script setup>
+import { useDisplay } from 'vuetify'
 import { computed, ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/store/user'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
 import UserRole from '@/enums/UserRole'
+import AddEvent from '@/components/AddEvent.vue'
+import EventMenu from '@/components/EventMenu.vue'
 
 const { apiAuth } = useApi()
 const router = useRouter()
@@ -129,6 +128,10 @@ const route = useRoute()
 const createSnackbar = useSnackbar()
 const user = useUserStore()
 const tab = ref('')
+
+// 判斷是否用手機
+const { xs } = useDisplay()
+const isXs = computed(() => xs.value)
 
 const routeUser = ref({
   EMAIL: (''),
@@ -156,7 +159,8 @@ const routeUser = ref({
   MAKE_TIME_POST: ([]),
   GO_EVENT: ([]),
   BE_MARK: ([]),
-  IS_CORE_MEMBER: ([])
+  IS_CORE_MEMBER: ([]),
+  EVENTS_ID: ([])
 })
 
 const get = async () => {
@@ -188,8 +192,11 @@ const get = async () => {
     routeUser.value.GO_EVENT = data.result.GO_EVENT
     routeUser.value.BE_MARK = data.result.BE_MARK
     routeUser.value.IS_CORE_MEMBER = data.result.IS_CORE_MEMBER
+    routeUser.value.EVENTS_ID = data.result.EVENTS_ID
 
     document.title = `學生社團 | ${routeUser.value.NICK_NAME}（${routeUser.value.USER_NAME}）`
+
+    await getEventById()
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
@@ -206,9 +213,49 @@ const get = async () => {
   }
 }
 
-onMounted(
-  () => { get() }
-)
+const routeEvent = ref([])
+const getEventById = async () => {
+  try {
+    const requests = routeUser.value.EVENTS_ID.map(id => apiAuth.get('/events/' + id))
+    const data = await Promise.all(requests)
+    routeEvent.value = data.map(response => {
+      const result = response.data.result
+      const [date, timeStart, timeEnd] = result.DATE.split(' ')
+      const [year, month, day] = date.split('/')
+      const [hourStart, minuteStart] = [timeStart.slice(0, 2), timeStart.slice(2)]
+      const [hourEnd, minuteEnd] = [timeEnd.slice(0, 2), timeEnd.slice(2)]
+      result.dateParts = {
+        year,
+        month: month.padStart(2, '0'),
+        day: day.padStart(2, '0'),
+        hourStart: hourStart.padStart(2, '0'),
+        minuteStart: minuteStart.padStart(2, '0'),
+        hourEnd: hourEnd.padStart(2, '0'),
+        minuteEnd: minuteEnd.padStart(2, '0')
+      }
+      return result
+    })
+
+    console.log(routeEvent.value, 'routeEvent.value in')
+  } catch (error) {
+    console.log(error)
+    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+    createSnackbar({
+      text,
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'red',
+        location: 'bottom'
+      }
+    })
+  }
+}
+
+onMounted(async () => {
+  await get()
+  console.log(routeEvent.value, 'routeEvent.value out')
+})
 
 </script>
 

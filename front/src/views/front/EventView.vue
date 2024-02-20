@@ -1,18 +1,5 @@
 <template>
-    <!-- 頂部導覽列 -->
-    <template v-if="isXs">
-      <v-app-bar>
-        <v-container class="d-flex align-center">
-          <v-btn icon="mdi-chevron-left" style="font-size: 1.4rem;"></v-btn>
-          <v-app-bar-title class="text-h5 ms-5">{{}}</v-app-bar-title>
-          <template v-for="item in TopNavItems" :key="item.to" >
-            <VBtn :to="item.to" :active=false class="iconTop"><v-icon>{{ item.icon }}</v-icon></VBtn>
-          </template>
-      </v-container>
-      </v-app-bar>
-
-    </template>
-
+  123
 </template>
 <script setup>
 import { useDisplay } from 'vuetify'

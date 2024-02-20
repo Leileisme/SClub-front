@@ -65,9 +65,7 @@ export const useUserStore = defineStore('user', () => {
     CLUB_CORE_MEMBER.value = data.CLUB_CORE_MEMBER
     _id.value = data._id
     EVENTS_ID.value = data.EVENTS_ID
-    console.log(_id, 'login _id')
     console.log(USER_NAME, 'login USER_NAME')
-    console.log(CLUB_CORE_MEMBER, 'login CLUB_CORE_MEMBER')
   }
 
   const isLogin = computed(() => {

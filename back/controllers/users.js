@@ -241,12 +241,18 @@ export const getUserName = async (req, res) => {
         CLUB_TH: club.CLUB_TH
       }
     })
+    const EVENTS = await events.find({ HOST: result._id }, '_id')
+    const EVENTS_ID = EVENTS.map(e => {
+      return e._id
+    })
+
     res.status(200).json({
       success: true,
       message: '',
       result: {
         ...result,
-        IS_CORE_MEMBER: clubs
+        IS_CORE_MEMBER: clubs,
+        EVENTS_ID
       }
     })
   } catch (error) {

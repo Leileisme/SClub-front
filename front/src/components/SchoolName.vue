@@ -65,7 +65,8 @@ const routeUser = ref({
   MAKE_TIME_POST: ([]),
   GO_EVENT: ([]),
   BE_MARK: ([]),
-  IS_CORE_MEMBER: ([])
+  IS_CORE_MEMBER: ([]),
+  EVENTS_ID: ([])
 })
 
 const get = async () => {
@@ -97,6 +98,7 @@ const get = async () => {
     routeUser.value.GO_EVENT = data.result.GO_EVENT
     routeUser.value.BE_MARK = data.result.BE_MARK
     routeUser.value.IS_CORE_MEMBER = data.result.IS_CORE_MEMBER
+    routeUser.value.EVENTS_ID = data.result.EVENTS_ID
 
     document.title = `學生社團 | ${routeUser.value.NICK_NAME}（${routeUser.value.USER_NAME}）`
   } catch (error) {
@@ -118,7 +120,6 @@ const get = async () => {
 onMounted(
   () => { get() }
 )
-
 </script>
 
 <style lang="sass" scoped>

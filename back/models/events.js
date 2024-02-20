@@ -181,7 +181,7 @@ export const schema = new Schema({
   },
   // 21.活動紀錄(照片)
   PHOTO: {
-    type: String
+    type: [String]
   }
 })
 

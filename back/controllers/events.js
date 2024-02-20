@@ -34,7 +34,36 @@ export const create = async (req, res) => {
   }
 }
 
-export const getEvent = async (req, res) => {
+export const getEventAll = async (req, res) => {
+  try {
+    const regex = new RegExp(req.query.search || '', 'i')
+
+    const data = await events.find({
+      $or: [
+        { TITLE: regex },
+        { CITY: regex },
+        { DATE: regex }
+      ]
+    }).limit(10)
+
+    console.log(data, 'data getEventAll')
+    res.status(200).json({
+      success: true,
+      message: '',
+      result: {
+        data
+      }
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+      success: false,
+      message: 'getEventAll 的未知錯誤'
+    })
+  }
+}
+
+export const getEventById = async (req, res) => {
   try {
     if (!validator.isMongoId(req.params.id)) throw new Error('ID')
 

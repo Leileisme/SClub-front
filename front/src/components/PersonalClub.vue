@@ -40,15 +40,6 @@
         <!-- 分隔線 -->
         <PersonalLine></PersonalLine>
 
-        <!-- 活動 -->
-        <v-col v-if="routeUser.USER_NAME === user.USER_NAME || routeUser.MAKE_EVENT.length !== 0" cols="12" style="color: #25ECE0; padding-bottom: 5px;">活動</v-col>
-        <v-col v-if="routeUser.USER_NAME === user.USER_NAME" cols="12" style="padding-top: 0;">
-          <AddEvent></AddEvent>
-        </v-col>
-
-        <!-- 分隔線 -->
-        <PersonalLine v-if="routeUser.USER_NAME === user.USER_NAME || routeUser.MAKE_EVENT.length !== 0"></PersonalLine>
-
         <!-- 限時動態 -->
         <TimePost></TimePost>
 
@@ -124,15 +115,6 @@
 
           <!-- 分隔線 -->
           <PersonalLine></PersonalLine>
-
-          <!-- 活動 -->
-          <v-col v-if="routeUser.USER_NAME === user.USER_NAME || routeUser.MAKE_EVENT.length !== 0" cols="12" style="color: #25ECE0; padding-bottom: 5px;">活動</v-col>
-          <v-col v-if="routeUser.USER_NAME === user.USER_NAME" cols="12" style="padding-top: 0;">
-            <AddEvent></AddEvent>
-          </v-col>
-
-          <!-- 分隔線 -->
-          <PersonalLine v-if="routeUser.USER_NAME === user.USER_NAME || routeUser.MAKE_EVENT.length !== 0"></PersonalLine>
 
           <!-- 限時動態 -->
         <TimePost></TimePost>
@@ -210,7 +192,8 @@ const routeUser = ref({
   MAKE_TIME_POST: ([]),
   GO_EVENT: ([]),
   BE_MARK: ([]),
-  IS_CORE_MEMBER: ([])
+  IS_CORE_MEMBER: ([]),
+  EVENTS_ID: ([])
 })
 
 const get = async () => {
@@ -242,6 +225,7 @@ const get = async () => {
     routeUser.value.GO_EVENT = data.result.GO_EVENT
     routeUser.value.BE_MARK = data.result.BE_MARK
     routeUser.value.IS_CORE_MEMBER = data.result.IS_CORE_MEMBER
+    routeUser.value.EVENTS_ID = data.result.EVENTS_ID
 
     document.title = `學生社團 | ${routeUser.value.NICK_NAME}（${routeUser.value.USER_NAME}）`
   } catch (error) {
@@ -263,7 +247,6 @@ const get = async () => {
 onMounted(
   () => { get() }
 )
-
 </script>
 
 <style lang="sass" scoped>

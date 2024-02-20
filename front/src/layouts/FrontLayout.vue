@@ -96,7 +96,7 @@ const router = useRouter()
 const isPersonalRoute = ref(router.currentRoute.value.name === 'personal')
 const isLoginRoute = ref(router.currentRoute.value.name === 'login')
 const isRegisterRoute = ref(router.currentRoute.value.name === 'register')
-const isEventRoute = ref(router.currentRoute.value.name === 'event')
+const isEventRoute = ref(router.currentRoute.value.name === 'eventDetail')
 
 // currentRoute 是異步的
 // 使用 ref 並進行監聽
@@ -104,7 +104,7 @@ watch(() => router.currentRoute.value.name, (newName) => {
   isPersonalRoute.value = newName === 'personal'
   isLoginRoute.value = newName === 'login'
   isRegisterRoute.value = newName === 'register'
-  isEventRoute.value = newName === 'event'
+  isEventRoute.value = newName === 'eventDetail'
 })
 
 // 判斷是否用手機
