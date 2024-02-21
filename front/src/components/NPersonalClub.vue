@@ -18,25 +18,26 @@
             </v-col>
             <!-- 學校 -->
             <SchoolName :routeUser="routeUser"></SchoolName>
+
             <!-- 幹部職位 / 畢業生 -->
-            <ClubMember></ClubMember>
+            <ClubMember :routeUser="routeUser"></ClubMember>
 
             <!-- 簡介-->
             <v-col cols="12">{{routeUser.DESCRIBE}}</v-col>
 
             <!-- 粉絲 -->
-            <FollowNumber></FollowNumber>
+            <FollowNumber :routeUser="routeUser"></FollowNumber>
           </v-row>
         </v-col>
 
         <!-- 編輯/分享/分數 狀態按鈕 -->
-        <StatusBtn :routeUser="routeUser"></StatusBtn>
+        <StatusBtn :routeUser="routeUser" @update-user="get"></StatusBtn>
 
         <!-- 限時動態 -->
         <TimePost :routeUser="routeUser"></TimePost>
 
         <!-- 分隔線 -->
-        <PersonalLine></PersonalLine>
+        <PersonalLine ></PersonalLine>
 
         <!-- 活動紀錄 -->
         <PostEvent :routeUser="routeUser" :routeEvent="props.routeEvent"></PostEvent>
@@ -92,17 +93,17 @@
               <SchoolName isNClubComputer :routeUser="routeUser"></SchoolName>
 
               <!-- 幹部職位 / 畢業生 -->
-              <ClubMember></ClubMember>
+              <ClubMember :routeUser="routeUser"></ClubMember>
               <!-- 簡介 -->
               <v-col cols="12">{{routeUser.DESCRIBE}}</v-col>
 
               <!-- 粉絲 -->
-              <FollowNumber></FollowNumber>
+              <FollowNumber :routeUser="routeUser"></FollowNumber>
             </v-row>
           </v-col>
 
           <!-- 編輯/分享/分數 狀態按鈕 -->
-          <StatusBtn :routeUser="routeUser"></StatusBtn>
+          <StatusBtn :routeUser="routeUser" @update-user="get"></StatusBtn>
 
           <!-- 限時動態 -->
           <TimePost :routeUser="routeUser"></TimePost>
@@ -121,12 +122,8 @@
 
 <script setup>
 import { useDisplay } from 'vuetify'
-import { computed, ref, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useApi } from '@/composables/axios'
-import { useSnackbar } from 'vuetify-use-dialog'
+import { computed } from 'vue'
 import { useUserStore } from '@/store/user'
-import UserRole from '@/enums/UserRole'
 import SettingsMenu from '@/components/SettingsMenu.vue'
 import ClubMember from '@/components/ClubMember.vue'
 import AddMenu from '@/components/AddMenu.vue'
@@ -138,10 +135,6 @@ import TimePost from '@/components/TimePost.vue'
 import SchoolName from '@/components/SchoolName.vue'
 import PersonalLine from '@/components/PersonalLine.vue'
 
-const { apiAuth } = useApi()
-const router = useRouter()
-const route = useRoute()
-const createSnackbar = useSnackbar()
 const user = useUserStore()
 
 // 判斷是否用手機

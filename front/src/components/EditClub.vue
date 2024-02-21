@@ -220,6 +220,9 @@ const { xs } = useDisplay()
 const isXs = computed(() => xs.value)
 // 給元件外部使用
 const emit = defineEmits(['updateUser'])
+const get = () => {
+  emit('updateUser')
+}
 
 //  選單開關
 const dialog = ref(false)

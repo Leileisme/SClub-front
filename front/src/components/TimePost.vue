@@ -14,16 +14,9 @@
 
 <script setup>
 import { useDisplay } from 'vuetify'
-import { computed, ref, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { computed } from 'vue'
 import { useUserStore } from '@/store/user'
-import { useSnackbar } from 'vuetify-use-dialog'
-import { useApi } from '@/composables/axios'
 
-const { apiAuth } = useApi()
-const router = useRouter()
-const route = useRoute()
-const createSnackbar = useSnackbar()
 const user = useUserStore()
 
 // 判斷是否用手機

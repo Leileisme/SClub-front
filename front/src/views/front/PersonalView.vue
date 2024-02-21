@@ -2,6 +2,7 @@
   <template v-if="isXs">
     <v-app-bar >
       <VContainer class="d-flex align-center" style="">
+        <v-btn v-if="routeUser.USER_NAME !== user.USER_NAME" icon="mdi-chevron-left" style="font-size: 1.4rem;" @click="goBack"></v-btn>
         <v-app-bar-title class="text-h5 ms-5">
           {{routeUser.USER_NAME}}
         </v-app-bar-title>
@@ -86,6 +87,10 @@ const isXs = computed(() => xs.value)
 const emit = defineEmits(['updateUser'])
 const get = () => {
   emit('updateUser')
+}
+
+const goBack = () => {
+  router.go(-1)
 }
 
 console.log(route.params.USER_NAME, 'route.params in PersonalView')

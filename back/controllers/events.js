@@ -67,9 +67,23 @@ export const getEventById = async (req, res) => {
   try {
     if (!validator.isMongoId(req.params.id)) throw new Error('ID')
 
-    const HOST_USER = await events.findById(req.params.id, 'HOST').populate('HOST', 'NICK_NAME CLUB_TH IMAGE DESCRIPTION')
-    const result = await events.findById(req.params.id)
-    result.HOST = HOST_USER.HOST
+    // findById(req.params.id, 'HOST')，後面的值代表指只返回這個欄位資料
+    // const HOST_USER = await events.findById(req.params.id, 'HOST').populate('HOST', 'NICK_NAME CLUB_TH IMAGE DESCRIBE')
+
+    // 這邊把 CO_ORGANIZER 和 HOST 關聯的都查詢出來，但也會返回 events 的資料
+    const result = await events.findById(req.params.id).populate(
+      {
+        path: 'CO_ORGANIZER',
+        select: 'NICK_NAME CLUB_TH IMAGE DESCRIBE USER_NAME'
+      }).populate(
+      {
+        path: 'HOST',
+        select: 'NICK_NAME CLUB_TH IMAGE DESCRIBE USER_NAME'
+      }
+    )
+
+    // result.HOST = HOST_USER.HOST
+    console.log(result, 'result')
 
     if (!result) throw new Error('NOT FOUND')
 

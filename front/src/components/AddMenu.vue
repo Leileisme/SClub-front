@@ -4,7 +4,7 @@
   <v-divider :style="styles.divider"></v-divider>
   <v-list-item  :style="styles.listItem">建立限動</v-list-item>
   <v-divider :style="styles.divider"></v-divider>
-  <template v-if="user.ROLE===3">
+  <template v-if="user.ROLE===UserRole.CLUB">
     <AddEvent  :isBtn="false"  :style="styles.listItem" :is-mobile="isMobile"></AddEvent>
     <v-divider :style="styles.dividerLast"></v-divider>
   </template>
@@ -13,6 +13,7 @@
 <script setup>
 import { computed } from 'vue'
 import AddEvent from '@/components/AddEvent.vue'
+import UserRole from '@/enums/UserRole'
 import { useUserStore } from '@/store/user'
 const user = useUserStore()
 

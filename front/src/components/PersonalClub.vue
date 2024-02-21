@@ -38,13 +38,13 @@
         <StatusBtn @update-user="get" :routeUser="routeUser" ></StatusBtn>
 
         <!-- 分隔線 -->
-        <PersonalLine></PersonalLine>
+        <PersonalLine v-if="routeUser.MAKE_EVENT.length !== 0"></PersonalLine>
 
         <!-- 限時動態 -->
         <TimePost :routeUser="routeUser"></TimePost>
 
         <!-- 貼文 / 活動紀錄 -->
-        <PostEvent :routeUser="routeUser" :routeEvent="props.routeEvent"></PostEvent>
+        <PostEvent :routeUser="routeUser" :routeEvent="routeEvent"></PostEvent>
       </v-row>
     </v-container>
   </template>
@@ -105,6 +105,7 @@
 
               <!-- 描述 -->
               <v-col cols="12">{{routeUser.DESCRIBE}}</v-col>
+
               <!-- 粉絲 / 貼文 -->
               <FollowNumber :routeUser="routeUser"></FollowNumber>
             </v-row>
@@ -114,13 +115,13 @@
             <StatusBtn @update-user="get" :routeUser="routeUser"></StatusBtn>
 
           <!-- 分隔線 -->
-          <PersonalLine></PersonalLine>
+          <PersonalLine v-if="routeUser.MAKE_EVENT.length !== 0"></PersonalLine>
 
           <!-- 限時動態 -->
         <TimePost :routeUser="routeUser"></TimePost>
 
         <!-- 貼文 / 活動紀錄 -->
-        <PostEvent :routeUser="routeUser" :routeEvent="props.routeEvent"></PostEvent>
+        <PostEvent :routeUser="routeUser" :routeEvent="routeEvent"></PostEvent>
         </v-row>
       </v-container>
     </div>
@@ -130,14 +131,9 @@
 
 <script setup>
 import { useDisplay } from 'vuetify'
-import { computed, ref, onMounted, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { computed, watch } from 'vue'
 import { useUserStore } from '@/store/user'
-import { useSnackbar } from 'vuetify-use-dialog'
-import { useApi } from '@/composables/axios'
-import UserRole from '@/enums/UserRole'
 import SettingsMenu from '@/components/SettingsMenu.vue'
-import AddEvent from '@/components/AddEvent.vue'
 import AddMenu from '@/components/AddMenu.vue'
 import SettingsMenuOther from '@/components/SettingsMenuOther.vue'
 import FollowNumber from '@/components/FollowNumber.vue'
@@ -147,10 +143,6 @@ import TimePost from '@/components/TimePost.vue'
 import SchoolName from '@/components/SchoolName.vue'
 import PersonalLine from '@/components/PersonalLine.vue'
 
-const { apiAuth } = useApi()
-const router = useRouter()
-const route = useRoute()
-const createSnackbar = useSnackbar()
 const user = useUserStore()
 
 // 判斷是否用手機

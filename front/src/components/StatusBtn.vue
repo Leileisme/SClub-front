@@ -4,7 +4,7 @@
         <v-col cols="4" style="padding-left: 4px; padding-right:4px ;">
           <template v-if="user.USER_NAME === routeUser.USER_NAME">
             <!-- 元件傳出一個觸發事件，並在這裡執行get的function -->
-            <EditClub v-if="routeUser.ROLE === UserRole.CLUB"  @update-user="get"></EditClub>
+            <EditClub v-if="routeUser.ROLE === UserRole.CLUB"  @update-user="get" :routeUser="routeUser"></EditClub>
             <v-btn  v-else color="#444" style="font-weight: 900; width: 100%;">編輯個人檔案</v-btn>
           </template>
           <v-btn v-else color="#1BBCA9" style="font-weight: 900; width: 100%;">追蹤</v-btn>
@@ -78,7 +78,6 @@ const props = defineProps({
     }
   }
 })
-
 
 </script>
 
