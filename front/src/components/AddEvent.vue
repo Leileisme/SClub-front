@@ -554,7 +554,7 @@ const schema = yup.object({
 })
 
 // 2.useForm建立一個表單(可設預設值)
-const { handleSubmit, isSubmitting, resetForm } = useForm({ validationSchema: schema, initialValues: { isEdit: false } })
+const { handleSubmit, isSubmitting, resetForm, errors} = useForm({ validationSchema: schema, initialValues: { isEdit: false } })
 
 // 3.useField建立表單的欄位
 const title = useField('title')

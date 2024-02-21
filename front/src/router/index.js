@@ -35,7 +35,6 @@ const routes = [
           title: '學生社團網 | 登入',
           login: false,
           admin: false
-
         }
       },
       {
@@ -44,26 +43,6 @@ const routes = [
         component: () => import('@/views/front/EventView.vue'),
         meta: {
           title: '學生社團網 | 活動',
-          login: true,
-          admin: false
-        }
-      },
-      {
-        path: '/event/:id',
-        name: 'eventDetail',
-        component: () => import('@/views/front/EventDetailView.vue'),
-        meta: {
-          title: '學生社團網 | 活動',
-          login: true,
-          admin: false
-        }
-      },
-      {
-        path: '/:USER_NAME',
-        name: 'personal',
-        component: () => import('@/views/front/PersonalView.vue'),
-        meta: {
-          title: '學生社團網 | 個人檔案',
           login: true,
           admin: false
         }
@@ -84,6 +63,26 @@ const routes = [
         component: () => import('@/views/front/TicketView.vue'),
         meta: {
           title: '學生社團網 | 動態',
+          login: true,
+          admin: false
+        }
+      },
+      {
+        path: '/event/:id',
+        name: 'eventDetail',
+        component: () => import('@/views/front/EventDetailView.vue'),
+        meta: {
+          title: '學生社團網 | 活動',
+          login: true,
+          admin: false
+        }
+      },
+      {
+        path: '/:USER_NAME',
+        name: 'personal',
+        component: () => import('@/views/front/PersonalView.vue'),
+        meta: {
+          title: '學生社團網 | 個人檔案',
           login: true,
           admin: false
         }

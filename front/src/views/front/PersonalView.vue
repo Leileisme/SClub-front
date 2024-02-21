@@ -54,8 +54,8 @@
     </v-app-bar>
   </template>
 
-  <NPersonalClub v-if="routeUser.ROLE !== UserRole.CLUB"></NPersonalClub>
-  <PersonalClub v-else></PersonalClub>
+  <NPersonalClub v-if="routeUser.ROLE !== UserRole.CLUB" :routeUser="routeUser" :routeEvent="routeEvent" @update-user="get" ></NPersonalClub>
+  <PersonalClub v-else :routeUser="routeUser" :routeEvent="routeEvent" @update-user="get"></PersonalClub>
 
 </template>
 
@@ -83,6 +83,13 @@ const createSnackbar = useSnackbar()
 const { xs } = useDisplay()
 const isXs = computed(() => xs.value)
 
+const emit = defineEmits(['updateUser'])
+const get = () => {
+  emit('updateUser')
+}
+
+console.log(route.params.USER_NAME, 'route.params in PersonalView')
+const routeEvent = ref([])
 const routeUser = ref({
   EMAIL: (''),
   ROLE: (''),
@@ -113,7 +120,7 @@ const routeUser = ref({
   EVENTS_ID: ([])
 })
 
-const get = async () => {
+const getUserName = async () => {
   try {
     const { data } = await apiAuth.get('/users/' + route.params.USER_NAME)
     routeUser.value.EMAIL = data.result.EMAIL
@@ -145,6 +152,8 @@ const get = async () => {
     routeUser.value.EVENTS_ID = data.result.EVENTS_ID
 
     document.title = `學生社團 | ${routeUser.value.NICK_NAME}（${routeUser.value.USER_NAME}）`
+    await getEventById()
+    // await getEventById()
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
@@ -161,8 +170,50 @@ const get = async () => {
   }
 }
 
-onMounted(
-  () => { get() }
+const getEventById = async () => {
+  try {
+    const requests = routeUser.value.EVENTS_ID.map(id => apiAuth.get('/events/' + id))
+    const data = await Promise.all(requests)
+    routeEvent.value = data.map(response => {
+      const result = response.data.result
+      const [date, timeStart, timeEnd] = result.DATE.split(' ')
+      const [year, month, day] = date.split('/')
+      const [hourStart, minuteStart] = [timeStart.slice(0, 2), timeStart.slice(2)]
+      const [hourEnd, minuteEnd] = [timeEnd.slice(0, 2), timeEnd.slice(2)]
+      result.dateParts = {
+        year,
+        month: month.padStart(2, '0'),
+        day: day.padStart(2, '0'),
+        hourStart: hourStart.padStart(2, '0'),
+        minuteStart: minuteStart.padStart(2, '0'),
+        hourEnd: hourEnd.padStart(2, '0'),
+        minuteEnd: minuteEnd.padStart(2, '0')
+      }
+      return result
+    })
+
+    console.log(routeEvent.value, 'routeEvent.value in')
+  } catch (error) {
+    console.log(error)
+    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+    createSnackbar({
+      text,
+      showCloseButton: false,
+      snackbarProps: {
+        timeout: 2000,
+        color: 'red',
+        location: 'bottom'
+      }
+    })
+  }
+}
+
+console.log(routeUser.value, 'routeUser in PersonalView')
+
+onMounted(async () => {
+  await getUserName()
+  console.log(routeEvent.value, 'routeEvent in PersonalView')
+}
 )
 </script>
 
