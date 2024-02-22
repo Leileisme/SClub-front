@@ -280,7 +280,7 @@
                     <v-select
                       v-if="role.value.value === 3"
                       v-model="clubCategory.value.value"
-                      ::error-messages="clubCategory.errorMessage.value"
+                      :error-messages="clubCategory.errorMessage.value"
                       :items="clubItems.items"
                       label="社團類別"
                       color="#25ECE0"

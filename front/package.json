@@ -12,6 +12,7 @@
     "@mdi/font": "7.0.96",
     "@popperjs/core": "^2.11.8",
     "axios": "^1.6.7",
+    "mitt": "^3.0.1",
     "pinia": "^2.0.23",
     "pinia-plugin-persistedstate": "^3.2.1",
     "roboto-fontface": "*",

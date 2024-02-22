@@ -204,7 +204,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch, inject } from 'vue'
 import { useForm, useField, useFieldArray } from 'vee-validate'
 import validator from 'validator'
 import * as yup from 'yup'
@@ -212,24 +212,32 @@ import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
 import { useUserStore } from '@/store/user'
 import { useDisplay } from 'vuetify'
+import { useEmitter } from '@/composables/mitt'
 
 const { apiAuth } = useApi()
 const createSnackbar = useSnackbar()
 const user = useUserStore()
 const { xs } = useDisplay()
 const isXs = computed(() => xs.value)
+const emitter = useEmitter()
 // 給元件外部使用
-const emit = defineEmits(['updateUser'])
-const get = () => {
-  emit('updateUser')
-}
 
 //  選單開關
 const dialog = ref(false)
+
 // 關閉對話框
 const closeDialog = () => {
   dialog.value = false
-  resetForm()
+  resetForm({
+    values: {
+      realName: user.REAL_NAME,
+      emailUB: user.EMAIL_UB,
+      clubTh: user.CLUB_TH,
+      clubCategory: user.CLUB_CATEGORY,
+      clubCoreMember: CoreMember.value,
+      describe: user.DESCRIBE
+    }
+  })
   fileAgent.value.deleteFileRecord()
 }
 
@@ -403,8 +411,7 @@ const submit = handleSubmit(async (values) => {
     })
 
     // 元件觸發事件，告訴外面要更新
-    emit('updateUser')
-    closeDialog()
+    emitter.emit('updateUser')
   } catch (error) {
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
     createSnackbar({
@@ -417,6 +424,10 @@ const submit = handleSubmit(async (values) => {
       }
     })
   }
+})
+
+emitter.on('updateUserOk', async () => {
+  closeDialog()
 })
 </script>
 

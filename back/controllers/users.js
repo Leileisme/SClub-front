@@ -271,11 +271,13 @@ export const edit = async (req, res) => {
       req.body.IMAGE = 'https://source.boringavatars.com/beam/120/' + req.user.EMAIL
     }
 
-    for (const idx in req.body.CLUB_CORE_MEMBER) {
-      req.body.CLUB_CORE_MEMBER[idx].CONFIRM = 'false'
-      req.body.CLUB_CORE_MEMBER[idx].CONFIRM_USER = null
-      const user = await users.findOne({ USER_NAME: req.body.CLUB_CORE_MEMBER[idx].USER }).orFail(new Error('NOT FOUND'))
-      req.body.CLUB_CORE_MEMBER[idx].USER = user._id
+    if (req.body.CLUB_CORE_MEMBER) {
+      for (const idx in req.body.CLUB_CORE_MEMBER) {
+        req.body.CLUB_CORE_MEMBER[idx].CONFIRM = 'false'
+        req.body.CLUB_CORE_MEMBER[idx].CONFIRM_USER = null
+        const user = await users.findOne({ USER_NAME: req.body.CLUB_CORE_MEMBER[idx].USER }).orFail(new Error('NOT FOUND'))
+        req.body.CLUB_CORE_MEMBER[idx].USER = user._id
+      }
     }
     console.log(req.body)
     // findOneAndUpdate用於找到並更新 MongoDB 中的特定文件

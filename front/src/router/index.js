@@ -75,7 +75,28 @@ const routes = [
           title: '學生社團網 | 活動',
           login: true,
           admin: false
-        }
+        },
+        children: [
+          {
+            path: '',
+            name: 'homeEventTicket',
+            component: () => import('@/views/front/HomeEventTicket.vue'),
+            meta: {
+              title: '學生社團網',
+              login: true,
+              admin: false
+            }
+          },
+          {
+            path: 'ticket',
+            name: 'eventTicket',
+            component: () => import('@/views/front/EventTicketView.vue'),
+            meta: {
+              title: '學生社團網 | 活動票',
+              login: true,
+              admin: false
+            }
+          }]
       },
       {
         path: '/:USER_NAME',

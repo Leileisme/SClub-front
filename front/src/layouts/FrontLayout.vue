@@ -89,23 +89,16 @@
 import { useDisplay } from 'vuetify'
 import { computed, ref, watch } from 'vue'
 import { useUserStore } from '@/store/user'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 const user = useUserStore()
 const router = useRouter()
-const isPersonalRoute = ref(router.currentRoute.value.name === 'personal')
-const isLoginRoute = ref(router.currentRoute.value.name === 'login')
-const isRegisterRoute = ref(router.currentRoute.value.name === 'register')
-const isEventRoute = ref(router.currentRoute.value.name === 'eventDetail')
-
-// currentRoute 是異步的
-// 使用 ref 並進行監聽
-watch(() => router.currentRoute.value.name, (newName) => {
-  isPersonalRoute.value = newName === 'personal'
-  isLoginRoute.value = newName === 'login'
-  isRegisterRoute.value = newName === 'register'
-  isEventRoute.value = newName === 'eventDetail'
-})
+const route = useRoute()
+const isPersonalRoute = computed(() => route.name === 'personal')
+const isLoginRoute = computed(() => route.name === 'login')
+const isRegisterRoute = computed(() => route.name === 'register')
+// 因為路由裡面還「子路由」，所以看所有[相關路由」中是否有 eventDetail
+const isEventRoute = computed(() => route.matched.some(item => item.name === 'eventDetail'))
 
 // 判斷是否用手機
 const { sm, xs } = useDisplay()

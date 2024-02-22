@@ -31,7 +31,7 @@
         </v-col>
 
         <!-- 編輯/分享/分數 狀態按鈕 -->
-        <StatusBtn :routeUser="routeUser" @update-user="get"></StatusBtn>
+        <StatusBtn :routeUser="routeUser"></StatusBtn>
 
         <!-- 限時動態 -->
         <TimePost :routeUser="routeUser"></TimePost>
@@ -40,7 +40,7 @@
         <PersonalLine ></PersonalLine>
 
         <!-- 活動紀錄 -->
-        <PostEvent :routeUser="routeUser" :routeEvent="props.routeEvent"></PostEvent>
+        <PostEvent :routeUser="routeUser" :routeEvent="routeEvent"></PostEvent>
 
       </v-row>
 
@@ -103,7 +103,7 @@
           </v-col>
 
           <!-- 編輯/分享/分數 狀態按鈕 -->
-          <StatusBtn :routeUser="routeUser" @update-user="get"></StatusBtn>
+          <StatusBtn :routeUser="routeUser"></StatusBtn>
 
           <!-- 限時動態 -->
           <TimePost :routeUser="routeUser"></TimePost>
@@ -112,7 +112,7 @@
           <PersonalLine></PersonalLine>
 
           <!-- 活動紀錄 -->
-          <PostEvent :routeUser="routeUser" :routeEvent="props.routeEvent"></PostEvent>
+          <PostEvent :routeUser="routeUser" :routeEvent="routeEvent"></PostEvent>
         </v-row>
       </v-container>
     </div>
@@ -122,7 +122,7 @@
 
 <script setup>
 import { useDisplay } from 'vuetify'
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
 import { useUserStore } from '@/store/user'
 import SettingsMenu from '@/components/SettingsMenu.vue'
 import ClubMember from '@/components/ClubMember.vue'
@@ -155,52 +155,50 @@ const share = () => {
     console.log('Web Share API is not supported in your browser.')
   }
 }
+const routeUser = inject('routeUser')
+const routeEvent = inject('routeEvent')
 
-const emit = defineEmits(['updateUser'])
-const get = () => {
-  emit('updateUser')
-}
+// const props = defineProps({
+//   routeUser: {
+//     type: Object,
+//     default: () => {
+//       return {
+//         EMAIL: (''),
+//         ROLE: (''),
+//         SCHOOL_NAME: (''),
+//         SCHOOL_CITY: (''),
+//         USER_NAME: (''),
+//         NICK_NAME: (''),
+//         CLUB_TH: (''),
+//         CLUB_CATEGORY: (''),
+//         IMAGE: (''),
+//         TICKET_CART: ([]),
+//         SCORES: (''),
+//         NOTIFY: ([]),
+//         KEEP_POST: ([]),
+//         KEEP_EVENT: ([]),
+//         FANS: ([]),
+//         FOLLOW: ([]),
+//         IS_STUDENT: (''),
+//         IS_ABLE: (''),
+//         IS_ADMIN: (''),
+//         DESCRIBE: (''),
+//         MAKE_EVENT: ([]),
+//         MAKE_POST: ([]),
+//         MAKE_TIME_POST: ([]),
+//         GO_EVENT: ([]),
+//         BE_MARK: ([]),
+//         IS_CORE_MEMBER: ([]),
+//         EVENTS_ID: ([])
+//       }
+//     }
+//   },
+//   routeEvent: {
+//     type: Array,
+//     default: () => []
+//   }
+// })
 
-const props = defineProps({
-  routeUser: {
-    type: Object,
-    default: () => {
-      return {
-        EMAIL: (''),
-        ROLE: (''),
-        SCHOOL_NAME: (''),
-        SCHOOL_CITY: (''),
-        USER_NAME: (''),
-        NICK_NAME: (''),
-        CLUB_TH: (''),
-        CLUB_CATEGORY: (''),
-        IMAGE: (''),
-        TICKET_CART: ([]),
-        SCORES: (''),
-        NOTIFY: ([]),
-        KEEP_POST: ([]),
-        KEEP_EVENT: ([]),
-        FANS: ([]),
-        FOLLOW: ([]),
-        IS_STUDENT: (''),
-        IS_ABLE: (''),
-        IS_ADMIN: (''),
-        DESCRIBE: (''),
-        MAKE_EVENT: ([]),
-        MAKE_POST: ([]),
-        MAKE_TIME_POST: ([]),
-        GO_EVENT: ([]),
-        BE_MARK: ([]),
-        IS_CORE_MEMBER: ([]),
-        EVENTS_ID: ([])
-      }
-    }
-  },
-  routeEvent: {
-    type: Array,
-    default: () => []
-  }
-})
 
 </script>
 

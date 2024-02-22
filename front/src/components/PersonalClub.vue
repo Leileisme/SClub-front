@@ -35,7 +35,7 @@
         </v-col>
 
         <!-- 編輯/分享/分數 狀態按鈕 -->
-        <StatusBtn @update-user="get" :routeUser="routeUser" ></StatusBtn>
+        <StatusBtn :routeUser="routeUser" ></StatusBtn>
 
         <!-- 分隔線 -->
         <PersonalLine v-if="routeUser.MAKE_EVENT.length !== 0"></PersonalLine>
@@ -131,7 +131,7 @@
 
 <script setup>
 import { useDisplay } from 'vuetify'
-import { computed, watch } from 'vue'
+import { computed, watch, inject } from 'vue'
 import { useUserStore } from '@/store/user'
 import SettingsMenu from '@/components/SettingsMenu.vue'
 import AddMenu from '@/components/AddMenu.vue'
@@ -154,53 +154,55 @@ const get = () => {
   emit('updateUser')
 }
 
-const props = defineProps({
-  routeUser: {
-    type: Object,
-    default: () => {
-      return {
-        EMAIL: (''),
-        ROLE: (''),
-        SCHOOL_NAME: (''),
-        SCHOOL_CITY: (''),
-        USER_NAME: (''),
-        NICK_NAME: (''),
-        CLUB_TH: (''),
-        CLUB_CATEGORY: (''),
-        IMAGE: (''),
-        TICKET_CART: ([]),
-        SCORES: (''),
-        NOTIFY: ([]),
-        KEEP_POST: ([]),
-        KEEP_EVENT: ([]),
-        FANS: ([]),
-        FOLLOW: ([]),
-        IS_STUDENT: (''),
-        IS_ABLE: (''),
-        IS_ADMIN: (''),
-        DESCRIBE: (''),
-        MAKE_EVENT: ([]),
-        MAKE_POST: ([]),
-        MAKE_TIME_POST: ([]),
-        GO_EVENT: ([]),
-        BE_MARK: ([]),
-        IS_CORE_MEMBER: ([]),
-        EVENTS_ID: ([])
-      }
-    }
-  },
-  routeEvent: {
-    type: Array,
-    default: () => []
-  }
-})
+const routeUser = inject('routeUser')
+const routeEvent = inject('routeEvent')
+// const props = defineProps({
+//   routeUser: {
+//     type: Object,
+//     default: () => {
+//       return {
+//         EMAIL: (''),
+//         ROLE: (''),
+//         SCHOOL_NAME: (''),
+//         SCHOOL_CITY: (''),
+//         USER_NAME: (''),
+//         NICK_NAME: (''),
+//         CLUB_TH: (''),
+//         CLUB_CATEGORY: (''),
+//         IMAGE: (''),
+//         TICKET_CART: ([]),
+//         SCORES: (''),
+//         NOTIFY: ([]),
+//         KEEP_POST: ([]),
+//         KEEP_EVENT: ([]),
+//         FANS: ([]),
+//         FOLLOW: ([]),
+//         IS_STUDENT: (''),
+//         IS_ABLE: (''),
+//         IS_ADMIN: (''),
+//         DESCRIBE: (''),
+//         MAKE_EVENT: ([]),
+//         MAKE_POST: ([]),
+//         MAKE_TIME_POST: ([]),
+//         GO_EVENT: ([]),
+//         BE_MARK: ([]),
+//         IS_CORE_MEMBER: ([]),
+//         EVENTS_ID: ([])
+//       }
+//     }
+//   },
+//   routeEvent: {
+//     type: Array,
+//     default: () => []
+//   }
+// })
 
 // 元件若有使用 onMounted ，裡面的元件若要使用 console.log，要用 watch 看
-watch(
-  () => props.routeEvent,
-  () => {
-    console.log(props.routeEvent, 'props.routeEvent PersonalClub.vue  watch')
-  })
+// watch(
+//   () => props.routeEvent,
+//   () => {
+//     console.log(props.routeEvent, 'props.routeEvent PersonalClub.vue  watch')
+//   })
 
 </script>
 

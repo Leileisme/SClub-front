@@ -46,7 +46,6 @@ export const getEventAll = async (req, res) => {
       ]
     }).limit(10)
 
-    console.log(data, 'data getEventAll')
     res.status(200).json({
       success: true,
       message: '',
@@ -82,9 +81,6 @@ export const getEventById = async (req, res) => {
       }
     )
 
-    // result.HOST = HOST_USER.HOST
-    console.log(result, 'result')
-
     if (!result) throw new Error('NOT FOUND')
 
     res.status(200).json({
@@ -103,6 +99,46 @@ export const getEventById = async (req, res) => {
       res.status(404).json({
         success: false,
         message: '查無商品'
+      })
+    } else {
+      res.status(500).json({
+        success: false,
+        message: '未知錯誤'
+      })
+    }
+  }
+}
+
+export const edit = async (req, res) => {
+  try {
+    req.body.IMAGE = req.file?.path
+    // findByIdAndUpdate用於找到並更新 MongoDB 中的特定文件
+    // 三個參數(尋找資料的_id,更新的資料,選項)
+    // 另外還有 findOneAndUpdate
+    await events.findByIdAndUpdate({ _id: req.params.id }, req.body, { runValidators: true }).orFail(new Error('NOT FOUND'))
+
+    res.status(200).json({
+      success: true,
+      message: ''
+    })
+  } catch (error) {
+    console.log(error)
+    if (error.name === 'CastError' || error.message === 'ID') {
+      res.status(400).json({
+        success: false,
+        message: 'ID 格式錯誤'
+      })
+    } else if (error.message === 'NOT FOUND') {
+      res.status(404).json({
+        success: false,
+        message: '查無使用者'
+      })
+    } else if (error.name === 'ValidationError') {
+      const key = Object.keys(error.errors)[0]
+      const message = error.errors[key].message
+      res.status(400).json({
+        success: false,
+        message
       })
     } else {
       res.status(500).json({

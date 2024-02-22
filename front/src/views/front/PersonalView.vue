@@ -1,5 +1,5 @@
 <template>
-  <template v-if="isXs">
+  <template v-if="isXs" >
     <v-app-bar >
       <VContainer class="d-flex align-center" style="">
         <v-btn v-if="routeUser.USER_NAME !== user.USER_NAME" icon="mdi-chevron-left" style="font-size: 1.4rem;" @click="goBack"></v-btn>
@@ -55,14 +55,14 @@
     </v-app-bar>
   </template>
 
-  <NPersonalClub v-if="routeUser.ROLE !== UserRole.CLUB" :routeUser="routeUser" :routeEvent="routeEvent" @update-user="get" ></NPersonalClub>
-  <PersonalClub v-else :routeUser="routeUser" :routeEvent="routeEvent" @update-user="get"></PersonalClub>
+  <NPersonalClub v-if="routeUser.ROLE !== UserRole.CLUB" :routeUser="routeUser" :routeEvent="routeEvent"></NPersonalClub>
+  <PersonalClub v-else :routeUser="routeUser" :routeEvent="routeEvent"></PersonalClub>
 
 </template>
 
 <script setup>
 import { useDisplay } from 'vuetify'
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, provide } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
@@ -73,27 +73,29 @@ import NPersonalClub from '@/components/NPersonalClub.vue'
 import SettingsMenu from '@/components/SettingsMenu.vue'
 import SettingsMenuOther from '@/components/SettingsMenuOther.vue'
 import AddMenu from '@/components/AddMenu.vue'
+import { useEmitter } from '@/composables/mitt'
 
 const { apiAuth } = useApi()
 const user = useUserStore()
 const router = useRouter()
 const route = useRoute()
 const createSnackbar = useSnackbar()
+const emitter = useEmitter()
 
 // 判斷是否用手機
 const { xs } = useDisplay()
 const isXs = computed(() => xs.value)
 
-const emit = defineEmits(['updateUser'])
-const get = () => {
-  emit('updateUser')
-}
-
 const goBack = () => {
   router.go(-1)
 }
 
-console.log(route.params.USER_NAME, 'route.params in PersonalView')
+emitter.on('updateUser', async () => {
+  await user.getProfile()
+  await getUserName()
+  emitter.emit('updateUserOk')
+})
+
 const routeEvent = ref([])
 const routeUser = ref({
   EMAIL: (''),
@@ -124,6 +126,8 @@ const routeUser = ref({
   IS_CORE_MEMBER: ([]),
   EVENTS_ID: ([])
 })
+provide('routeUser', routeUser)
+provide('routeEvent', routeEvent)
 
 const getUserName = async () => {
   try {
