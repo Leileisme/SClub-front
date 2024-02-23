@@ -66,6 +66,21 @@
     </v-container>
   </v-container>
 
+  <!-- 【通知】積分不足 -->
+  <InfoAll :InfoSwitch="InfoSwitchScores" :InfoText="InfoTextScores" :closeInfo="closeInfo" @update:InfoSwitch="value => InfoTextScores = value"></InfoAll>
+
+  <!-- 【通知】取過票 -->
+  <InfoAll :InfoSwitch="InfoSwitchHadTicket" :InfoText="InfoTextHadTicket" :closeInfo="closeInfo" @update:InfoSwitch="value => InfoSwitchHadTicket = value"></InfoAll>
+
+  <!-- 【通知】預售票售罄 -->
+  <InfoAll :InfoSwitch="InfoSwitchNTicket" :InfoText="InfoTextNTicket" :closeInfo="closeInfo" @update:InfoSwitch="value => InfoSwitchNTicket = value"></InfoAll>
+
+  <!-- 【通知】後端訊息 -->
+  <InfoAll :InfoSwitch="InfoSwitch" :InfoText="InfoText" :closeInfo="closeInfo" @update:InfoSwitch="value => InfoSwitch = value"></InfoAll>
+
+    <!-- 【通知】取票成功 -->
+    <InfoAll :InfoSwitch="InfoSwitchTicketOk" :InfoText="InfoTextTicketOk" :closeInfo="closeInfo" @update:InfoSwitch="value => InfoSwitchTicketOk = value"></InfoAll>
+
 </template>
 
 <script setup>
@@ -75,14 +90,13 @@ import { useRouter, useRoute } from 'vue-router'
 import EventInfo from '@/components/EventView/EventInfo.vue'
 import { useUserStore } from '@/store/user'
 import { useApi } from '@/composables/axios'
-import { useSnackbar } from 'vuetify-use-dialog'
+import InfoAll from '@/components/InfoAll.vue'
 
 const router = useRouter()
 const route = useRoute()
 const routeEvent = inject('routeEvent')
 const user = useUserStore()
 const { apiAuth } = useApi()
-const createSnackbar = useSnackbar()
 
 // 判斷是否用手機
 const { xs } = useDisplay()
@@ -127,73 +141,82 @@ const disabled = computed(() => {
   return number.value === 0
 })
 
-// 跳通知的開關
-const hadTicket = ref(false)
-const nScores = ref(false)
-const goBackToEvent = () => {
-  hadTicket.value = false
-  nScores.value = false
+// 取過票通知
+const InfoSwitchHadTicket = ref(false)
+const InfoTextHadTicket = ref('已經取過票溜！')
+
+// 積分不足通知
+const InfoSwitchScores = ref(false)
+const InfoTextScores = ref('Sorry！榮譽積分不足～快參加活動賺積分(-`д´-)')
+
+// 票售罄通知
+const InfoSwitchNTicket = ref(false)
+const InfoTextNTicket = ref('ㄚ！晚了一步，預售票沒有啦～')
+
+// 後端通知
+const InfoSwitch = ref(false)
+const InfoText = ref('')
+
+// 後端通知
+const InfoSwitchTicketOk = ref(false)
+const InfoTextTicketOk = ref('取票成功！')
+
+const closeInfo = () => {
+  InfoSwitchHadTicket.value = false
+  InfoSwitchScores.value = false
+  InfoSwitch.value = false
+  InfoSwitchNTicket.value = false
+  InfoSwitchTicketOk.value = false
   router.push(`/event/${route.params.id}`)
 }
-console.log(routeEvent)
 
 // 取票
 const goTicket = async () => {
-  if (user.SCORES < routeEvent.SCORE_VALUES) {
-    nScores.value = true
+  if (routeEvent.value.HOST._id === user._id) {
+    // 這邊要跳出 取票狀態表單
+    console.log('這邊要跳出 取票狀態表單')
+    return
+  }
+
+  if (user.SCORES < routeEvent.value.SCORE_VALUES) {
+    // 積分不足通知
+    InfoSwitchScores.value = true
+  } else if (routeEvent.value.PRE_SALE - routeEvent.value.TICKET.length === 0) {
+    // 票售罄通知
+    InfoSwitchNTicket.value = true
+  } else if (routeEvent.value.TICKET.some(ticket => ticket.USER === user._id)) {
+    // 取過票通知
+    InfoSwitchHadTicket.value = true
   } else {
     try {
-      const preSale = await apiAuth.get(`/events/${route.params.id}`)
-
-      if (preSale.data.result.PRE_SALE - preSale.data.result.TICKET.length === 0) {
-        createSnackbar({
-          text: '票券已售完',
-          showCloseButton: false,
-          snackbarProps: {
-            timeout: 2000,
-            color: 'red',
-            location: 'bottom'
-          }
-        })
-        return
-      }
-
       // 取票
       const ticket = [{ USER: user._id, USED: false }]
-      await apiAuth.patch(`/events/${route.params.id}`, {
+      const response = await apiAuth.patch(`/events/${route.params.id}`, {
         TICKET: ticket
       })
 
-      createSnackbar({
-        text: '取票成功',
-        showCloseButton: false,
-        snackbarProps: {
-          timeout: 2000,
-          color: 'green',
-          location: 'bottom'
-        }
+      console.log(response)
+
+      // 將 活動_id 、 票券_id 存入使用者資料
+      const ticketId = response.data.ticketId
+      user.TICKET_CART.push({ EVENT: route.params.id, TICKET: ticketId })
+
+      await apiAuth.patch('/users/edit', {
+        USER_NAME: user.USER_NAME,
+        TICKET_CART: user.TICKET_CART
       })
 
-      router.push(`/event/${route.params.id}`)
+      // 取票成功通知
+      InfoSwitchTicketOk.value = true
     } catch (error) {
       console.log(error)
       const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
-      createSnackbar({
-        text,
-        showCloseButton: false,
-        snackbarProps: {
-          timeout: 2000,
-          console: 'red',
-          location: 'bottom'
-        }
-      })
+      InfoText.value = text
+      InfoSwitch.value = true
     }
   }
 }
 
 </script>
 <style scoped>
-.okBtn.v-btn--disabled {
-  background-color: rgba(0, 0, 0, 0.1) !important;
-}
 </style>

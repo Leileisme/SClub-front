@@ -40,11 +40,14 @@
         <v-col cols="9" style="font-size: 1.5rem; font-weight: 900; " class="d-flex align-center">{{ routeEvent.TITLE }}</v-col>
 
         <v-col cols="12" style="color: #999 ; padding-top:0; padding-bottom: 0;font-size: 1rem" class="d-flex align-center justify-end">
+          <!-- 總人次 -->
           <v-icon style="font-size: 1.1rem;" class="me-1">mdi-eye-outline </v-icon>
           <span class="me-5">{{ routeEvent.REACH }}</span>
+          <!-- 喜歡人次 -->
           <v-icon style="font-size: 1.1rem;" class="me-1">mdi-cards-heart-outline</v-icon>
           <span  class="me-5">{{ routeEvent.LIKES.length }}</span>
-          <v-btn color="#1BBCA9"  style="font-weight: 900;" @click="goTicket">馬上取票</v-btn>
+          <!-- 取票按鈕 / 查看取票狀態 -->
+          <v-btn color="#1BBCA9"  style="font-weight: 900;" @click="goTicket" :disabled="getTicketDisabled" class="okBtn">{{getTicketText}}</v-btn>
         </v-col>
 
         <!-- 詳細資訊 -->
@@ -92,37 +95,17 @@
     </v-container>
   </v-container>
 
-  <!-- 【通知】取過票 -->
-  <v-dialog v-model="hadTicket" max-width="290">
-    <v-card class="rounded-lg">
-      <v-card-title></v-card-title>
-      <v-card-text class="headline text-center" style="font-size: 1.2rem;">已經取過票溜!</v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn  color="#1BBCA9" style="font-weight: 900;" @click="closeInfo" >關閉</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-
   <!-- 【通知】積分不足 -->
-  <v-dialog v-model="nScores" max-width="290">
-    <v-card class="rounded-lg">
-      <v-card-title></v-card-title>
-      <v-card-text class="headline text-center" style="font-size: 1.2rem;">
-        <v-row>
-          <v-col cols="12" style="padding-bottom: 0; color:;">Sorry！榮譽積分不足～快參加活動賺積分(-`д´-)</v-col>
-          <!-- <v-col cols="12" >快參加活動賺積分吧！</v-col> -->
-        </v-row>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn  color="#1BBCA9" style="font-weight: 900;" @click="closeInfo" >關閉</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <InfoAll :InfoSwitch="InfoSwitchScores" :InfoText="InfoTextScores" :closeInfo="closeInfo" @update:InfoSwitch="value => InfoTextScores = value"></InfoAll>
 
-  <!-- 【後端通知】 -->
-  <TextBack :backInfo="backInfo" :textBack="textBack" :closeInfo="closeInfo" @update:backInfo="value => backInfo = value"></TextBack>
+  <!-- 【通知】取過票 -->
+  <InfoAll :InfoSwitch="InfoSwitchHadTicket" :InfoText="InfoTextHadTicket" :closeInfo="closeInfo" @update:InfoSwitch="value => InfoSwitchHadTicket = value"></InfoAll>
+
+  <!-- 【通知】預售票售罄 -->
+  <InfoAll :InfoSwitch="InfoSwitchNTicket" :InfoText="InfoTextNTicket" :closeInfo="closeInfo" @update:InfoSwitch="value => InfoSwitchNTicket = value"></InfoAll>
+
+  <!-- 【通知】後端訊息 -->
+  <InfoAll :InfoSwitch="InfoSwitch" :InfoText="InfoText" :closeInfo="closeInfo" @update:InfoSwitch="value => InfoSwitch = value"></InfoAll>
 </template>
 
 <script setup>
@@ -132,14 +115,28 @@ import { useRouter, useRoute } from 'vue-router'
 import EventInfo from '@/components/EventView/EventInfo.vue'
 import EventHostCard from '@/components/EventView/EventHostCard.vue'
 import { useUserStore } from '@/store/user'
-import { useApi } from '@/composables/axios'
-import TextBack from '@/components/TextBack.vue'
+import InfoAll from '@/components/InfoAll.vue'
 
 const router = useRouter()
 const route = useRoute()
 const routeEvent = inject('routeEvent')
 const user = useUserStore()
-const { apiAuth } = useApi()
+
+const getTicketDisabled = computed(() => {
+  if (routeEvent.value.HOST._id === user._id || routeEvent.value.CO_ORGANIZER.some(co => co._id === user._id)) {
+    return false
+  } else {
+    return routeEvent.value.PRE_SALE - routeEvent.value.TICKET.length === 0
+  }
+})
+
+const getTicketText = computed(() => {
+  if (routeEvent.value.HOST._id === user._id || routeEvent.value.CO_ORGANIZER.some(co => co._id === user._id)) {
+    return '取票狀態'
+  } else {
+    return routeEvent.value.PRE_SALE - routeEvent.value.TICKET.length === 0 ? '預售票掃空' : '馬上取票'
+  }
+})
 
 // 判斷是否用手機
 const { xs } = useDisplay()
@@ -165,44 +162,55 @@ const colorTwo = computed(() => {
   return tab.value === 'two' ? 'color:#25ECE0; border:1.8px #25ECE0 solid;' : 'color:#fff; border:1.8px rgba(204,204,204,0.5) solid;'
 })
 
-// 跳通知的開關
-const hadTicket = ref(false)
-const nScores = ref(false)
+// 取過票通知
+const InfoSwitchHadTicket = ref(false)
+const InfoTextHadTicket = ref('已經取過票溜！')
 
-// backInfo、closeInfo( backInfo.value = false)、textBack 都要傳給子元件
-const backInfo = ref(false)
-const textBack = ref('')
+// 積分不足通知
+const InfoSwitchScores = ref(false)
+const InfoTextScores = ref('Sorry！榮譽積分不足～快參加活動賺積分(-`д´-)')
+
+// 票售罄通知
+const InfoSwitchNTicket = ref(false)
+const InfoTextNTicket = ref('ㄚ！晚了一步，預售票沒有啦～')
+
+// 後端通知
+const InfoSwitch = ref(false)
+const InfoText = ref('')
 
 const closeInfo = () => {
-  hadTicket.value = false
-  nScores.value = false
-  backInfo.value = false
+  InfoSwitchHadTicket.value = false
+  InfoSwitchScores.value = false
+  InfoSwitch.value = false
+  InfoSwitchNTicket.value = false
   router.push(`/event/${route.params.id}`)
 }
 
 const goTicket = async () => {
+  if (routeEvent.value.HOST._id === user._id || routeEvent.value.CO_ORGANIZER.some(co => co._id === user._id)) {
+    // 這邊要跳出 取票狀態表單
+    console.log('這邊要跳出 取票狀態表單')
+    return
+  }
+
   if (user.SCORES < routeEvent.value.SCORE_VALUES) {
     // 積分不足通知
-    nScores.value = true
+    InfoSwitchScores.value = true
+  } else if (routeEvent.value.PRE_SALE - routeEvent.value.TICKET.length === 0) {
+    // 票售罄通知
+    InfoSwitchNTicket.value = true
+  } else if (routeEvent.value.TICKET.some(ticket => ticket.USER === user._id)) {
+    // 取過票通知
+    InfoSwitchHadTicket.value = true
   } else {
     try {
-      // 獲取事件的當前票據
-      const response = await apiAuth.get(`/events/${route.params.id}`)
-      const currentTickets = response.data.result.TICKET
-
-      // 檢查 USER 是否包含 user._id
-      if (currentTickets.some(ticket => ticket.USER === user._id)) {
-        // 跳出已取票
-        hadTicket.value = true
-        return
-      }
-
       // 跳轉去取票頁
       router.push(`/event/${route.params.id}/ticket`)
     } catch (error) {
       console.log(error)
-      textBack.value = error?.response?.data?.message || '發生錯誤，請稍後再試QQ'
-      backInfo.value = true
+      const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+      InfoText.value = text
+      InfoSwitch.value = true
     }
   }
 }

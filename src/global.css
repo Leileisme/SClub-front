@@ -1,0 +1,7 @@
+.okBtn.v-btn--disabled {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.disabledText {
+  color: #aaa !important;
+}
