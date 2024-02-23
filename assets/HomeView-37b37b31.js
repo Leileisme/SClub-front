@@ -1,1 +1,0 @@
-import{_}from"./_plugin-vue_export-helper-c27b6911.js";import{A as o,o as s}from"./index-55945f57.js";const t={__name:"HomeView",setup(c){const{xs:e}=o();return s(()=>e.value),(a,p)=>" 首頁 "}},n=_(t,[["__scopeId","data-v-091305c3"]]);export{n as default};

@@ -1,1 +1,0 @@
-import{_ as o}from"./_plugin-vue_export-helper-c27b6911.js";import{V as r}from"./VDivider-7d9b1768.js";import{a as e}from"./VRow-c1fb15ad.js";import{D as a,E as c,F as s,v as t}from"./index-55945f57.js";const f={};function i(n,_){return a(),c(e,{cols:"12"},{default:s(()=>[t(r,{color:"#fff",class:"border-opacity-50"})]),_:1})}const x=o(f,[["render",i]]);export{x as P};
