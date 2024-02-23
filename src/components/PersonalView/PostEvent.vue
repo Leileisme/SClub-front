@@ -102,7 +102,7 @@ import { computed, ref } from 'vue'
 import { useUserStore } from '@/store/user'
 import UserRole from '@/enums/UserRole'
 import AddEvent from '@/components/AddEvent.vue'
-import EventMenu from '@/components/EventMenu.vue'
+import EventMenu from '@/components/PersonalView/EventMenu.vue'
 
 const user = useUserStore()
 const tab = ref('')

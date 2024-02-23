@@ -45,7 +45,40 @@ const routes = [
           title: '學生社團網 | 活動',
           login: true,
           admin: false
-        }
+        },
+        children: [
+          {
+            path: ':id',
+            name: 'eventId',
+            component: () => import('@/views/front/event/EventId.vue'),
+            meta: {
+              title: '學生社團網 | 活動',
+              login: true,
+              admin: false
+            },
+            children: [
+              {
+                path: '',
+                name: 'eventTicketHome.vue',
+                component: () => import('@/views/front/event/eventId/HomeEventId.vue'),
+                meta: {
+                  title: '學生社團網 | 活動內頁',
+                  login: true,
+                  admin: false
+                }
+              },
+              {
+                path: 'ticket',
+                name: 'eventTicket',
+                component: () => import('@/views/front/event/eventId/TicketView.vue'),
+                meta: {
+                  title: '學生社團網 | 活動頁取票',
+                  login: true,
+                  admin: false
+                }
+              }]
+          }
+        ]
       },
       {
         path: '/post',
@@ -66,37 +99,6 @@ const routes = [
           login: true,
           admin: false
         }
-      },
-      {
-        path: '/event/:id',
-        name: 'eventDetail',
-        component: () => import('@/views/front/EventDetailView.vue'),
-        meta: {
-          title: '學生社團網 | 活動',
-          login: true,
-          admin: false
-        },
-        children: [
-          {
-            path: '',
-            name: 'homeEventTicket',
-            component: () => import('@/views/front/HomeEventTicket.vue'),
-            meta: {
-              title: '學生社團網',
-              login: true,
-              admin: false
-            }
-          },
-          {
-            path: 'ticket',
-            name: 'eventTicket',
-            component: () => import('@/views/front/EventTicketView.vue'),
-            meta: {
-              title: '學生社團網 | 活動票',
-              login: true,
-              admin: false
-            }
-          }]
       },
       {
         path: '/:USER_NAME',

@@ -12,7 +12,7 @@
         <v-col cols="9" style="font-size: 1.5rem; font-weight: 900; " class="d-flex align-center">{{ routeEvent.TITLE }}</v-col>
 
         <!-- 詳細資訊 -->
-        <EventInf></EventInf>
+        <EventInfo></EventInfo>
 
         <!-- 購票須知 -->
         <v-col cols="12">
@@ -66,23 +66,13 @@
     </v-container>
   </v-container>
 
-  <v-dialog v-model="hadTicket" max-width="290">
-    <v-card class="rounded-lg">
-      <v-card-title></v-card-title>
-      <v-card-text class="headline text-center" style="font-size: 1.2rem;">已取過票溜!</v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn  color="#1BBCA9" style="font-weight: 900;" @close="goBackToEvent" >關閉</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
 </template>
 
 <script setup>
 import { useDisplay } from 'vuetify'
 import { computed, ref, inject } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import EventInf from './EventInfo.vue'
+import EventInfo from '@/components/EventView/EventInfo.vue'
 import { useUserStore } from '@/store/user'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
@@ -119,7 +109,7 @@ const clickBtn = () => {
   number.value = !isPlus.value ? 1 : 0
 }
 
-// 展開
+// 展開詳細資訊
 const isExpanded = ref(false)
 const openExpand = () => {
   isExpanded.value = !isExpanded.value
@@ -137,35 +127,34 @@ const disabled = computed(() => {
   return number.value === 0
 })
 
+// 跳通知的開關
 const hadTicket = ref(false)
+const nScores = ref(false)
 const goBackToEvent = () => {
   hadTicket.value = false
+  nScores.value = false
   router.push(`/event/${route.params.id}`)
 }
+console.log(routeEvent)
 
 // 取票
 const goTicket = async () => {
   if (user.SCORES < routeEvent.SCORE_VALUES) {
-    createSnackbar({
-      text: '積分不足',
-      showCloseButton: false,
-      snackbarProps: {
-        timeout: 2000,
-        color: 'red',
-        location: 'bottom'
-      }
-    })
+    nScores.value = true
   } else {
     try {
-      // 獲取事件的當前票據
-      const response = await apiAuth.get(`/events/${route.params.id}`)
-      const currentTickets = response.data.result.TICKET
+      const preSale = await apiAuth.get(`/events/${route.params.id}`)
 
-      console.log(currentTickets)
-      // 檢查 USER 是否包含 user._id
-      if (currentTickets.some(ticket => ticket.USER === user._id)) {
-        // 跳出已取票
-        hadTicket.value = true
+      if (preSale.data.result.PRE_SALE - preSale.data.result.TICKET.length === 0) {
+        createSnackbar({
+          text: '票券已售完',
+          showCloseButton: false,
+          snackbarProps: {
+            timeout: 2000,
+            color: 'red',
+            location: 'bottom'
+          }
+        })
         return
       }
 

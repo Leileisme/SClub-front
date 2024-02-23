@@ -1,6 +1,6 @@
 <template>
         <!-- 分隔線 -->
-        <PersonalLine></PersonalLine>
+        <BlankLine></BlankLine>
 
         <!-- 活動時間 -->
         <v-col cols="12" class="d-flex align-center">
@@ -28,17 +28,17 @@
         <!-- 預售票 / 現場票 -->
         <v-col cols="12" class="d-flex align-center">
           <v-icon class="me-3">mdi-ticket-confirmation-outline</v-icon>
-          <span class="me-3">預售票： {{ routeEvent.PRE_SALE }} 張</span>
-          <span class="me-3">/</span>
+          <span class="me-1">預售票： {{ routeEvent.PRE_SALE - routeEvent.TICKET.length }} / {{ routeEvent.PRE_SALE }} 張 </span>
+          <span class="me-3">,</span>
           <span class="me-1">現場票：{{ routeEvent.ON_SITE_SALE }} 張</span>
         </v-col>
 
         <!-- 分隔線 -->
-        <PersonalLine></PersonalLine>
+        <BlankLine></BlankLine>
 </template>
 <script setup>
 import { computed, inject } from 'vue'
-import PersonalLine from '@/components/PersonalLine.vue'
+import BlankLine from '@/components/BlankLine.vue'
 
 const routeEvent = inject('routeEvent')
 
@@ -56,6 +56,11 @@ const WEEK = computed(() => {
   const formattedDate = changeDateFormat(routeEvent.value.YY_MM_DD)
   return getDayOfWeek(formattedDate)
 })
+
+// const preTicketAll = computed(()=>{
+//   // return routeEvent.PRE_SALE - routeEvent.TICKET.USER.length
+// })
+
 </script>
 <style scoped>
 </style>

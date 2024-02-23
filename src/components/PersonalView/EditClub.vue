@@ -249,7 +249,10 @@ const selectUserName = (value, idx) => {
 const CoreMember = ref([])
 
 for (const idx in user.CLUB_CORE_MEMBER) {
-  CoreMember.value.push({ USER: user.CLUB_CORE_MEMBER[idx].USER.USER_NAME, ROLE: user.CLUB_CORE_MEMBER[idx].ROLE })
+  CoreMember.value.push({
+    USER: user.CLUB_CORE_MEMBER[idx].USER?.USER_NAME || '',
+    ROLE: user.CLUB_CORE_MEMBER[idx].ROLE
+  })
 }
 
 // IMAGE 的 v-model

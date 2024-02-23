@@ -26,7 +26,7 @@ import { useRoute } from 'vue-router'
 import { useUserStore } from '@/store/user'
 
 import UserRole from '@/enums/UserRole'
-import EditClub from '@/components/EditClub.vue'
+import EditClub from '@/components/PersonalView/EditClub.vue'
 
 const user = useUserStore()
 

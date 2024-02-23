@@ -125,7 +125,6 @@ const getEventById = async () => {
 
 onMounted(async () => {
   await getEventById()
-  console.log(routeEvent.value, 'routeEvent.value in')
 })
 
 </script>

@@ -67,13 +67,13 @@ import { useRouter, useRoute } from 'vue-router'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useUserStore } from '@/store/user'
-import UserRole from '@/enums/UserRole'
-import PersonalClub from '@/components/PersonalClub.vue'
-import NPersonalClub from '@/components/NPersonalClub.vue'
-import SettingsMenu from '@/components/SettingsMenu.vue'
-import SettingsMenuOther from '@/components/SettingsMenuOther.vue'
-import AddMenu from '@/components/AddMenu.vue'
 import { useEmitter } from '@/composables/mitt'
+import UserRole from '@/enums/UserRole'
+import PersonalClub from '@/components/PersonalView/PersonalClub.vue'
+import NPersonalClub from '@/components/PersonalView/NPersonalClub.vue'
+import SettingsMenu from '@/components/PersonalView/SettingsMenu.vue'
+import SettingsMenuOther from '@/components/PersonalView/SettingsMenuOther.vue'
+import AddMenu from '@/components/AddMenu.vue'
 
 const { apiAuth } = useApi()
 const user = useUserStore()
@@ -200,8 +200,6 @@ const getEventById = async () => {
       }
       return result
     })
-
-    console.log(routeEvent.value, 'routeEvent.value in')
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
@@ -217,11 +215,8 @@ const getEventById = async () => {
   }
 }
 
-console.log(routeUser.value, 'routeUser in PersonalView')
-
 onMounted(async () => {
   await getUserName()
-  console.log(routeEvent.value, 'routeEvent in PersonalView')
 }
 )
 </script>

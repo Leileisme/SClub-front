@@ -98,7 +98,7 @@ const isPersonalRoute = computed(() => route.name === 'personal')
 const isLoginRoute = computed(() => route.name === 'login')
 const isRegisterRoute = computed(() => route.name === 'register')
 // 因為路由裡面還「子路由」，所以看所有[相關路由」中是否有 eventDetail
-const isEventRoute = computed(() => route.matched.some(item => item.name === 'eventDetail'))
+const isEventRoute = computed(() => route.matched.some(item => item.name === 'eventId'))
 
 // 判斷是否用手機
 const { sm, xs } = useDisplay()

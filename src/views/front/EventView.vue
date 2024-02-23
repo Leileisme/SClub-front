@@ -1,5 +1,6 @@
 <template>
-  123
+  <RouterView :key="$route.fullPath" >
+  </RouterView>
 </template>
 <script setup>
 import { useDisplay } from 'vuetify'
