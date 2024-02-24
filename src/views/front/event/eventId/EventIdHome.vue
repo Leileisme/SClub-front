@@ -32,7 +32,7 @@
 
         <!-- 主辦單位頭像 -->
         <v-col :cols="imageCol"  class="d-flex justify-center" style="background-color: ;">
-          <v-avatar size="96%"  >
+          <v-avatar size="96%" @click="goUserName"  style="cursor: pointer;">
             <v-img  :src="routeEvent.HOST.IMAGE"></v-img>
           </v-avatar>
         </v-col>
@@ -121,6 +121,14 @@ const router = useRouter()
 const route = useRoute()
 const routeEvent = inject('routeEvent')
 const user = useUserStore()
+
+const goUserName = () => {
+  if (routeEvent.value.HOST.USER_NAME) {
+    router.push(`/${routeEvent.value.HOST.USER_NAME}`)
+  } else {
+    console.error('goUserName is error')
+  }
+}
 
 const getTicketDisabled = computed(() => {
   if (routeEvent.value.HOST._id === user._id || routeEvent.value.CO_ORGANIZER.some(co => co._id === user._id)) {

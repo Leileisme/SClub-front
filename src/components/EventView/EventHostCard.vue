@@ -69,7 +69,6 @@ const goUserName = () => {
   if (props.item.USER_NAME) {
     router.push(`/${props.item.USER_NAME}`)
   } else {
-    console.log(props.item.USER_NAME, 'props.item.USER_NAME')
     console.error('props.item.USER_NAME is not defined or empty')
   }
 }

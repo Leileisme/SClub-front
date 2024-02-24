@@ -60,7 +60,7 @@ const routes = [
               {
                 path: '',
                 name: 'eventTicketHome.vue',
-                component: () => import('@/views/front/event/eventId/HomeEventId.vue'),
+                component: () => import('@/views/front/event/eventId/EventIdHome.vue'),
                 meta: {
                   title: '學生社團網 | 活動內頁',
                   login: true,
@@ -70,7 +70,7 @@ const routes = [
               {
                 path: 'ticket',
                 name: 'eventTicket',
-                component: () => import('@/views/front/event/eventId/TicketView.vue'),
+                component: () => import('@/views/front/event/eventId/GetTicket.vue'),
                 meta: {
                   title: '學生社團網 | 活動頁取票',
                   login: true,
@@ -95,7 +95,17 @@ const routes = [
         name: 'ticket',
         component: () => import('@/views/front/TicketView.vue'),
         meta: {
-          title: '學生社團網 | 動態',
+          title: '學生社團網 | 票券',
+          login: true,
+          admin: false
+        }
+      },
+      {
+        path: '/ticket/:id',
+        name: 'ticketUsed',
+        component: () => import('@/views/front/TicketUsed.vue'),
+        meta: {
+          title: '學生社團網 | 票券',
           login: true,
           admin: false
         }

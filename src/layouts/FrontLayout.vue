@@ -1,7 +1,7 @@
 <template>
   <v-layout>
     <!-- 頂部導覽列 -->
-    <template v-if="isXs && !isPersonalRoute && !isLoginRoute && !isRegisterRoute && !isEventRoute">
+    <template v-if="isXs && !isPersonalRoute && !isLoginRoute && !isRegisterRoute && !isEventRoute && !isTicketRoute & !isTicketIdRoute">
       <v-app-bar>
         <VContainer class="d-flex align-center">
         <v-app-bar-title class="text-h5 ms-5">LogoHere</v-app-bar-title>
@@ -99,6 +99,8 @@ const isLoginRoute = computed(() => route.name === 'login')
 const isRegisterRoute = computed(() => route.name === 'register')
 // 因為路由裡面還「子路由」，所以看所有[相關路由」中是否有 eventDetail
 const isEventRoute = computed(() => route.matched.some(item => item.name === 'eventId'))
+const isTicketRoute = computed(() => route.matched.some(item => item.name === 'ticket'))
+const isTicketIdRoute = computed(() => route.matched.some(item => item.name === 'ticketUsed'))
 
 // 判斷是否用手機
 const { sm, xs } = useDisplay()

@@ -9,7 +9,7 @@
     </template>
 
     <div :style="heigh" class="boxHeigh">
-    <div style="width: 400px; h " :style="boxBorder" class="pb-8" >
+    <div style="width: 400px;  " :style="boxBorder" class="pb-8" >
       <div v-if="!isXs" style="height: 65px; width: 100%; box-shadow: 0 1px 5px #000;" class="d-flex justify-center align-center">
         <div class="text-h5 font-weight-black">登入</div>
       </div>

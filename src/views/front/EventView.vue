@@ -8,6 +8,7 @@ import { computed, ref, watch } from 'vue'
 import { useUserStore } from '@/store/user'
 import { useRouter } from 'vue-router'
 
+
 const user = useUserStore()
 const router = useRouter()
 const isPersonalRoute = ref(router.currentRoute.value.name === 'personal')

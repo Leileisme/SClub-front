@@ -66,7 +66,7 @@ const props = defineProps({
         GO_EVENT: ([]),
         BE_MARK: ([]),
         IS_CORE_MEMBER: ([]),
-        EVENTS_ID: ([])
+        MAKE_EVENTS_ID: ([])
       }
     }
   },

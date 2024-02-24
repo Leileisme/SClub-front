@@ -124,7 +124,7 @@ const routeUser = ref({
   GO_EVENT: ([]),
   BE_MARK: ([]),
   IS_CORE_MEMBER: ([]),
-  EVENTS_ID: ([])
+  MAKE_EVENTS_ID: ([])
 })
 provide('routeUser', routeUser)
 provide('routeEvent', routeEvent)
@@ -158,7 +158,7 @@ const getUserName = async () => {
     routeUser.value.GO_EVENT = data.result.GO_EVENT
     routeUser.value.BE_MARK = data.result.BE_MARK
     routeUser.value.IS_CORE_MEMBER = data.result.IS_CORE_MEMBER
-    routeUser.value.EVENTS_ID = data.result.EVENTS_ID
+    routeUser.value.MAKE_EVENTS_ID = data.result.MAKE_EVENTS_ID
 
     document.title = `學生社團 | ${routeUser.value.NICK_NAME}（${routeUser.value.USER_NAME}）`
     await getEventById()
@@ -181,7 +181,7 @@ const getUserName = async () => {
 
 const getEventById = async () => {
   try {
-    const requests = routeUser.value.EVENTS_ID.map(id => apiAuth.get('/events/' + id))
+    const requests = routeUser.value.MAKE_EVENTS_ID.map(id => apiAuth.get('/events/' + id))
     const data = await Promise.all(requests)
     routeEvent.value = data.map(response => {
       const result = response.data.result

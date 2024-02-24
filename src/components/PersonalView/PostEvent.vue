@@ -48,7 +48,7 @@
           <v-row>
             <!-- 主辦活動 -->
             <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px; padding-bottom: 0;" >{{ new Date().getFullYear() }}</v-col>
-            <template v-if="routeUser.EVENTS_ID.length !== 0">
+            <template v-if="routeUser.MAKE_EVENTS_ID.length !== 0">
               <template v-for="item in routeEvent" :key="item._id" >
                 <v-col cols="3" style="background: rgba(6, 50, 107,0);padding-right: 0;">
                 <span class="me-1">{{ item.dateParts.month }}</span>
@@ -154,7 +154,7 @@ const props = defineProps({
         GO_EVENT: ([]),
         BE_MARK: ([]),
         IS_CORE_MEMBER: ([]),
-        EVENTS_ID: ([])
+        MAKE_EVENTS_ID: ([])
       }
     }
   },
