@@ -13,11 +13,12 @@
     </v-card>
   </v-dialog>
 
-    <!-- 【後端通知】 -->
-    <v-dialog v-else v-model="localInfoSwitch" max-width="290">
+  <!-- 【通知】 -->
+  <v-dialog v-else v-model="localInfoSwitch" max-width="290">
     <v-card class="rounded-lg">
       <v-card-title></v-card-title>
       <v-card-text class="headline text-center" style="font-size: 1.2rem;">
+        <v-col v-if="InfoTitle" style="color:#1BBCA9 ;">{{ InfoTitle }}</v-col>
         <span>{{ InfoText }}</span>
       </v-card-text>
       <v-card-actions>
@@ -28,7 +29,7 @@
   </v-dialog>
 
   <!-- 外層使用法 -->
-  <!-- <InfoAll :InfoSwitch="InfoSwitch" :InfoText="InfoText" :closeInfo="closeInfo" @update:InfoSwitch="value => InfoSwitch = value"></InfoAll> -->
+  <!-- <InfoAll :InfoSwitch="InfoSwitch" :InfoText="InfoText" :InfoTitle="InfoTitle" :closeInfo="closeInfo" @update:InfoSwitch="value => InfoSwitch = value"></InfoAll> -->
 </template>
 
 <script setup>
@@ -50,6 +51,9 @@ const props = defineProps({
   isBack: {
     type: Boolean,
     default: false
+  },
+  InfoTitle: {
+    type: String
   }
 })
 
@@ -63,6 +67,7 @@ const localInfoSwitch = computed({
 // 外層使用法
 
 // const InfoSwitch = ref(false)
+// const InfoTitle = ref('')
 // const InfoText = ref('')
 // const closeInfo = () => {
 //   InfoSwitch.value = false

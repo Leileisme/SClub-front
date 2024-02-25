@@ -63,8 +63,8 @@
                   <v-icon style=" " color="#fff ">mdi-camera</v-icon>
                 </v-col>
                 <v-col cols="1" class="d-flex justify-center" style="cursor: pointer;">
-                  <EventMenu v-if="isXs" isMobile ></EventMenu>
-                  <EventMenu v-else ></EventMenu>
+                  <EventMenu v-if="isXs" isMobile  :itemId="item._id"></EventMenu>
+                  <EventMenu v-else  :itemId="item._id"></EventMenu>
 
                 </v-col>
               </template>

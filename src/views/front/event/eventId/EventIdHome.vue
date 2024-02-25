@@ -28,6 +28,15 @@
         <v-col cols="2"  class="d-flex justify-end">
           <v-icon  style="color: #999;" class="me-5">mdi-bookmark-multiple-outline</v-icon>
           <v-icon style="color: #999;">mdi-cards-heart-outline</v-icon>
+
+          <template v-if="!isXs">
+            <v-icon class="ms-5" style="cursor: pointer;" id="setting">mdi-menu</v-icon>
+            <v-menu activator="#setting" width="150" style="text-align: center;" >
+              <v-list>
+                <EventSetList></EventSetList>
+              </v-list>
+            </v-menu>
+          </template>
         </v-col>
 
         <!-- 主辦單位頭像 -->
@@ -116,6 +125,7 @@ import EventInfo from '@/components/EventView/EventInfo.vue'
 import EventHostCard from '@/components/EventView/EventHostCard.vue'
 import { useUserStore } from '@/store/user'
 import InfoAll from '@/components/InfoAll.vue'
+import EventSetList from '@/components/EventView/EventSetList.vue'
 
 const router = useRouter()
 const route = useRoute()

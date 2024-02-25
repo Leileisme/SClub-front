@@ -2,7 +2,9 @@
   <v-dialog  v-model="dialog"  fullscreen transition="dialog-bottom-transition">
     <!-- 新增活動按鈕 -->
     <template v-slot:activator="{ props }">
-      <v-btn v-if="isBtnTrue" type="button"  v-bind="props" style="background-color:#1BBCA9; height: auto; padding-top: 3px; padding-bottom:3px;" > <v-icon style="margin-left: -3px;">mdi-plus</v-icon>新增活動</v-btn>
+      <v-btn v-if="isBtnTrue" type="button"  v-bind="props" style="background-color:#1BBCA9; height: auto; padding-top: 3px; padding-bottom:3px;" >
+        <v-icon style="margin-left: -3px;">mdi-plus</v-icon>建立活動
+      </v-btn>
       <v-list-item v-else  v-bind="props" :style="style">建立活動</v-list-item>
     </template>
 
@@ -319,7 +321,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, inject } from 'vue'
 import { useField, useForm, useFieldArray } from 'vee-validate'
 import validator from 'validator'
 import * as yup from 'yup'
@@ -327,6 +329,8 @@ import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
 import { useUserStore } from '@/store/user'
 import { useDisplay } from 'vuetify'
+import { useEmitter } from '@/composables/mitt'
+import { useRouter } from 'vue-router'
 
 const { apiAuth } = useApi()
 const createSnackbar = useSnackbar()
@@ -334,6 +338,8 @@ const user = useUserStore()
 const { xs, sm } = useDisplay()
 const isXs = computed(() => xs.value)
 const isSm = computed(() => sm.value)
+const emitter = useEmitter()
+const router = useRouter()
 
 const cityItems = ['臺北市', '新北市', '桃園市', '臺中市', '臺南市', '高雄市', '新竹縣', '苗栗縣', '彰化縣', '南投縣', '雲林縣', '嘉義縣', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '澎湖縣', '金門縣', '連江縣', '基隆市', '新竹市', '嘉義市']
 const isPublicItems = ['公開', '學生']
@@ -554,7 +560,7 @@ const schema = yup.object({
 })
 
 // 2.useForm建立一個表單(可設預設值)
-const { handleSubmit, isSubmitting, resetForm, errors} = useForm({ validationSchema: schema, initialValues: { isEdit: false } })
+const { handleSubmit, isSubmitting, resetForm, errors } = useForm({ validationSchema: schema, initialValues: { isEdit: false } })
 
 // 3.useField建立表單的欄位
 const title = useField('title')
@@ -612,6 +618,10 @@ const submit = handleSubmit(async (values) => {
     }
 
     await apiAuth.post('/events', fd)
+    const response = await apiAuth.post('/events', fd)
+    const eventId = response.data.result._id // 從伺服器回應中取得新建事件的 _id
+    console.log('eventId', eventId)
+    // emitter.emit('updateUser')
     createSnackbar({
       text: '新增成功',
       showCloseButton: false,
@@ -621,7 +631,7 @@ const submit = handleSubmit(async (values) => {
         location: 'bottom'
       }
     })
-    closeDialog()
+    router.push('/event/' + eventId)
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
@@ -635,6 +645,10 @@ const submit = handleSubmit(async (values) => {
       }
     })
   }
+})
+
+emitter.on('updateUserOk', async () => {
+  closeDialog()
 })
 </script>
 <style scoped>

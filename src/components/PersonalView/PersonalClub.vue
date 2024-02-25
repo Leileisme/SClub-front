@@ -18,6 +18,7 @@
                 <span class="me-3" >{{ routeUser.NICK_NAME }}</span>
                 <span class="me-3" style="font-size: 1.05rem;">第{{ routeUser.CLUB_TH }}屆</span>
                 <span>
+                  <!-- <v-btn v-if="routeUser.CLUB_CORE_MEMBER.every(member => member.USER === null)" color="#444" style="min-width: 0; color: #fff; font-weight: 900;  height: auto; padding-top: 2px; padding-bottom:3px; "  class="align-center">幽靈社團</v-btn> -->
                   <v-btn color="#FF9900" style="min-width: 0; width: 42px;color: #fff; font-weight: 900;  height: auto; padding-top: 2px; padding-bottom:3px; "  class="align-center">成員</v-btn>
                 </span>
             </v-col>

@@ -9,10 +9,17 @@
         <v-list-item :style="styles.listItem">編輯</v-list-item>
         <v-divider :style="styles.divider"></v-divider>
         <v-list-item :style="styles.listItem">分享</v-list-item>
+        <v-divider :style="styles.divider"></v-divider>
+        <v-list-item :style="styles.listItem" @click="deleteItem">刪除</v-list-item>
         <v-divider :style="styles.dividerLast"></v-divider>
       </v-list>
     </v-menu>
   </div>
+  <!-- 【通知】後端訊息 -->
+  <InfoAll :InfoSwitch="InfoSwitch" :InfoText="InfoText" :closeInfo="closeInfo" @update:InfoSwitch="value => InfoSwitch = value"></InfoAll>
+
+  <!-- 【通知】刪除成功 -->
+  <InfoAll :InfoSwitch="InfoSwitchTicketOk" :InfoText="InfoTextTicketOk" :closeInfo="closeInfo" @update:InfoSwitch="value => InfoSwitchTicketOk = value"></InfoAll>
 
 </template>
 
@@ -21,17 +28,25 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/user'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import InfoAll from '@/components/InfoAll.vue'
+import { useEmitter } from '@/composables/mitt'
 
 const router = useRouter()
 const user = useUserStore()
 const { apiAuth } = useApi()
+const emitter = useEmitter()
 
 const props = defineProps({
   isMobile: {
     type: Boolean,
     default: false,
     required: false
+  },
+  itemId: {
+    type: String,
+    default: '',
+    required: true
   }
 })
 
@@ -74,5 +89,30 @@ const styles = computed(() => {
     }
   }
 })
+
+// 後端通知
+const InfoSwitch = ref(false)
+const InfoText = ref('')
+
+// 通知
+const InfoSwitchTicketOk = ref(false)
+const InfoTextTicketOk = ref('刪除成功！')
+
+const closeInfo = () => {
+  InfoSwitch.value = false
+  InfoSwitchTicketOk.value = false
+}
+
+const deleteItem = async () => {
+  try {
+    await apiAuth.delete(`/events/${props.itemId}`)
+    emitter.emit('updateUser')
+    InfoSwitchTicketOk.value = true
+  } catch (error) {
+    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
+    InfoText.value = text
+    InfoSwitch.value = true
+  }
+}
 
 </script>

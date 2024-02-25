@@ -91,6 +91,7 @@ import EventInfo from '@/components/EventView/EventInfo.vue'
 import { useUserStore } from '@/store/user'
 import { useApi } from '@/composables/axios'
 import InfoAll from '@/components/InfoAll.vue'
+import TicketUseState from '@/enums/TicketUseState'
 
 const router = useRouter()
 const route = useRoute()
@@ -157,7 +158,7 @@ const InfoTextNTicket = ref('ㄚ！晚了一步，預售票沒有啦～')
 const InfoSwitch = ref(false)
 const InfoText = ref('')
 
-// 後端通知
+// 通知
 const InfoSwitchTicketOk = ref(false)
 const InfoTextTicketOk = ref('取票成功！')
 
@@ -190,7 +191,7 @@ const goTicket = async () => {
   } else {
     try {
       // 取票
-      const ticket = [{ USER: user._id, USED: false }]
+      const ticket = [{ USER: user._id, USED: TicketUseState.N_USE }]
       const response = await apiAuth.patch(`/events/${route.params.id}`, {
         TICKET: ticket
       })
@@ -199,13 +200,15 @@ const goTicket = async () => {
 
       // 將 活動_id 、 票券_id 存入使用者資料
       const ticketId = response.data.ticketId
-      user.TICKET_CART.push({ EVENT: route.params.id, TICKET: ticketId })
+      user.TICKET_CART.push({ EVENT: route.params.id, TICKET: ticketId, USED: TicketUseState.N_USE })
 
       await apiAuth.patch('/users/edit', {
         USER_NAME: user.USER_NAME,
         TICKET_CART: user.TICKET_CART
       })
 
+      // 更新 user 資料
+      await user.getProfile()
       // 取票成功通知
       InfoSwitchTicketOk.value = true
     } catch (error) {

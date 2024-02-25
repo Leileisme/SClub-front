@@ -124,7 +124,8 @@ const routeUser = ref({
   GO_EVENT: ([]),
   BE_MARK: ([]),
   IS_CORE_MEMBER: ([]),
-  MAKE_EVENTS_ID: ([])
+  MAKE_EVENTS_ID: ([]),
+  CLUB_CORE_MEMBER: ([])
 })
 provide('routeUser', routeUser)
 provide('routeEvent', routeEvent)

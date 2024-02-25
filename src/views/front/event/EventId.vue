@@ -5,7 +5,24 @@
       <v-container class="align-center justify-space-around d-flex">
         <v-btn icon="mdi-chevron-left" style="font-size: 1.4rem;" @click="goBack"></v-btn>
         <v-app-bar-title class="text-h5">{{routeEvent.TITLE}}</v-app-bar-title>
-        <v-btn icon="mdi-menu" style="font-size: 1.25rem;"> </v-btn>
+
+        <v-dialog max-width="400px">
+          <template v-slot:activator="{ props }" >
+            <v-btn v-bind="props" icon="mdi-menu" style="font-size: 1.25rem;"> </v-btn>
+          </template>
+          <template v-slot:default="{ isActive }" >
+            <v-card style="border-radius: 15px;">
+              <v-card-text class="text-center">
+                <EventSetList isMobile></EventSetList>
+              </v-card-text>
+                <v-spacer></v-spacer>
+                <v-btn text="Close Dialog" :flat="true" @click="isActive.value = false"  style="position: absolute; right: 0; top: 0;">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+            </v-card>
+          </template>
+        </v-dialog>
+
       </v-container>
     </v-app-bar>
   </template>
@@ -21,11 +38,14 @@ import { computed, ref, onMounted, provide } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
+import EventSetList from '@/components/EventView/EventSetList.vue'
+import { useEmitter } from '@/composables/mitt'
 
 const { apiAuth } = useApi()
 const router = useRouter()
 const route = useRoute()
 const createSnackbar = useSnackbar()
+const emitter = useEmitter()
 
 // 判斷是否用手機
 const { xs } = useDisplay()
@@ -34,6 +54,11 @@ const isXs = computed(() => xs.value)
 const goBack = () => {
   router.go(-1)
 }
+
+emitter.on('updateEvent', async () => {
+  await getEventById()
+  emitter.emit('updateEventOk')
+})
 
 const routeEvent = ref({
   TITLE: (''),
@@ -123,8 +148,11 @@ const getEventById = async () => {
   }
 }
 
+const event = ref('')
+
 onMounted(async () => {
-  await getEventById()
+  event.value = await getEventById()
+  provide('routeEvent', event)
 })
 
 </script>

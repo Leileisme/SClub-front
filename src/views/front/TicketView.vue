@@ -1,5 +1,5 @@
 <template>
-   <!-- 頂部導覽列 -->
+  <!-- 頂部導覽列 -->
   <TicketAppBar></TicketAppBar>
 
   <v-container style="margin-top: 1rem; max-width:800px">
@@ -16,113 +16,52 @@
       </v-col>
 
       <v-window v-model="tab" style="width:100%; " >
-        <!-- 活動內容-->
+        <!-- 報名完成-->
+
         <v-window-item value="one">
           <v-container>
             <v-row>
-              <v-col cols="12" v-for="(item,idx) in user.TICKET_CART"  :key="item._id">
-                <!-- <span style="border: 1px solid #1BBCA9; padding: 2px;font-size: 0.8rem; color: #ccc;" >
-                  <v-icon style="font-size: 0.75rem;margin-top: -2px;" >mdi-map-marker</v-icon>  {{ item.EVENT.CITY }}
-                </span> -->
-                <v-card  width="100%" class="rounded-lg mt-1" >
-                  <v-card-item style="padding-right: 0;">
-                    <v-row>
-                      <!-- 內容 -->
-                      <v-col cols="9" style="position: relative;">
+              <v-col  v-if="!user.TICKET_CART.some(item => item.USED !== TicketUseState.N_USE) & !user.TICKET_CART.some(item => item.USED !== TicketUseState.USED)" style="color: #aaa;">目前沒有任何票券</v-col>
+              <!-- 未使用票券 -->
+              <template v-if="user.TICKET_CART.some(item => item.USED === TicketUseState.N_USE)">
+                <v-container style="padding-bottom: 0;">未使用票券</v-container>
+                <v-col cols="12" v-for="(item) in user.TICKET_CART.filter(item => item.USED === 0)"  :key="item._id" >
+                    <IsTicket :item="item"></IsTicket>
+                </v-col>
+              </template>
 
-                        <v-row>
-                          <!-- <v-col cols="12" style="padding-top: 0;"></v-col> -->
-                          <!-- 1. 主辦大頭 -->
-                          <v-col :cols="hostImage" class="d-flex " style="max-height: 60px;" >
-                            <v-avatar :size="hostSize"  style="cursor: pointer;" >
-                              <v-img  :src="item.EVENT.HOST.IMAGE"></v-img>
-                            </v-avatar>
-                          </v-col>
-
-                          <!-- 2. 訂單編號 -->
-                          <v-col cols="10" style="font-size: 0.9rem; color: #aaa;padding-right: 0;padding-left: 0; padding-bottom: 5px;">
-                            <v-col cols="12" style="padding-top: 0; padding-bottom: 0; " class="d-flex align-center">
-                                <span class="me-3">訂單編號　/ </span>
-                                <span style="border: 0px solid #1BBCA9; padding-right: 4px; padding-left:0.5px;padding-bottom:0px;font-size: 0.9rem; color: #1BBCA9;" >
-                                  <v-icon style="font-size: 0.8rem; margin-top: -2px;" >mdi-map-marker</v-icon>  {{ item.EVENT.CITY }}
-                                </span>
-                            </v-col>
-                            <v-col cols="12" style="padding-top: 7px; padding-bottom: 0;">{{ item.TICKET }}</v-col>
-                          </v-col>
-
-                          <!-- 3. 活動名稱 -->
-                          <v-col cols="12" style="font-size: 1.3rem; font-weight: 900; padding-top: 12px;" class="d-flex align-center" >{{ item.EVENT.TITLE }}</v-col>
-
-                          <v-col cols="12" style="color: #fff;padding-top:0 ;" >
-
-                          </v-col>
-
-                          <!-- 4. 活動日期 -->
-                          <v-col cols="12" style="padding-top: 12px;">
-                            <v-row>
-                              <!-- 開始日期 / 時間 -->
-                              <v-col :cols="dateCol " style="background-color:;">
-                                  <v-row style="background-color: ;">
-                                    <v-col cols="12" style="padding:0;padding-left: 12px;font-size: 0.8rem;color: #aaa"> {{ formatDate(item.EVENT.DATE)[0] }}</v-col>
-                                    <!-- 日期 -->
-                                    <v-col cols="8" style="background-color: ;font-size: 1.55rem; padding-right:0;padding-top: 0px;">{{ formatDate(item.EVENT.DATE)[1] }}</v-col>
-                                    <v-col cols="4" class="d-flex align-center" style="padding-top:0px;padding-bottom: 0;">
-                                      <v-row style="color:#aaa ;margin-top:-20px; " >
-                                        <v-col cols="12" style="padding: 0;font-size: 0.7rem;">{{ formatDate(item.EVENT.DATE)[2] }}</v-col>
-                                        <v-col cols="12" style="padding: 0; font-size: 0.85rem; margin-top: -3px;">{{ formatDate(item.EVENT.DATE)[3] }}</v-col>
-                                      </v-row>
-                                    </v-col>
-                                  </v-row>
-                              </v-col>
-
-                              <!-- 線 -->
-                              <v-col cols="2" class="d-flex align-center" style="padding-top: 18px;">
-                                <v-divider color="#aaa" thickness="2px" style="opacity: 1;"></v-divider>
-                              </v-col>
-
-                              <!-- 結束日期 / 時間 -->
-                              <v-col :cols="dateCol " style="background-color:;">
-                                <v-row style="background-color: ;">
-                                  <v-col cols="12" style="padding:0;padding-left: 12px;font-size: 0.8rem;color: #aaa"> {{ formatDate(item.EVENT.DATE)[0] }}</v-col>
-                                  <!-- 日期 -->
-                                  <v-col cols="8" style="background-color: ;font-size: 1.55rem; padding-right:0;padding-top: 0px;">{{ formatDate(item.EVENT.DATE)[1] }}</v-col>
-                                  <v-col cols="4" class="d-flex align-center" style="padding-top:0px;padding-bottom: 0;">
-                                    <v-row style="color:#aaa ;margin-top:-20px; " >
-                                      <v-col cols="12" style="padding: 0;font-size: 0.7rem;">{{ formatDate(item.EVENT.DATE)[2] }}</v-col>
-                                      <v-col cols="12" style="padding: 0; font-size: 0.85rem; margin-top: -3px;">{{ formatDate(item.EVENT.DATE)[4] }}</v-col>
-                                    </v-row>
-                                  </v-col>
-                                </v-row>
-                              </v-col>
-
-                            </v-row>
-                          </v-col>
-                        </v-row>
-                      </v-col>
-
-                        <!-- 查看 -->
-                      <v-col cols="2" style="border-left: 2px dashed #999;margin-left: 5px; padding: 0;" class="d-flex align-center">
-                        <v-row style="color: #aaa;" :style="{ 'margin-left': checkMarginStyle }">
-                        <v-col cols="12" style="padding-bottom: 5px;font-size: 1.2rem;padding-top: 10px;" class="d-flex justify-center">
-                          <v-icon @click="goUsedTicket(item)">mdi-eye</v-icon>
-                        </v-col>
-                        <v-col cols="12" style="padding-top: 0; font-size: 0.8rem;" class="d-flex justify-center" @click="goUsedTicket(item)">查看</v-col>
-                      </v-row>
-                      </v-col>
-
-                    </v-row>
-                  </v-card-item>
-                </v-card>
-              </v-col>
+              <!-- 已使用票券 -->
+              <template v-if="user.TICKET_CART.some(item => item.USED === TicketUseState.USED)" >
+                <v-container style="padding-bottom: 0; margin-top: 1rem;opacity: 0.6;" >已使用票券</v-container>
+                <v-col cols="12" v-for="(item) in user.TICKET_CART.filter(item => item.USED === 1)"  :key="item._id" style="opacity: 0.6;">
+                    <IsTicket :item="item"></IsTicket>
+                </v-col>
+              </template>
             </v-row>
           </v-container>
         </v-window-item>
 
-        <!--動態 / 直播-->
-        <v-window-item value="two"></v-window-item>
+        <!-- 已取消 -->
+        <v-window-item value="two">
+          <v-container>
+            <v-row>
+              <v-col  v-if="!user.TICKET_CART.some(item => item.USED !== TicketUseState.CANCEL )" style="color: #aaa;">目前沒有任何票券</v-col>
+
+              <template v-if="user.TICKET_CART.some(item => item.USED === TicketUseState.CANCEL)" >
+                <v-container style="padding-bottom: 0; margin-top: 1rem;opacity: 0.6;" >已使用票券</v-container>
+                <v-col cols="12" v-for="(item) in user.TICKET_CART.filter(item => item.USED === 1)"  :key="item._id" style="opacity: 0.6;">
+                    <IsTicket :item="item"></IsTicket>
+                </v-col>
+              </template>
+            </v-row>
+          </v-container>
+        </v-window-item>
       </v-window>
+
     </v-row>
+
   </v-container>
+
 </template>
 
 <script setup>
@@ -131,16 +70,29 @@ import { computed, ref, inject } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useUserStore } from '@/store/user'
 import TicketAppBar from '@/components/TicketView/TicketAppBar.vue'
+import InfoAll from '@/components/InfoAll.vue'
+import IsTicket from '@/components/TicketView/IsTicket.vue'
+import TicketUseState from '@/enums/TicketUseState'
 
 const router = useRouter()
 const route = useRoute()
 const user = useUserStore()
+// 取得路由資訊
+// const routeEvent = inject('routeEvent')。
 
 // 判斷是否用手機
 const { xs, sm } = useDisplay()
 const isXs = computed(() => xs.value)
 const isSm = computed(() => sm.value)
 
+// 使用票券的通知開關
+const InfoSwitch = ref(false)
+const InfoTitle = ref('使用票券')
+const closeInfo = () => {
+  InfoSwitch.value = false
+}
+
+// 設定日期格式
 const formatDate = (value) => {
   const parts = value.split(' ')
   const dateParts = parts[0].split('/')
@@ -165,57 +117,13 @@ const formatDate = (value) => {
   const formattedDate = changeDateFormat(parts[0])
   const week = getDayOfWeek(formattedDate)
 
-  return [year, monthDay, week, startTime, endTime]
+  return { year, monthDay, week, startTime, endTime }
 }
 
-const dateCol = computed(() => {
-  return isXs.value ? 5 : isSm.value ? 4 : 3
-})
-
-const checkMarginStyle = computed(() => {
-  return isXs.value ? '0.5rem' : '2rem'
-})
-
-const hostImage = computed(() => {
-  return isXs.value ? 2 : 1
-})
-
-const hostSize = computed(() => {
-  return isXs.value ? '140%' : isSm.value ? '180%' : '160%'
-})
-
+// 跳往 QRcode 使用的頁面 先不做太複雜
 const goUsedTicket = (value) => {
   router.push('/ticket/' + value.TICKET)
 }
-
-// const changeDateFormat = (value) => {
-//   return value.replace(/\//g, '-')
-// }
-
-// const getDayOfWeek = (value) => {
-//   const date = new Date(value)
-//   const days = ['日', '一', '二', '三', '四', '五', '六']
-//   return days[date.getDay()]
-// }
-
-// const WEEK = computed(() => {
-//   const formattedDate = changeDateFormat(YY_MM_DD)
-//   return getDayOfWeek(formattedDate)
-// })
-
-// const [date, timeStart, timeEnd] = user.EVENT.DATE.split(' ')
-// const [year, month, day] = date.split('/')
-// const [hourStart, minuteStart] = [timeStart.slice(0, 2), timeStart.slice(2)]
-// const [hourEnd, minuteEnd] = [timeEnd.slice(0, 2), timeEnd.slice(2)]
-
-// const YEAR = year
-// const MONTH = month.padStart(2, '0')
-// const DAY = day.padStart(2, '0')
-// const MINUTE_START = minuteStart.padStart(2, '0')
-// const MINUTE_END = minuteEnd.padStart(2, '0')
-// const HOUR_START = hourStart.padStart(2, '0')
-// const HOUR_END = hourEnd.padStart(2, '0')
-// const YY_MM_DD = date
 
 const tab = ref('one')
 const colorOne = computed(() => {

@@ -76,6 +76,16 @@ const routes = [
                   login: true,
                   admin: false
                 }
+              },
+              {
+                path: 'ticketUsed',
+                name: 'eventTicketUsed',
+                component: () => import('@/views/front/event/eventId/TicketUsed.vue'),
+                meta: {
+                  title: '學生社團網 | 使用票券',
+                  login: true,
+                  admin: false
+                }
               }]
           }
         ]
