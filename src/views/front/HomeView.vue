@@ -1,30 +1,25 @@
 <template>
-  <v-container class="d-flex justify-center" style="max-width: 800px">
-  <v-row >
-    <v-col cols="12" style="padding-right: 0;padding-left: 0;padding-top: 0;">
-      <div>
-        <!-- 輪播圖 -->
-        <div class="swiper  swiper1 mySwiper" style="position:relative;max-width:100vw;" :style="swiperTopStyle">
-          <div class="swiper-wrapper swiper-wrapper1">
-            <div class="swiper-slide" v-for="(item,idx) in randomEventsTop.slice(0,5)" :key="idx" >
-              <v-img
-              cover
-              :src="item.IMAGE" style="height: 100%;"
-              @click="router.push(`/event/${item._id}`)"
-              ></v-img>
-            </div>
-          </div>
-          <div class="swiper-pagination"></div>
+  <div>
+    <div class="swiper  swiper1 mySwiper" :style="swiperTopStyle">
+      <div class="swiper-wrapper swiper-wrapper1">
+        <div class="swiper-slide" v-for="(item,idx) in randomEventsTop.slice(0,5)" :key="idx" >
+          <v-img
+          cover
+          :src="item.IMAGE" style="height: 100%;"
+          @click="router.push(`/event/${item._id}`)"
+          ></v-img>
         </div>
       </div>
-    </v-col>
+      <div class="swiper-pagination"></div>
+    </div>
 
+  <v-container class="d-flex justify-center" style="max-width: 800px !important ;">
+  <v-row >
     <v-col cols="12" style="padding-bottom: 0;" >最新活動</v-col>
 
     <v-col cols="12" style="padding-left: 0; padding-right: 0;" >
         <div>
-          <!-- 輪播圖 -->
-          <div class="swiper mySwiper2 swiper2" style="max-width:100vw" :style="swiperSlideStyle">
+          <div class="swiper mySwiper2 swiper2" style="max-width:800px" :style="swiperSlideStyle">
             <div class="swiper-wrapper">
               <template v-for="(item,idx) in eventAll" :key="idx">
                 <div class="swiper-slide swiper-slide2"  @click="router.push(`/event/${item._id}`)">
@@ -84,38 +79,78 @@
       </v-select>
     </v-col>
 
-    <v-col cols="12"  v-for="(item,idx) in filteredEvents" :key="idx">
-      <v-card  class="rounded-xl" @click="router.push(`/event/${item._id}`)">
-        <v-card-item style="padding-left: 0; padding-top: 0;padding-bottom: 0;">
-          <v-row style="margin:0;" >
-            <v-col cols="5" class="text-center" style="padding: 0; height: 130px;">
-              <v-img :src="item.IMAGE"  cover   aspect-ratio="1"></v-img>
+    <template v-if="isXs">
+      <v-col :cols="cardCol"  v-for="(item,idx) in filteredEvents" :key="idx">
+        <v-card  class="rounded-xl" @click="router.push(`/event/${item._id}`)">
+          <v-card-item style="padding-left: 0; padding-top: 0;padding-bottom: 0;">
+            <v-row style="margin:0;" >
+              <v-col :cols="imageCol" class="text-center" style="padding: 0; height: 130px;">
+                <v-img :src="item.IMAGE"  cover   aspect-ratio="1"></v-img>
+              </v-col>
+
+              <v-col :cols="textCol" style="padding: 0;">
+                  <!-- 標題 -->
+                  <v-col cols="12" style="font-size: 1.2rem;font-weight: 900;padding-bottom: 5px;">{{ item.TITLE }}</v-col>
+                  <!-- 日期 -->
+                  <v-col cols="12" style="padding-top: 0;padding-bottom: 5px;color: #aaa;">
+                    <span class="me-1">{{ formatDate(item.DATE).monthDay2 }} ({{ formatDate(item.DATE).week }})</span>
+                    <span> {{ formatDate(item.DATE).startTime }}</span>
+                    <span>～</span>
+                    <span> {{ formatDate(item.DATE).endTime }}</span>
+                  </v-col>
+                  <v-col cols="12" style="color: #25ECE0; padding-top:0;">
+                    <v-icon style="font-size: 0.9rem;" class="me-1">mdi-map-marker</v-icon>
+                    <span>{{ item.CITY }}</span>
+                  </v-col>
+              </v-col>
+            </v-row>
+          </v-card-item>
+        </v-card>
+      </v-col>
+    </template>
+    <template v-else>
+      <v-col cols="12" class="text-center">
+        <v-row>
+          <v-col cols="12" style="color:">
+            <v-row>
+              <v-col cols="1">項次</v-col>
+              <v-col cols="1">海報</v-col>
+              <v-col cols="3">活動名稱</v-col>
+              <v-col cols="2">活動日期</v-col>
+              <v-col cols="1">開始時間</v-col>
+              <v-col cols="1">結束時間</v-col>
+              <v-col cols="2">地點</v-col>
+              <v-col cols="1">查看</v-col>
+              <BlankLine style="padding-bottom: 12px;"></BlankLine>
+            </v-row>
             </v-col>
 
-            <v-col cols="7" style="padding: 0;">
-              <v-rop>
-                <!-- 標題 -->
-                <v-col cols="12" style="font-size: 1.2rem;font-weight: 900;padding-bottom: 5px;">{{ item.TITLE }}</v-col>
-                <!-- 日期 -->
-                <v-col cols="12" style="padding-top: 0;padding-bottom: 5px;color: #aaa;">
-                  <span class="me-1">{{ formatDate(item.DATE).monthDay2 }} ({{ formatDate(item.DATE).week }})</span>
-                  <span> {{ formatDate(item.DATE).startTime }}</span>
-                  <span>～</span>
-                  <span> {{ formatDate(item.DATE).endTime }}</span>
+          <template v-for="(item,idx) in filteredEvents" :key="idx">
+            <!-- <v-col cols="12" :style="{ backgroundColor: idx % 2 === 0 ? 'rgba(0,0,0,0.3)' : '#color2', color: idx % 2 === 0 ? '#25ECE0' : '#fff' }" style="padding-top: 20px;padding-bottom: 20px;"> -->
+            <v-col cols="12" style="padding-top: 20px;padding-bottom: 20px; color: #aaa;" class="hoverClass" >
+              <v-row class="d-flex align-center">
+                <v-col cols="1">{{ idx+1 }}</v-col>
+                <v-col cols="1">
+                  <v-img :src="item.IMAGE" cover aspect-ratio="1"></v-img>
                 </v-col>
-                <v-col cols="12" style="color: #25ECE0; padding-top:0;">
-                  <v-icon style="font-size: 0.9rem;" class="me-1">mdi-map-marker</v-icon>
-                  <span>{{ item.CITY }}</span>
-                </v-col>
-              </v-rop>
+                <v-col cols="3"  style="font-size: 1.2rem;">{{ item.TITLE }}</v-col>
+                <v-col cols="2">{{ formatDate(item.DATE).monthDay2 }}</v-col>
+                <v-col cols="1">{{ formatDate(item.DATE).startTime }}</v-col>
+                <v-col cols="1">{{ formatDate(item.DATE).endTime }}</v-col>
+                <v-col cols="2">{{ item.CITY }}</v-col>
+                <v-col cols="1"  @click="router.push(`/event/${item._id}`)" style="font-size: 0.8rem;"><v-icon>mdi-eye</v-icon></v-col>
+                <BlankLine style="padding-top: 12px;" ></BlankLine>
+              </v-row>
             </v-col>
-          </v-row>
-        </v-card-item>
-      </v-card>
-    </v-col>
+          </template>
+        </v-row>
+      </v-col>
+   </template>
   </v-row>
 </v-container>
-  <!-- 【通知】後端訊息 -->
+</div>
+
+<!-- 【通知】後端訊息 -->
   <InfoAll :InfoSwitch="InfoSwitch" :InfoText="InfoText" :closeInfo="closeInfo" @update:InfoSwitch="value => InfoSwitch = value"></InfoAll>
 </template>
 
@@ -129,6 +164,7 @@ import { useEmitter } from '@/composables/mitt'
 import InfoAll from '@/components/InfoAll.vue'
 import Swiper from 'swiper/bundle'
 import 'swiper/css/bundle'
+import BlankLine from '@/components/BlankLine.vue'
 
 const { apiAuth } = useApi()
 const router = useRouter()
@@ -168,6 +204,18 @@ const filteredEvents = computed(() => {
   })
 })
 
+const cardCol = computed(() => {
+  return isXs.value ? 12 : 12
+})
+
+const imageCol = computed(() => {
+  return isXs.value ? 5 : 3
+})
+
+const textCol = computed(() => {
+  return isXs.value ? 7 : 9
+})
+
 // 後端通知
 const InfoSwitch = ref(false)
 const InfoText = ref('')
@@ -177,11 +225,11 @@ const closeInfo = () => {
 }
 
 const swiperTopStyle = computed(() => {
-  return isXs.value ? 'height: 250px;' : 'height: 310px;'
+  return isXs.value ? 'height: 250px; width:100vw' : 'height: 310px;max-width:800px;'
 })
 
 const swiperSlideStyle = computed(() => {
-  return isXs.value ? 'height: 180px;' : 'height: 300px;'
+  return isXs.value ? 'height: 180px; width:100vw' : 'height: 300px;max-width:800px;'
 })
 
 const swiper2Style = computed(() => {
@@ -292,5 +340,47 @@ onMounted(async () => {
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    /* html,
+    body {
+      position: relative;
+      height: 100%;
+    }
+
+    body {
+      background: #eee;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      margin: 0;
+      padding: 0;
+    }
+
+    .swiper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .swiper-slide img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    } */
+
+    .hoverClass:hover {
+      color: #25ECE0 !important;
+      cursor: pointer;
+      transform: scale(105%);
     }
     </style>
