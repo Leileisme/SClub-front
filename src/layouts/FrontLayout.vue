@@ -131,7 +131,7 @@ const TopNavItems = computed(() => {
 const BottomNavItems = computed(() => {
   return [
     { to: '/', text: '首頁', icon: 'mdi-home', show: user.isLogin },
-    { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: user.isLogin },
+    // { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: user.isLogin },
     // { to: '', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show:user.isLogin },
     { to: '/post', text: '動態', icon: 'mdi-account-multiple', show: user.isLogin },
     // { to: '', text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin },
@@ -144,7 +144,7 @@ const BottomNavItems = computed(() => {
 const navItems = computed(() => {
   return [
     { to: '/', text: '首頁', icon: 'mdi-home', show: user.isLogin },
-    { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: user.isLogin },
+    // { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: user.isLogin },
     // { to: '', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show: user.isLogin },
     { to: '/post', text: '動態', icon: 'mdi-account-multiple', show: user.isLogin },
     // { to: '/personal', text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin },
@@ -152,7 +152,7 @@ const navItems = computed(() => {
     { to: '/ticket', text: '票券', icon: 'mdi-ticket-confirmation-outline', show: user.isLogin },
     { to: '', text: '通知', icon: 'mdi-bell-outline', show: user.isLogin },
     { to: '', text: '訊息', icon: 'mdi-chat-processing', show: user.isLogin },
-    { to: '/admin', text: '管理員後台', icon: 'mdi-account-cog-outline', show: user.IS_ADMIN }
+    // { to: '/admin', text: '管理員後台', icon: 'mdi-account-cog-outline', show: user.IS_ADMIN }
   ]
 })
 

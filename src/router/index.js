@@ -48,6 +48,16 @@ const routes = [
         },
         children: [
           {
+            path: '',
+            name: 'eventHome.vue',
+            component: () => import('@/views/front/event/EventHome.vue'),
+            meta: {
+              title: '學生社團網 | 活動',
+              login: true,
+              admin: false
+            }
+          },
+          {
             path: ':id',
             name: 'eventId',
             component: () => import('@/views/front/event/EventId.vue'),
