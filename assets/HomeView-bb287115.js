@@ -1,0 +1,1 @@
+import{x as o,y as s,A as _,o as e}from"./index-59a9ea1a.js";import{_ as r}from"./_plugin-vue_export-helper-c27b6911.js";const a={__name:"HomeView",setup(u){o(),s();const{xs:t}=_();return e(()=>t.value),e(()=>[{to:"",text:"會員管理"},{to:"",text:"活動管理"},{to:"",text:"貼文管理"},{to:"/",text:"回首頁"}]),(c,n)=>null}},x=r(a,[["__scopeId","data-v-29b2b5f2"]]);export{x as default};
