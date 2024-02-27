@@ -85,7 +85,7 @@
             <!-- 參加活動 -->
             <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px; padding-bottom: 0;" >{{ new Date().getFullYear() }}</v-col>
             <template v-if="routeUser.TICKET_CART.length !== 0">
-              <template v-for="item in sortedRouteTicketCart" :key="item._id" >
+              <template v-for="item in sortedRouteTicketCart.filter(item => item.USED === 1)" :key="item._id" >
                 <v-col cols="3" style="background: rgba(6, 50, 107,0);padding-right: 0;">
                 <span class="me-1">{{ formatDate(item.EVENT.DATE).month }}</span>
                 <span class="me-1"  style="font-size: 0.7rem;">月</span>
@@ -106,7 +106,7 @@
               </template>
             </template>
 
-            <v-col cols="12" v-else>
+            <v-col cols="12" v-if="sortedRouteTicketCart.filter(item => item.USED === 1).length ===0">
               <div style="font-size: 1.3rem;color: #ccc;">目前無活動</div>
             </v-col>
           </v-row>

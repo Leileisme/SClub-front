@@ -5,8 +5,8 @@
       <v-row style="padding-top: 3px; padding-bottom: 3px;" class="d-flex align-center"  >
         <!-- 大頭 -->
         <v-col cols="3" >
-            <v-avatar size="80%"  @click="goUserName" style="cursor: pointer;" >
-              <v-img  :src="item.IMAGE"></v-img>
+            <v-avatar size="75"  @click="goUserName" style="cursor: pointer;" >
+              <v-img  :src="item.IMAGE" cover></v-img>
             </v-avatar>
         </v-col>
 

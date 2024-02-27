@@ -60,7 +60,7 @@
             <v-row>
               <v-col cols="12" class="d-flex justify-center align-center">
               <v-avatar :size="avatarSize"  >
-                <v-img  :src="routeUser.IMAGE"></v-img>
+                <v-img  :src="routeUser.IMAGE" cover></v-img>
               </v-avatar>
             </v-col>
             </v-row>
