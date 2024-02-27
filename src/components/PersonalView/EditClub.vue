@@ -111,7 +111,7 @@
 
                   <!-- 搜尋的id -->
                   <v-menu :activator="'#clubCoreMember_user' + idx" >
-                    <v-list>
+                    <v-list style="max-height: 300px; overflow-y: auto;">
                       <!-- 搜尋有符合 -->
                       <template v-if="field.value.USER">
                         <v-list-item
@@ -121,12 +121,12 @@
                         >
                         <!-- 搜尋清單 -->
                           <v-row  style="margin: 5px; ">
-                            <v-col cols="4" class="justify-center align-center" style="padding: 8px;">
-                              <v-avatar size="100%"  >
-                                <v-img :src="item.IMAGE"></v-img>
+                            <v-col cols="5" class="justify-center " style="padding: 8px;">
+                              <v-avatar size="35"  >
+                                <v-img :src="item.IMAGE" cover></v-img>
                               </v-avatar>
                             </v-col>
-                            <v-col cols="8"  class="justify-center align-center">
+                            <v-col cols="7"  class="justify-center align-center">
                               <v-row >
                                 <v-col cols="12" style="padding: 0; margin: 0;font-size: 1.1rem;color: #25ECE0;"  >{{ item.USER_NAME }}</v-col>
                                 <v-col cols="12" style="padding: 0;margin: 0; font-size: 0.8rem;color: #cccccc;">{{ item.NICK_NAME }}</v-col>

@@ -1,38 +1,43 @@
 <template>
-  <div>
-    <div class="swiper  swiper1 mySwiper" :style="swiperTopStyle">
-      <div class="swiper-wrapper swiper-wrapper1">
-        <div class="swiper-slide" v-for="(item,idx) in randomEventsTop.slice(0,5)" :key="idx" >
-          <v-img
-          cover
-          :src="item.IMAGE" style="height: 100%;"
-          @click="router.push(`/event/${item._id}`)"
-          ></v-img>
-        </div>
-      </div>
-      <div class="swiper-pagination"></div>
-    </div>
 
-  <v-container class="d-flex justify-center" style="max-width: 800px !important ;">
+  <v-container class="d-flex justify-center" style=" position: relative"  :style="maxWidth">
   <v-row >
+    <v-col cols="12">
+      <div>
+        <div class="swiper  swiper1 mySwiper" :style="swiperTopStyle">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide" v-for="(item,idx) in randomEventsTop.slice(0,5)" :key="idx" style="cursor: pointer;">
+            <v-img
+            cover
+            :src="item.IMAGE" style="height: 100%;"
+            @click="router.push(`/event/${item._id}`)"
+            ></v-img>
+          </div>
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+    </v-col>
     <v-col cols="12" style="padding-bottom: 0;" >最新活動</v-col>
 
     <v-col cols="12" style="padding-left: 0; padding-right: 0;" >
         <div>
-          <div class="swiper mySwiper2 swiper2" style="max-width:800px" :style="swiperSlideStyle">
+          <div class="swiper mySwiper2 swiper2"  :style="swiperSlideStyle">
             <div class="swiper-wrapper">
-              <template v-for="(item,idx) in eventAll" :key="idx">
+              <template v-for="(item,idx) in sortedEventNewMade.slice(0,8)" :key="idx">
                 <div class="swiper-slide swiper-slide2"  @click="router.push(`/event/${item._id}`)">
-                  <v-card  width="100%" class="rounded-lg mt-1" style="position: relative;">
+                  <v-card  width="100%" class="rounded-lg" style="position: relative;cursor: pointer;">
                     <v-card-item style="padding: 0;">
                       <v-row style="margin: 0;padding: 0;">
                         <v-col cols="12" style="margin: 0; padding: 0;width: 100%;" :style="swiper2Style">
                           <v-img :src="item.IMAGE" cover></v-img>
                         </v-col>
-                        <v-col cols="11" >
-                          <span class="me-2">{{ item.TITLE.length > 10 ? item.TITLE.substring(0, 15) + '...' : item.TITLE }}</span>
-                          <span>{{ formatDate(item.DATE).startTime }}</span>
-                          <span>開始</span>
+                        <v-col cols="11"  >
+                          <span v-if="isXs" class="me-2">{{ item.TITLE.length > 10 ? item.TITLE.substring(0, 15) + '...' : item.TITLE }}</span>
+                          <span v-else class="me-2" >{{ item.TITLE }}</span>
+
+                          <span style="color:#25ECE0;" class="me-1">{{ formatDate(item.DATE).startTime }}</span>
+                          <span style="color:#25ECE0;">開始</span>
                         </v-col>
                           <div style="position: absolute;background-color:#fff;top: 5px;left: 5px;width: 50px;height: 50px;font-weight: 900;" class="rounded-lg  text-center">
                             <div style="width: 100%; height: 55%;background-color: red;font-size: 0.9rem;line-height: 1.8rem;" class="rounded-t-lg ">
@@ -80,17 +85,18 @@
     </v-col>
 
     <template v-if="isXs">
-      <v-col :cols="cardCol"  v-for="(item,idx) in filteredEvents" :key="idx">
-        <v-card  class="rounded-xl" @click="router.push(`/event/${item._id}`)">
+      <v-col :cols="cardCol"  v-for="(item,idx) in  filteredEvents.slice(0,number)" :key="idx">
+        <v-card  class="rounded-lg" @click="router.push(`/event/${item._id}`)">
           <v-card-item style="padding-left: 0; padding-top: 0;padding-bottom: 0;">
             <v-row style="margin:0;" >
-              <v-col :cols="imageCol" class="text-center" style="padding: 0; height: 130px;">
-                <v-img :src="item.IMAGE"  cover   aspect-ratio="1"></v-img>
+              <v-col :cols="imageCol" class="text-center" style="padding: 0; height: 160px;">
+                <v-img :src="item.IMAGE"  cover   aspect-ratio="1" ></v-img>
               </v-col>
 
-              <v-col :cols="textCol" style="padding: 0;">
+              <v-col :cols="textCol" >
+                <v-row>
                   <!-- 標題 -->
-                  <v-col cols="12" style="font-size: 1.2rem;font-weight: 900;padding-bottom: 5px;">{{ item.TITLE }}</v-col>
+                  <v-col cols="12" style="font-size: 1.2rem;font-weight: 600;padding-bottom: 5px;">{{ item.TITLE }}</v-col>
                   <!-- 日期 -->
                   <v-col cols="12" style="padding-top: 0;padding-bottom: 5px;color: #aaa;">
                     <span class="me-1">{{ formatDate(item.DATE).monthDay2 }} ({{ formatDate(item.DATE).week }})</span>
@@ -102,12 +108,18 @@
                     <v-icon style="font-size: 0.9rem;" class="me-1">mdi-map-marker</v-icon>
                     <span>{{ item.CITY }}</span>
                   </v-col>
+                </v-row>
               </v-col>
             </v-row>
           </v-card-item>
         </v-card>
       </v-col>
+      <v-col cols="12" style="color: #FF3333;text-align: right; padding-top:10px ;font-size: 1.2rem;">
+        <span class="pe-2" v-if="filteredEvents.length>number" style="cursor: pointer;" @click="addNumber">and more</span>
+        <span v-else style="color: #25ECE0;">已經到底了（;≧皿≦）</span>
+      </v-col>
     </template>
+
     <template v-else>
       <v-col cols="12" class="text-center">
         <v-row>
@@ -116,47 +128,57 @@
               <v-col cols="1">項次</v-col>
               <v-col cols="1">海報</v-col>
               <v-col cols="3">活動名稱</v-col>
-              <v-col cols="2">活動日期</v-col>
+              <v-col cols="1">活動日期</v-col>
               <v-col cols="1">開始時間</v-col>
               <v-col cols="1">結束時間</v-col>
-              <v-col cols="2">地點</v-col>
-              <v-col cols="1">查看</v-col>
-              <BlankLine style="padding-bottom: 12px;"></BlankLine>
+              <v-col cols="2">地區</v-col>
+              <v-col cols="2">預售票</v-col>
+              <v-divider color="#fff" class="border-opacity-50"></v-divider>
             </v-row>
             </v-col>
 
-          <template v-for="(item,idx) in filteredEvents" :key="idx">
+          <template v-for="(item,idx) in filteredEvents.slice(0,number)" :key="idx">
             <!-- <v-col cols="12" :style="{ backgroundColor: idx % 2 === 0 ? 'rgba(0,0,0,0.3)' : '#color2', color: idx % 2 === 0 ? '#25ECE0' : '#fff' }" style="padding-top: 20px;padding-bottom: 20px;"> -->
-            <v-col cols="12" style="padding-top: 20px;padding-bottom: 20px; color: #aaa;" class="hoverClass" >
-              <v-row class="d-flex align-center">
-                <v-col cols="1">{{ idx+1 }}</v-col>
+            <v-col cols="12" style="padding-top: 0px;padding-bottom: 0px; color: #aaa;" class="hoverClass" @click="router.push(`/event/${item._id}`)">
+              <v-divider color="#fff" class="border-opacity-50" ></v-divider>
+              <v-row class="d-flex align-center" style="padding-top: 20px;padding-bottom: 20px;">
+                <v-col cols="1" >{{ idx+1 }}</v-col>
                 <v-col cols="1">
                   <v-img :src="item.IMAGE" cover aspect-ratio="1"></v-img>
                 </v-col>
-                <v-col cols="3"  style="font-size: 1.2rem;">{{ item.TITLE }}</v-col>
-                <v-col cols="2">{{ formatDate(item.DATE).monthDay2 }}</v-col>
+                <v-col cols="3"  style="">{{ item.TITLE }}</v-col>
+                <v-col cols="1">{{ formatDate(item.DATE).monthDay2 }}</v-col>
                 <v-col cols="1">{{ formatDate(item.DATE).startTime }}</v-col>
                 <v-col cols="1">{{ formatDate(item.DATE).endTime }}</v-col>
                 <v-col cols="2">{{ item.CITY }}</v-col>
-                <v-col cols="1"  @click="router.push(`/event/${item._id}`)" style="font-size: 0.8rem;"><v-icon>mdi-eye</v-icon></v-col>
-                <BlankLine style="padding-top: 12px;" ></BlankLine>
+                <v-col cols="2">{{item.PRE_SALE-item.TICKET.length}} / {{ item.PRE_SALE }}</v-col>
+                <!-- <BlankLine style="padding-top: 12px;" ></BlankLine> -->
               </v-row>
+              <v-divider color="#fff" class="border-opacity-50"></v-divider>
             </v-col>
           </template>
+
+          <v-col cols="12" v-if="filteredEvents.length ===0" style="padding-bottom: 30px;padding-top: 30px;color: #aaa;" class="d-flex align-center">目前沒有活動</v-col>
+          <v-divider color="#fff" class="border-opacity-50"></v-divider>
+
+          <v-col cols="12" style="color: #FF3333;text-align: right; padding-top:20px ;font-size: 1.2rem;">
+            <span class="me-2" v-if="filteredEvents.length>number" style="cursor: pointer;" @click="addNumber">and more</span>
+            <span v-else style="color: #25ECE0;padding-bottom: 100px;">已經到底了（;≧皿≦）</span>
+          </v-col>
         </v-row>
       </v-col>
-   </template>
+    </template>
   </v-row>
 </v-container>
-</div>
 
 <!-- 【通知】後端訊息 -->
   <InfoAll :InfoSwitch="InfoSwitch" :InfoText="InfoText" :closeInfo="closeInfo" @update:InfoSwitch="value => InfoSwitch = value"></InfoAll>
+
 </template>
 
 <script setup>
 import { useDisplay } from 'vuetify'
-import { computed, ref, onMounted, provide } from 'vue'
+import { computed, ref, onMounted, provide, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useApi } from '@/composables/axios'
@@ -173,13 +195,33 @@ const createSnackbar = useSnackbar()
 const emitter = useEmitter()
 const { xs, sm } = useDisplay()
 const isXs = computed(() => xs.value)
+const isSm = computed(() => sm.value)
 
 // 所有活動搜尋
 const search = ref()
 const searchData = ref('')
 const city = ref()
 const cityItems = ['臺北市', '新北市', '桃園市', '臺中市', '臺南市', '高雄市', '新竹縣', '苗栗縣', '彰化縣', '南投縣', '雲林縣', '嘉義縣', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '澎湖縣', '金門縣', '連江縣', '基隆市', '新竹市', '嘉義市']
+const number = ref(5)
+const addNumber = () => {
+  number.value += 5
+}
 
+// 依照日期近遠改變排序
+const sortedEventAll = computed(() => {
+  return eventAll.value.slice().sort((a, b) => {
+    const dateA = a.DATE.split(' ')[0] // 分割日期和時間，並只取日期部分
+    const dateB = b.DATE.split(' ')[0]
+    return new Date(dateA) - new Date(dateB) // 將日期字符串轉換為 Date 物件並進行比較
+  })
+})
+
+// 依照建立順序
+const sortedEventNewMade = computed(() => {
+  return eventAll.value.slice().reverse()
+})
+
+// 隨機出現
 const randomEvents = computed(() => {
   return [...eventAll.value].sort(() => Math.random() - 0.5)
 })
@@ -204,6 +246,14 @@ const filteredEvents = computed(() => {
   })
 })
 
+watch([search, city], () => {
+  number.value = 5
+})
+
+const maxWidth = computed(() => {
+  return isXs.value ? 'max-width: calc(100vw - 30px);' : isSm.value ? 'max-width: 600px ;' : 'max-width:800px;'
+})
+
 const cardCol = computed(() => {
   return isXs.value ? 12 : 12
 })
@@ -225,11 +275,11 @@ const closeInfo = () => {
 }
 
 const swiperTopStyle = computed(() => {
-  return isXs.value ? 'height: 250px; width:100vw' : 'height: 310px;max-width:800px;'
+  return isXs.value ? 'height: 250px;width: calc(100vw - 30px);' : isSm.value ? 'height: 400px;max-width:calc(85vw) ;' : 'height: 400px;max-width:800px;'
 })
 
 const swiperSlideStyle = computed(() => {
-  return isXs.value ? 'height: 180px; width:100vw' : 'height: 300px;max-width:800px;'
+  return isXs.value ? 'height: 180px;width: calc(100vw - 30px);' : isSm.value ? 'height: 300px;max-width:85vw ;' : 'height: 300px;max-width:800px;'
 })
 
 const swiper2Style = computed(() => {
@@ -381,6 +431,6 @@ onMounted(async () => {
     .hoverClass:hover {
       color: #25ECE0 !important;
       cursor: pointer;
-      transform: scale(105%);
+      transform: scale(102%);
     }
     </style>

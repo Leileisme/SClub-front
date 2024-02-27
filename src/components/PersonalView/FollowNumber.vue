@@ -5,14 +5,14 @@
         <!-- 貼文 -->
       <v-col cols="2" style="background: ;">
         <v-row class="text-center">
-          <v-col cols="12" style="padding: 0;">{{routeUser.FANS.length}}</v-col>
+          <v-col cols="12" style="padding: 0;">{{routeUser.MAKE_POST.length}}</v-col>
           <v-col cols="12" style="padding: 0;">貼文</v-col>
         </v-row>
       </v-col>
       <!-- 活動 -->
       <v-col cols="2" style="background: ;">
         <v-row class="text-center">
-          <v-col cols="12" style="padding: 0;">{{routeUser.FANS.length}}</v-col>
+          <v-col cols="12" style="padding: 0;">{{routeUser.MAKE_EVENTS_ID.length}}</v-col>
           <v-col cols="12" style="padding: 0;">活動</v-col>
         </v-row>
       </v-col>

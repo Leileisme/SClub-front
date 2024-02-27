@@ -20,7 +20,7 @@
       </v-text-field>
       <!-- 搜尋結果列 -->
       <v-menu activator="#searchBtn" >
-        <v-list>
+        <v-list  style="max-height: 300px; overflow-y: auto;">
           <!-- 搜尋有符合 -->
           <template v-if="searchResults.length > 0">
             <v-list-item
@@ -34,8 +34,8 @@
             <template v-if="isXs">
               <v-row  style="margin: 5px; ">
                 <v-col cols="3" class="d-flex justify-center align-center">
-                  <v-avatar size="100%"  >
-                  <v-img  :src="item.IMAGE"></v-img>
+                  <v-avatar size="40"  >
+                  <v-img  :src="item.IMAGE" cover></v-img>
                 </v-avatar>
                 </v-col>
                 <v-col cols="9"  class="d-flex justify-center align-center">
@@ -50,8 +50,8 @@
             <template v-else>
               <v-row  style="margin: 5px; ">
                 <v-col cols="1" class="d-flex justify-center align-center me-3"  style="height: 45px;">
-                  <v-avatar size="220%"  >
-                  <v-img  :src="item.IMAGE"></v-img>
+                  <v-avatar size="45"  >
+                  <v-img  :src="item.IMAGE" cover></v-img>
                 </v-avatar>
                 </v-col>
                 <v-col cols="9"  class="d-flex justify-center align-center">
@@ -75,18 +75,6 @@
         </template>
         </v-list>
       </v-menu>
-      </v-col>
-
-      <v-col cols="12">
-        <v-carousel style="height: 200px;"  hide-delimiters  show-arrows="hover">
-          <template v-for="(item,idx) in eventAll.slice(0,3)" :key="idx">
-          <v-carousel-item
-            :src=item.IMAGE
-            cover
-          ></v-carousel-item>
-        </template>
-        </v-carousel>
-
       </v-col>
     </v-row>
 </v-container>

@@ -41,8 +41,8 @@
 
         <!-- 主辦單位頭像 -->
         <v-col :cols="imageCol"  class="d-flex justify-center" style="background-color: ;">
-          <v-avatar size="96%" @click="goUserName"  style="cursor: pointer;">
-            <v-img  :src="routeEvent.HOST.IMAGE"></v-img>
+          <v-avatar :size="avatarSize" @click="goUserName"  style="cursor: pointer;">
+            <v-img  :src="routeEvent.HOST.IMAGE" cover></v-img>
           </v-avatar>
         </v-col>
         <!-- 活動標題 -->
@@ -78,8 +78,8 @@
           <!-- 活動內容-->
           <v-window-item value="one">
             <v-col cols="12" style="color: #25ECE0; font-size: 0.9rem; font-weight: bold; padding-bottom: 0px;">活動介紹</v-col>
-            <v-col cols="12">
-              {{ routeEvent.DESCRIPTION }}
+            <v-col cols="12" >
+            <pre style="white-space: pre-wrap;">{{ routeEvent.DESCRIPTION }}</pre>
             </v-col>
 
             <!-- 主辦單位 -->
@@ -91,8 +91,8 @@
             <!-- 協辦單位 -->
             <v-col v-if="routeEvent.CO_ORGANIZER.length>0" cols="12"></v-col>
             <v-col v-if="routeEvent.CO_ORGANIZER.length>0" cols="12" style="color: #25ECE0; font-size: 0.9rem; font-weight: bold;padding-bottom: 0px;">協辦單位</v-col>
-            <v-col cols="12">
-              <EventHostCard  v-for="item in routeEvent.CO_ORGANIZER" :key="item._id" :item="item"></EventHostCard>
+            <v-col cols="12"  v-for="item in routeEvent.CO_ORGANIZER" :key="item._id">
+              <EventHostCard  :item="item"></EventHostCard>
             </v-col>
           </v-window-item>
 
@@ -159,6 +159,10 @@ const getTicketText = computed(() => {
 // 判斷是否用手機
 const { xs } = useDisplay()
 const isXs = computed(() => xs.value)
+
+const avatarSize = computed(() => {
+  return isXs.value ? 80 : 85
+})
 
 const aspectRatio = computed(() => {
   return isXs.value ? 16 / 9 : 8 / 3

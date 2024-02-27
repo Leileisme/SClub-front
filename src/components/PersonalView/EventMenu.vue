@@ -2,15 +2,19 @@
   <div class="d-flex justify-space-around">
     <v-menu>
       <template v-slot:activator="{ props }">
-        <v-icon v-bind="props" color="#fff">mdi-dots-vertical</v-icon>
+        <v-icon v-bind="props"  class="textHover">mdi-dots-vertical</v-icon>
       </template>
       <v-list>
         <v-divider :style="styles.dividerFirst"></v-divider>
+        <template v-if="!joinEvent">
         <v-list-item :style="styles.listItem">編輯</v-list-item>
         <v-divider :style="styles.divider"></v-divider>
+      </template>
         <v-list-item :style="styles.listItem">分享</v-list-item>
-        <v-divider :style="styles.divider"></v-divider>
-        <v-list-item :style="styles.listItem" @click="deleteItem">刪除</v-list-item>
+        <template v-if="!joinEvent">
+          <v-divider :style="styles.divider"></v-divider>
+          <v-list-item :style="styles.listItem" @click="deleteItem">刪除</v-list-item>
+        </template>
         <v-divider :style="styles.dividerLast"></v-divider>
       </v-list>
     </v-menu>
@@ -47,6 +51,11 @@ const props = defineProps({
     type: String,
     default: '',
     required: true
+  },
+  joinEvent: {
+    type: Boolean,
+    default: false,
+    required: false
   }
 })
 
@@ -116,3 +125,11 @@ const deleteItem = async () => {
 }
 
 </script>
+
+<style scoped>
+.textHover:hover{
+color: #25ECE0;
+text-shadow: #25ECE0 0px 0px 1.2px;
+cursor: pointer;
+  }
+</style>

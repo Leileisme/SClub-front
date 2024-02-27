@@ -4,7 +4,7 @@
       <v-row class="box" style="background-color: ;padding-top: 1rem;">
         <!-- 【左】大頭照 -->
             <v-col cols="4" class="d-flex justify-center" style="padding-top: 1.2rem;">
-            <v-avatar size="100%"  >
+            <v-avatar size="115"  style="margin-top: 15px;" >
               <v-img  :src="routeUser.IMAGE"></v-img>
             </v-avatar>
         </v-col>
@@ -55,8 +55,8 @@
           <!-- 【左】大頭照 -->
           <v-col cols="4" style="border: 0px solid ;" >
             <v-row>
-              <v-col cols="12" class="d-flex justify-center">
-                <v-avatar size="100%" style="margin-top:0;" >
+              <v-col cols="12" class="d-flex justify-center align-center">
+                <v-avatar :size="avatarSize">
                   <v-img  :src="routeUser.IMAGE"></v-img>
                 </v-avatar>
               </v-col>
@@ -138,8 +138,9 @@ import BlankLine from '@/components/BlankLine.vue'
 const user = useUserStore()
 
 // 判斷是否用手機
-const { xs } = useDisplay()
+const { xs, sm } = useDisplay()
 const isXs = computed(() => xs.value)
+const isSm = computed(() => sm.value)
 
 // 分享網址，但是樣式不好看先留著沒用
 const share = () => {
@@ -155,50 +156,17 @@ const share = () => {
     console.log('Web Share API is not supported in your browser.')
   }
 }
+
+const avatarSize = computed(() => {
+  if (isSm.value) {
+    return 150
+  } else {
+    return 180
+  }
+})
+
 const routeUser = inject('routeUser')
 const routeEvent = inject('routeEvent')
-
-// const props = defineProps({
-//   routeUser: {
-//     type: Object,
-//     default: () => {
-//       return {
-//         EMAIL: (''),
-//         ROLE: (''),
-//         SCHOOL_NAME: (''),
-//         SCHOOL_CITY: (''),
-//         USER_NAME: (''),
-//         NICK_NAME: (''),
-//         CLUB_TH: (''),
-//         CLUB_CATEGORY: (''),
-//         IMAGE: (''),
-//         TICKET_CART: ([]),
-//         SCORES: (''),
-//         NOTIFY: ([]),
-//         KEEP_POST: ([]),
-//         KEEP_EVENT: ([]),
-//         FANS: ([]),
-//         FOLLOW: ([]),
-//         IS_STUDENT: (''),
-//         IS_ABLE: (''),
-//         IS_ADMIN: (''),
-//         DESCRIBE: (''),
-//         MAKE_EVENT: ([]),
-//         MAKE_POST: ([]),
-//         MAKE_TIME_POST: ([]),
-//         GO_EVENT: ([]),
-//         BE_MARK: ([]),
-//         IS_CORE_MEMBER: ([]),
-//         MAKE_EVENTS_ID: ([])
-//       }
-//     }
-//   },
-//   routeEvent: {
-//     type: Array,
-//     default: () => []
-//   }
-// })
-
 
 </script>
 

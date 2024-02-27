@@ -1,5 +1,5 @@
 <template>
-  <v-dialog  v-model="dialog"  fullscreen transition="dialog-bottom-transition">
+  <v-dialog  v-model="dialog"  fullscreen transition="dialog-bottom-transition" :persistent="true">
     <!-- 新增活動按鈕 -->
     <template v-slot:activator="{ props }">
       <v-btn v-if="isBtnTrue" type="button"  v-bind="props" style="background-color:#1BBCA9; height: auto; padding-top: 3px; padding-bottom:3px;" >
@@ -65,7 +65,9 @@
                           label="活動日期" prepend-icon="mdi-calendar" readonly v-bind="attrs" @click="menu = !menu">
                         </v-text-field>
                       </template>
-                      <v-date-picker  type="date" color="#25ECE0" v-model="date.value.value" :min="minDate" no-time no-title @input="menu = false">
+                      <v-date-picker  type="date" color="#25ECE0" v-model="date.value.value" no-time no-title @input="menu = false">
+
+                      <!-- <v-date-picker  type="date" color="#25ECE0" v-model="date.value.value" :min="minDate" no-time no-title @input="menu = false"> -->
                         <template v-slot:actions>
                           <v-btn  style="background-color: #25ECE0; color: rgb(0, 0, 0); font-weight: 900;" @click="menu = false">確定</v-btn>
                         </template>
@@ -223,8 +225,8 @@
                 </v-combobox>
 
               <!-- 搜尋的id -->
-              <v-menu activator="#searchId" >
-                <v-list>
+              <v-menu activator="#searchId"  @click.stop >
+                <v-list style="max-height: 300px; overflow-y: auto;">
                   <!-- 搜尋有符合 -->
                   <template v-if="search">
                     <v-list-item
@@ -234,9 +236,9 @@
                     >
                     <!-- 搜尋清單 -->
                       <v-row  style="margin: 5px; ">
-                        <v-col cols="5" class="justify-center align-center" style="padding: 8px; height: 45px;">
-                          <v-avatar size="100%"  >
-                            <v-img :src="item.IMAGE"></v-img>
+                        <v-col :cols="avatarCol" class="justify-center align-center" style="padding: 0px; height: 45px;">
+                          <v-avatar size="45"  >
+                            <v-img :src="item.IMAGE" cover></v-img>
                           </v-avatar>
                         </v-col>
                         <v-col cols="7"  class="justify-center align-center">
@@ -344,6 +346,14 @@ const router = useRouter()
 const cityItems = ['臺北市', '新北市', '桃園市', '臺中市', '臺南市', '高雄市', '新竹縣', '苗栗縣', '彰化縣', '南投縣', '雲林縣', '嘉義縣', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '澎湖縣', '金門縣', '連江縣', '基隆市', '新竹市', '嘉義市']
 const isPublicItems = ['公開', '學生']
 const categoryItems = ['音樂', '合唱', '管樂', '吉他', '熱音', '熱舞', '手語', '康輔', '桌遊', '運動', '棒球', '桌球', '籃球', '羽球', '排球', '天文', '文學', '話劇', '美術', '攝影', '校友會', '學生會', '系學會', '營隊', '學習']
+
+const avatarCol = computed(() => {
+  if (isXs.value) {
+    return 3
+  } else {
+    return 2
+  }
+})
 
 const props = defineProps({
   isBtn: {
@@ -617,7 +627,6 @@ const submit = handleSubmit(async (values) => {
       fd.append('ADD_REMARK', addRemark.value.value)
     }
 
-    await apiAuth.post('/events', fd)
     const response = await apiAuth.post('/events', fd)
     const eventId = response.data.result._id // 從伺服器回應中取得新建事件的 _id
     console.log('eventId', eventId)
@@ -631,6 +640,7 @@ const submit = handleSubmit(async (values) => {
         location: 'bottom'
       }
     })
+    emitter.emit('updateUserOk')
     router.push('/event/' + eventId)
   } catch (error) {
     console.log(error)
@@ -647,9 +657,6 @@ const submit = handleSubmit(async (values) => {
   }
 })
 
-emitter.on('updateUserOk', async () => {
-  closeDialog()
-})
 </script>
 <style scoped>
 ::v-deep .custom-chips .v-chip {

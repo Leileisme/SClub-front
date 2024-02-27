@@ -49,7 +49,8 @@
             <!-- 主辦活動 -->
             <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px; padding-bottom: 0;" >{{ new Date().getFullYear() }}</v-col>
             <template v-if="routeUser.MAKE_EVENTS_ID.length !== 0">
-              <template v-for="item in routeEvent" :key="item._id" >
+              <template v-for="item in sortedRouteEvent" :key="item._id" >
+
                 <v-col cols="3" style="background: rgba(6, 50, 107,0);padding-right: 0;">
                 <span class="me-1">{{ item.dateParts.month }}</span>
                 <span class="me-1"  style="font-size: 0.7rem;">月</span>
@@ -57,15 +58,14 @@
                 <span class="me-1" style="font-size: 0.7rem;">日</span>
                 </v-col>
 
-                <v-col cols="7" @click="$router.push(`/event/${item._id}`)" style="cursor: pointer;" class="title">{{ item.TITLE }}</v-col>
+                <v-col cols="7" @click="$router.push(`/event/${item._id}`)"  class="textHover">{{ item.TITLE }}</v-col>
 
-                <v-col cols="1"  class="d-flex justify-center">
-                  <v-icon style=" " color="#fff ">mdi-camera</v-icon>
+                <v-col cols="1"  class="d-flex justify-center textHover">
+                  <v-icon >mdi-camera</v-icon>
                 </v-col>
-                <v-col cols="1" class="d-flex justify-center" style="cursor: pointer;">
-                  <EventMenu v-if="isXs" isMobile  :itemId="item._id"></EventMenu>
+                <v-col cols="1" class="d-flex justify-center textHover">
+                  <EventMenu v-if="isXs" isMobile  :itemId="item._id" ></EventMenu>
                   <EventMenu v-else  :itemId="item._id"></EventMenu>
-
                 </v-col>
               </template>
             </template>
@@ -80,9 +80,36 @@
 
         <!-- 活動 -->
         <v-window-item value="three">
-        <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px; padding-bottom: 0;" >{{ new Date().getFullYear() }}</v-col>
-        <v-col cols="12">
-          <div style="font-size: 1.3rem;color: #ccc;">目前無活動參加紀錄</div>
+          <v-col cols="12">
+          <v-row>
+            <!-- 參加活動 -->
+            <v-col cols="12" style="font-size: 0.9rem; color: #ccc;padding-top: 0px; padding-bottom: 0;" >{{ new Date().getFullYear() }}</v-col>
+            <template v-if="routeUser.TICKET_CART.length !== 0">
+              <template v-for="item in sortedRouteTicketCart" :key="item._id" >
+                <v-col cols="3" style="background: rgba(6, 50, 107,0);padding-right: 0;">
+                <span class="me-1">{{ formatDate(item.EVENT.DATE).month }}</span>
+                <span class="me-1"  style="font-size: 0.7rem;">月</span>
+                <span class="me-1">{{ formatDate(item.EVENT.DATE).day }}</span>
+                <span class="me-1" style="font-size: 0.7rem;">日</span>
+                </v-col>
+
+                <v-col cols="7" @click="$router.push(`/event/${item.EVENT._id}`)"  class="textHover">{{ item.EVENT.TITLE }}</v-col>
+
+                <v-col cols="1"  class="d-flex justify-center textHover">
+                  <v-icon >mdi-camera</v-icon>
+                </v-col>
+                <v-col cols="1" class="d-flex justify-center textHover" >
+                  <EventMenu v-if="isXs" isMobile  :itemId="item._id" :joinEvent="true"></EventMenu>
+                  <EventMenu v-else  :itemId="item._id"  :joinEvent="true"></EventMenu>
+
+                </v-col>
+              </template>
+            </template>
+
+            <v-col cols="12" v-else>
+              <div style="font-size: 1.3rem;color: #ccc;">目前無活動</div>
+            </v-col>
+          </v-row>
         </v-col>
       </v-window-item>
     </v-window>
@@ -111,6 +138,24 @@ const tab = ref('')
 const { xs } = useDisplay()
 const isXs = computed(() => xs.value)
 
+// 【主辦活動】依照日期改變排序
+const sortedRouteEvent = computed(() => {
+  return props.routeEvent.slice().sort((a, b) => {
+    const dateA = a.DATE.split(' ')[0] // 分割日期和時間，並只取日期部分
+    const dateB = b.DATE.split(' ')[0]
+    return new Date(dateB) - new Date(dateA) // 將日期字符串轉換為 Date 物件並進行比較
+  })
+})
+
+// 參加活動
+const sortedRouteTicketCart = computed(() => {
+  return props.routeUser.TICKET_CART.slice().sort((a, b) => {
+    const dateA = a.EVENT.DATE.split(' ')[0] // 分割日期和時間，並只取日期部分
+    const dateB = b.EVENT.DATE.split(' ')[0]
+    return new Date(dateB) - new Date(dateA) // 將日期字符串轉換為 Date 物件並進行比較
+  })
+})
+
 const colorOne = computed(() => {
   return tab.value === 'one' ? 'color:#25ECE0; border:1.8px #25ECE0 solid;' : 'color:#fff; border:1.8px rgba(204,204,204,0.5) solid;'
 })
@@ -122,6 +167,36 @@ const colorTwo = computed(() => {
 const colorThree = computed(() => {
   return tab.value === 'three' ? 'color:#25ECE0; border:1.8px #25ECE0 solid;' : 'color:#fff; border:1.8px rgba(204,204,204,0.5) solid;'
 })
+
+const formatDate = (value) => {
+  const parts = value.split(' ')
+  const dateParts = parts[0].split('/')
+  const timePartStat = parts[1].split(' ')
+  const timePartsEnd = parts[2].split(' ')
+
+  const year = dateParts[0] // 2024
+  const monthDay = (dateParts[1].padStart(2, '0') + '.' + dateParts[2].padStart(2, '0')) // 02.29
+  const startTime = timePartStat[0].slice(0, 2) + ':' + timePartStat[0].slice(2) // 10:00
+  const endTime = timePartsEnd[0].slice(0, 2) + ':' + timePartsEnd[0].slice(2) // 22:00
+  const month = dateParts[1]
+  const day = dateParts[2]
+  const monthDay2 = (dateParts[1].padStart(2, '0') + '/' + dateParts[2].padStart(2, '0')) // 02.29
+
+  const changeDateFormat = (value) => {
+    return value.replace(/\//g, '-')
+  }
+
+  const getDayOfWeek = (value) => {
+    const date = new Date(value)
+    const days = ['日', '一', '二', '三', '四', '五', '六']
+    return days[date.getDay()]
+  }
+
+  const formattedDate = changeDateFormat(parts[0])
+  const week = getDayOfWeek(formattedDate)
+
+  return { year, monthDay, monthDay2, week, startTime, endTime, month, day }
+}
 
 const props = defineProps({
   routeUser: {
@@ -167,8 +242,9 @@ const props = defineProps({
 </script>
 
 <style scoped>
-.title:hover{
+.textHover:hover{
 color: #25ECE0;
 text-shadow: #25ECE0 0px 0px 1.2px;
+cursor: pointer;
   }
 </style>
