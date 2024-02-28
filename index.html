@@ -10,12 +10,62 @@
   <link rel="preload" as="font" type="font/ttf" href="assets/materialdesignicons-webfont-bd725a7a.ttf" crossorigin="anonymous">
 
   <meta charset="UTF-8" />
-  <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" href="./favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to Vuetify 3</title>
-  <script type="module" crossorigin src="./assets/index-59a9ea1a.js"></script>
+
+    <!-- Apple PWA -->
+    <meta name="theme-color" content="#333333">
+    <meta name="apple-mobile-web-app-title" content="SClub | 學生社團社群">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="mask-icon" href="./safari-pinned-tab.svg" color="#25ece0">
+
+  <!-- 還有啟動畫面，安卓會自己讀json檔，apple要自己寫 -->
+  <!-- 標籤產生器，須把圖片資料放到public -->
+  <!-- https://appsco.pe/developer/splash-screens -->
+  <link href="splashscreens/iphone5_splash.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/iphone6_splash.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/iphoneplus_splash.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/iphonex_splash.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/iphonexr_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/iphonexsmax_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/ipad_splash.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/ipadpro1_splash.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/ipadpro3_splash.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  <link href="splashscreens/ipadpro2_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+  
+  <!-- 微軟 MS PWA -->
+  <meta name="msapplication-TileColor" content="#333333">
+  <meta name="msapplication-square150x150logo" content="/mstile-150x150.png">
+  
+  <!-- 產生分享用的 mata tag，示意圖算是預覽，圖片要自己放，一定要是https的網站的圖片 -->
+  <!-- https://metatags.io/ -->
+  <!-- Primary Meta Tags -->
+<title>SClub | 學生社團社群</title>
+<meta name="title" content="SClub | 學生社團社群" />
+<meta name="description" content="社團活動與朋友緊密相連，專為學生社團打造的社群!" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://metatags.io/" />
+<meta property="og:title" content="SClub | 學生社團社群" />
+<meta property="og:description" content="社團活動與朋友緊密相連，專為學生社團打造的社群!" />
+<meta property="og:image" content="https://metatags.io/images/meta-tags.png" />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://metatags.io/" />
+<meta property="twitter:title" content="SClub | 學生社團社群" />
+<meta property="twitter:description" content="社團活動與朋友緊密相連，專為學生社團打造的社群!" />
+<meta property="twitter:image" content="https://metatags.io/images/meta-tags.png" />
+
+<!-- Meta Tags Generated with https://metatags.io -->
+  <script type="module" crossorigin src="./assets/index-ad800216.js"></script>
   <link rel="stylesheet" href="./assets/index-f2b12680.css">
-</head>
+<link rel="manifest" href="./manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
 
 <body>
   <div id="app"></div>
