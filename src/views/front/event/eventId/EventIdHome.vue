@@ -238,8 +238,7 @@ const goTicket = async () => {
 }
 
 onMounted(() => {
-  console.log(routeEvent.value.TICKET)
-  console.log(routeEvent.value.TICKET.some(ticket => ticket.USER === user._id))
+
 })
 
 </script>

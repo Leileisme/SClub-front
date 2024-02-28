@@ -275,11 +275,11 @@ const closeInfo = () => {
 }
 
 const swiperTopStyle = computed(() => {
-  return isXs.value ? 'height: 250px;width: calc(100vw - 30px);' : isSm.value ? 'height: 400px;max-width:calc(85vw) ;' : 'height: 400px;max-width:800px;'
+  return isXs.value ? 'height: 250px;width: calc(100vw - 30px);' : isSm.value ? 'height: 400px;max-width:calc(85vw) ;' : 'height: 400px;max-width:745px;'
 })
 
 const swiperSlideStyle = computed(() => {
-  return isXs.value ? 'height: 180px;width: calc(100vw - 30px);' : isSm.value ? 'height: 300px;max-width:85vw ;' : 'height: 300px;max-width:800px;'
+  return isXs.value ? 'height: 180px;width: calc(100vw - 30px);' : isSm.value ? 'height: 300px;max-width:85vw ;' : 'height: 300px;max-width:745px;'
 })
 
 const swiper2Style = computed(() => {
@@ -333,8 +333,6 @@ const formatDate = (value) => {
 
 onMounted(async () => {
   await getEventAll()
-  console.log('eventAll', eventAll.value)
-
   const swiper = new Swiper('.mySwiper', {
     spaceBetween: 30,
     pagination: {
@@ -391,42 +389,6 @@ onMounted(async () => {
       height: 100%;
       object-fit: cover;
     }
-
-    /* html,
-    body {
-      position: relative;
-      height: 100%;
-    }
-
-    body {
-      background: #eee;
-      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-      font-size: 14px;
-      color: #000;
-      margin: 0;
-      padding: 0;
-    }
-
-    .swiper {
-      width: 100%;
-      height: 100%;
-    }
-
-    .swiper-slide {
-      text-align: center;
-      font-size: 18px;
-      background: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .swiper-slide img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    } */
 
     .hoverClass:hover {
       color: #25ECE0 !important;

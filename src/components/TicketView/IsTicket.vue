@@ -7,9 +7,9 @@
 
           <v-row>
             <!-- 1. 主辦大頭 -->
-            <v-col :cols="hostImage" class="d-flex " style="max-height: 60px;" >
+            <v-col cols="2" class="d-flex " style="max-height: 60px;" >
               <v-avatar :size="hostSize"  style="cursor: pointer;" >
-                <v-img  :src="item.EVENT.HOST.IMAGE"></v-img>
+                <v-img  :src="item.EVENT.HOST.IMAGE" cover></v-img>
               </v-avatar>
             </v-col>
 
@@ -102,12 +102,8 @@ const checkMarginStyle = computed(() => {
   return isXs.value ? '0.5rem' : '2rem'
 })
 
-const hostImage = computed(() => {
-  return isXs.value ? 2 : 1
-})
-
 const hostSize = computed(() => {
-  return isXs.value ? '140%' : isSm.value ? '180%' : '160%'
+  return isXs.value ? 40 : 50
 })
 
 // 跳往 QRcode 使用的頁面 先不做太複雜

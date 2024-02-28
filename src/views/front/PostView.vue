@@ -1,8 +1,8 @@
 <template>
   <v-container style="max-width: 800px;" class="d-flex justify-center">
     <v-row>
-      <v-col cols="12">
-      <!-- 搜尋列 -->
+      <!-- 舊的搜尋列 -->
+      <!-- <v-col cols="12">
       <v-text-field
         v-model="search"
         label="搜尋"
@@ -10,7 +10,7 @@
         single-line
         variant="outlined"
         hide-details
-        @input="searchData"
+        @input="getUserAll"
         id="searchBtn"
         style="position: relative;padding: 1rem;max-width: 800px;"
       >
@@ -18,10 +18,10 @@
           <v-icon>mdi-close</v-icon>
         </v-list-item>
       </v-text-field>
-      <!-- 搜尋結果列 -->
+
       <v-menu activator="#searchBtn" >
         <v-list  style="max-height: 300px; overflow-y: auto;">
-          <!-- 搜尋有符合 -->
+
           <template v-if="searchResults.length > 0">
             <v-list-item
             v-for="(item) in searchResults"
@@ -30,7 +30,6 @@
             :to="'/'+item.USER_NAME"
             >
 
-            <!-- xs 手機版 搜尋清單 -->
             <template v-if="isXs">
               <v-row  style="margin: 5px; ">
                 <v-col cols="3" class="d-flex justify-center align-center">
@@ -67,7 +66,6 @@
           </v-list-item>
         </template>
 
-        <!-- 無搜尋符合 -->
         <template v-else>
           <v-list-item>
             <v-list-item-title>無搜尋結果</v-list-item-title>
@@ -75,86 +73,135 @@
         </template>
         </v-list>
       </v-menu>
+      </v-col> -->
+
+      <v-col  cols="8">
+      <v-text-field
+          v-model="search"
+          label="使用者名稱"
+          prepend-inner-icon="mdi-magnify"
+          single-line
+          variant="outlined"
+          hide-details
+          density="compact"
+          @input="searchData"></v-text-field>
+    </v-col>
+    <v-col  cols="4" style="padding-left: 0;">
+      <v-select
+        v-model="city"
+        :items="cityItems"
+        density="compact"
+        color="#25ECE0"
+        label="地區"
+        variant="outlined"
+        @keydown.delete="city = null"
+        >
+      </v-select>
+    </v-col>
+
+      <v-col cols="12"  v-for="(item,idx) in  filteredUserAll.slice(0,number)" :key="idx">
+        <v-card  class="rounded-lg" @click="router.push(`/${item.USER_NAME}`)">
+          <v-card-item style="padding-left: 0; padding-top: 0;padding-bottom: 0;">
+            <v-row style="margin:0;" >
+
+              <v-col :cols="imgCols" class="text-center">
+                <v-avatar size="90"  >
+                <v-img  :src="item.IMAGE" cover></v-img>
+              </v-avatar>
+              </v-col>
+
+              <v-col cols="8">
+                <v-row>
+                  <v-col cols="12">
+                    <span class="me-2" style="font-size: 1.2rem;">{{ item.NICK_NAME }}</span>
+                    <span style="color: #aaa;">( {{ item.USER_NAME }} )</span>
+                  </v-col>
+
+                  <v-col cols="12"  style=" font-size: 0.9rem;padding-top: 0;">
+                    <span style="border: 1px solid #25ECE0; padding: 3px 10px; color: #FF6868;"  >
+                      <span style="margin-right: 10px; font-weight: 900; color: #25ECE0;" >{{ item.SCHOOL_NAME }}</span>
+                      <span>{{ item.SCHOOL_CITY }}</span>
+                    </span>
+                  </v-col>
+
+                  <v-col cols="12" style="padding-top:0 ;">
+                    <span style="color: #aaa;">{{ item.DESCRIBE }}</span>
+                  </v-col>
+                </v-row>
+              </v-col>
+
+            </v-row>
+          </v-card-item>
+        </v-card>
       </v-col>
+      <v-col cols="12" style="color: #FF3333;text-align: right; padding-top:10px ;font-size: 1.2rem;">
+        <span v-if="filteredUserAll.length>number" class="pe-2" style="cursor: pointer;" @click="addNumber">and more</span>
+        <span v-else style="color: #25ECE0;">已經到底了（;≧皿≦）</span>
+      </v-col>
+
     </v-row>
 </v-container>
 </template>
 
 <script setup>
-import { computed, ref, onMounted } from 'vue'
 import { useApi } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useDisplay } from 'vuetify'
 import { useRouter, useRoute } from 'vue-router'
-import { useEmitter } from '@/composables/mitt'
 import InfoAll from '@/components/InfoAll.vue'
-import Swiper from 'swiper/bundle'
-import 'swiper/css/bundle'
+import { computed, ref, onMounted, provide, watch } from 'vue'
+
+const { xs } = useDisplay()
+const isXs = computed(() => xs.value)
+const { apiAuth } = useApi()
+const router = useRouter()
+const createSnackbar = useSnackbar()
 
 // 所有活動搜尋
-// const search = ref()
-// const searchData = ref('')
+const search = ref()
+const searchData = ref('')
 const city = ref()
 const cityItems = ['臺北市', '新北市', '桃園市', '臺中市', '臺南市', '高雄市', '新竹縣', '苗栗縣', '彰化縣', '南投縣', '雲林縣', '嘉義縣', '屏東縣', '宜蘭縣', '花蓮縣', '臺東縣', '澎湖縣', '金門縣', '連江縣', '基隆市', '新竹市', '嘉義市']
+const number = ref(5)
+const addNumber = () => {
+  number.value += 5
+}
 
-const randomEvents = computed(() => {
-  return [...eventAll.value].sort(() => Math.random() - 0.5)
+// 依照日期近遠改變排序
+const sortedEventAll = computed(() => {
+  return eventAll.value.slice().sort((a, b) => {
+    const dateA = a.DATE.split(' ')[0] // 分割日期和時間，並只取日期部分
+    const dateB = b.DATE.split(' ')[0]
+    return new Date(dateA) - new Date(dateB) // 將日期字符串轉換為 Date 物件並進行比較
+  })
 })
 
-const randomEventsTop = computed(() => {
-  return [...eventAll.value].sort(() => Math.random() - 0.5)
+// 隨機出現
+const randomUserAll = computed(() => {
+  return [...userAll.value].sort(() => Math.random() - 0.5)
 })
 
-const filteredEvents = computed(() => {
-  return randomEvents.value.filter(item => {
+const filteredUserAll = computed(() => {
+  return randomUserAll.value.filter(item => {
     let matchesSearch = true
     if (search.value) {
-      matchesSearch = item.TITLE.includes(search.value)
+      matchesSearch = item.USER_NAME.includes(search.value) || item.NICK_NAME.includes(search.value)
     }
 
     let matchesCity = true
     if (city.value) {
-      matchesCity = item.CITY === city.value
+      matchesCity = item.SCHOOL_CITY === city.value
     }
 
     return matchesSearch && matchesCity
   })
 })
 
-// 後端通知
-const InfoSwitch = ref(false)
-const InfoText = ref('')
-
-const closeInfo = () => {
-  InfoSwitch.value = false
-}
-
-const swiperTopStyle = computed(() => {
-  return isXs.value ? 'height: 250px;' : 'height: 310px;'
-})
-
-const swiperSlideStyle = computed(() => {
-  return isXs.value ? 'height: 180px;' : 'height: 300px;'
-})
-
-const swiper2Style = computed(() => {
-  return isXs.value ? 'height: 110px;' : 'height: 200px;'
+watch([search, city], () => {
+  number.value = 5
 })
 
 const eventAll = ref([])
-
-const getEventAll = async (value) => {
-  try {
-    const { data } = await apiAuth.get('/events/getEventAll')
-
-    eventAll.value = data.result
-  } catch (error) {
-    console.log(error)
-    const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
-    InfoText.value = text
-    InfoSwitch.value = true
-  }
-}
 
 const formatDate = (value) => {
   const parts = value.split(' ')
@@ -186,49 +233,21 @@ const formatDate = (value) => {
   return { year, monthDay, monthDay2, week, startTime, endTime, month, day }
 }
 
-onMounted(async () => {
-  await getEventAll()
-  console.log('eventAll', eventAll.value)
-
-  const swiper = new Swiper('.mySwiper', {
-    spaceBetween: 30,
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true
-    },
-    autoplay: {
-      delay: 5000
-    }
-  })
-
-  const swiper2 = new Swiper('.mySwiper2', {
-    slidesPerView: 2,
-    spaceBetween: 30,
-    freeMode: true,
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true
-    }
-  })
+const imgCols = computed(() => {
+  return isXs.value ? 4 : 2
 })
-const { apiAuth } = useApi()
-const createSnackbar = useSnackbar()
-const { xs } = useDisplay()
-const isXs = computed(() => xs.value)
 
-const search = ref('')
-const searchResults = ref([])
+// 使用者搜尋
+const userAll = ref([])
 
-const searchData = async () => {
+const getUserAll = async () => {
   try {
     const { data } = await apiAuth.get('/users/getUser', {
       params: {
-        search: search.value,
         role: '1,2,3'
       }
     })
-    searchResults.value = data.result.data
-    console.log(data, 'data')
+    userAll.value = data.result.data
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'
@@ -244,8 +263,11 @@ const searchData = async () => {
   }
 }
 
-const clearSearch = () => {
-  search.value = ''
-}
+// const clearGetUserAll = () => {
+//   search.value = ''
+// }
 
+onMounted(async () => {
+  getUserAll()
+})
 </script>

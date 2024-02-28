@@ -192,13 +192,10 @@ const goTicket = async () => {
   } else {
     try {
       // 取票
-      console.log(user._id, 'user._id')
       const ticket = [{ USER: user._id, USED: TicketUseState.N_USE }]
       const response = await apiAuth.patch(`/events/${route.params.id}`, {
         TICKET: ticket
       })
-
-      console.log(response)
 
       // 將 活動_id 、 票券_id 存入使用者資料
       const ticketId = response.data.ticketId

@@ -42,7 +42,7 @@
 
         <v-list  nav>
           <template v-for="item in navItems" :key="item.to">
-            <v-list-item :to="item.to"  exact>
+            <v-list-item :to="item.to"  exact  color="#25ECE0">
               <template v-slot:prepend>
                 <v-icon :icon="item.icon"></v-icon>
               </template>
@@ -133,7 +133,7 @@ const BottomNavItems = computed(() => {
     { to: '/', text: '首頁', icon: 'mdi-home', show: user.isLogin },
     // { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: user.isLogin },
     // { to: '', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show:user.isLogin },
-    { to: '/post', text: '動態', icon: 'mdi-account-multiple', show: user.isLogin },
+    { to: '/post', text: '檔案牆', icon: 'mdi-account-multiple', show: user.isLogin },
     { to: '/' + user.USER_NAME, text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin }
 
   ]
@@ -145,7 +145,7 @@ const navItems = computed(() => {
     { to: '/', text: '首頁', icon: 'mdi-home', show: user.isLogin },
     // { to: '/event', text: '活動', icon: 'mdi-calendar-check', show: user.isLogin },
     // { to: '', text: '論壇', icon: 'mdi-bullhorn-variant-outline', show: user.isLogin },
-    { to: '/post', text: '動態', icon: 'mdi-account-multiple', show: user.isLogin },
+    { to: '/post', text: '檔案牆', icon: 'mdi-account-multiple', show: user.isLogin },
     // { to: '/personal', text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin },
     { to: '/' + user.USER_NAME, text: '個人檔案', icon: 'mdi-account-circle-outline', show: user.isLogin },
     { to: '/ticket', text: '票券', icon: 'mdi-ticket-confirmation-outline', show: user.isLogin },
