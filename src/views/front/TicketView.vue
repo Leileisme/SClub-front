@@ -45,7 +45,7 @@
         <v-window-item value="two">
           <v-container>
             <v-row>
-              <v-col  v-if="user.TICKET_CART.some(item => item.USED !== TicketUseState.CANCEL )" style="color: #aaa;">目前沒有任何票券</v-col>
+              <v-col  v-if="!user.TICKET_CART.some(item => item.USED !== TicketUseState.CANCEL )" style="color: #aaa;">目前沒有任何票券</v-col>
 
               <template v-if="user.TICKET_CART.some(item => item.USED === TicketUseState.CANCEL)" >
                 <v-container style="padding-bottom: 0; margin-top: 1rem;opacity: 0.6;" >已使用票券</v-container>

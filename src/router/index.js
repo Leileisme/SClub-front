@@ -12,7 +12,7 @@ const routes = [
         name: 'home',
         component: () => import('@/views/front/HomeView.vue'),
         meta: {
-          title: '學生社團網',
+          title: 'SClub | 學生社團社群',
           login: true,
           admin: false
         }
@@ -22,7 +22,7 @@ const routes = [
         name: 'register',
         component: () => import('@/views/front/RegisterView.vue'),
         meta: {
-          title: '學生社團網 | 註冊',
+          title: 'SClub | 註冊',
           login: false,
           admin: false
         }
@@ -32,7 +32,7 @@ const routes = [
         name: 'login',
         component: () => import('@/views/front/LoginView.vue'),
         meta: {
-          title: '學生社團網 | 登入',
+          title: 'SClub | 登入',
           login: false,
           admin: false
         }
@@ -42,7 +42,7 @@ const routes = [
         name: 'event',
         component: () => import('@/views/front/EventView.vue'),
         meta: {
-          title: '學生社團網 | 活動',
+          title: 'SClub | 活動',
           login: true,
           admin: false
         },
@@ -52,7 +52,7 @@ const routes = [
             name: 'eventHome.vue',
             component: () => import('@/views/front/event/EventHome.vue'),
             meta: {
-              title: '學生社團網 | 活動',
+              title: 'SClub | 活動',
               login: true,
               admin: false
             }
@@ -62,7 +62,7 @@ const routes = [
             name: 'eventId',
             component: () => import('@/views/front/event/EventId.vue'),
             meta: {
-              title: '學生社團網 | 活動',
+              title: 'SClub | 活動',
               login: true,
               admin: false
             },
@@ -72,7 +72,7 @@ const routes = [
                 name: 'eventTicketHome.vue',
                 component: () => import('@/views/front/event/eventId/EventIdHome.vue'),
                 meta: {
-                  title: '學生社團網 | 活動內頁',
+                  title: 'SClub | 活動內頁',
                   login: true,
                   admin: false
                 }
@@ -82,7 +82,7 @@ const routes = [
                 name: 'eventTicket',
                 component: () => import('@/views/front/event/eventId/GetTicket.vue'),
                 meta: {
-                  title: '學生社團網 | 活動頁取票',
+                  title: 'SClub | 活動頁取票',
                   login: true,
                   admin: false
                 }
@@ -92,7 +92,7 @@ const routes = [
                 name: 'eventTicketUsed',
                 component: () => import('@/views/front/event/eventId/TicketUsed.vue'),
                 meta: {
-                  title: '學生社團網 | 使用票券',
+                  title: 'SClub | 使用票券',
                   login: true,
                   admin: false
                 }
@@ -105,7 +105,7 @@ const routes = [
         name: 'post',
         component: () => import('@/views/front/PostView.vue'),
         meta: {
-          title: '學生社團網 | 動態',
+          title: 'SClub | 動態',
           login: true,
           admin: false
         }
@@ -115,7 +115,7 @@ const routes = [
         name: 'ticket',
         component: () => import('@/views/front/TicketView.vue'),
         meta: {
-          title: '學生社團網 | 票券',
+          title: 'SClub | 票券',
           login: true,
           admin: false
         }
@@ -125,7 +125,7 @@ const routes = [
         name: 'ticketUsed',
         component: () => import('@/views/front/TicketUsed.vue'),
         meta: {
-          title: '學生社團網 | 票券',
+          title: 'SClub | 票券',
           login: true,
           admin: false
         }
@@ -135,7 +135,7 @@ const routes = [
         name: 'personal',
         component: () => import('@/views/front/PersonalView.vue'),
         meta: {
-          title: '學生社團網 | 個人檔案',
+          title: 'SClub | 個人檔案',
           login: true,
           admin: false
         }
@@ -151,7 +151,7 @@ const routes = [
         name: 'AdminHome',
         component: () => import('@/views/admin/HomeView.vue'),
         meta: {
-          title: '學生社團網 | 管理',
+          title: 'SClub | 管理',
           login: true,
           admin: true
         }
@@ -162,7 +162,7 @@ const routes = [
     name: 'NotFound',
     component: () => import('@/views/NotFoundView.vue'),
     meta: {
-      title: '學生社團網 | 找不到',
+      title: 'SClub | 找不到',
       login: false,
       admin: false
     }

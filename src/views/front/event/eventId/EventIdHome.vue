@@ -119,7 +119,7 @@
 
 <script setup>
 import { useDisplay } from 'vuetify'
-import { computed, ref, inject } from 'vue'
+import { computed, ref, inject, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import EventInfo from '@/components/EventView/EventInfo.vue'
 import EventHostCard from '@/components/EventView/EventHostCard.vue'
@@ -150,7 +150,7 @@ const getTicketDisabled = computed(() => {
 
 const getTicketText = computed(() => {
   if (routeEvent.value.HOST._id === user._id || routeEvent.value.CO_ORGANIZER.some(co => co._id === user._id)) {
-    return '取票狀態'
+    return '登記票券'
   } else {
     return routeEvent.value.PRE_SALE - routeEvent.value.TICKET.length === 0 ? '預售票掃空' : '馬上取票'
   }
@@ -211,7 +211,7 @@ const closeInfo = () => {
 const goTicket = async () => {
   if (routeEvent.value.HOST._id === user._id || routeEvent.value.CO_ORGANIZER.some(co => co._id === user._id)) {
     // 這邊要跳出 取票狀態表單
-    console.log('這邊要跳出 取票狀態表單')
+    router.push(`/event/${route.params.id}/ticketUsed`)
     return
   }
 
@@ -221,7 +221,7 @@ const goTicket = async () => {
   } else if (routeEvent.value.PRE_SALE - routeEvent.value.TICKET.length === 0) {
     // 票售罄通知
     InfoSwitchNTicket.value = true
-  } else if (routeEvent.value.TICKET.some(ticket => ticket.USER === user._id)) {
+  } else if (routeEvent.value.TICKET.some(ticket => ticket.USER._id === user._id)) {
     // 取過票通知
     InfoSwitchHadTicket.value = true
   } else {
@@ -236,6 +236,11 @@ const goTicket = async () => {
     }
   }
 }
+
+onMounted(() => {
+  console.log(routeEvent.value.TICKET)
+  console.log(routeEvent.value.TICKET.some(ticket => ticket.USER === user._id))
+})
 
 </script>
 <style scoped>

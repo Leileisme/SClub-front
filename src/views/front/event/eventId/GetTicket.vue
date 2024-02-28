@@ -171,6 +171,7 @@ const closeInfo = () => {
   router.push(`/event/${route.params.id}`)
 }
 
+console.log()
 // 取票
 const goTicket = async () => {
   if (routeEvent.value.HOST._id === user._id) {
@@ -191,6 +192,7 @@ const goTicket = async () => {
   } else {
     try {
       // 取票
+      console.log(user._id, 'user._id')
       const ticket = [{ USER: user._id, USED: TicketUseState.N_USE }]
       const response = await apiAuth.patch(`/events/${route.params.id}`, {
         TICKET: ticket

@@ -48,9 +48,9 @@
           <div v-for="(item,idx) in routeEvent.TICKET.filter(item => item.USED === TicketUseState.N_USE)" :key="idx">
             <v-row >
               <v-col cols="1"> {{idx+1}}.</v-col>
-              <v-col cols="1" class="d-flex justify-center align-center me-3"  style="height: 45px;">
-                <v-avatar size="250%"  >
-                <v-img  :src="item.USER.IMAGE"></v-img>
+              <v-col cols="1" class="d-flex justify-center align-center me-3"  style="height: 55px;">
+                <v-avatar size="35"  >
+                <v-img  :src="item.USER.IMAGE" cover></v-img>
               </v-avatar>
               </v-col>
               <v-col cols="9"  class="d-flex justify-center align-center">
@@ -70,8 +70,8 @@
           <div v-for="(item,idx) in routeEvent.TICKET.filter(item => item.USED === TicketUseState.USED)" :key="idx">
             <v-row >
               <v-col cols="1"> {{idx+1}}.</v-col>
-              <v-col cols="1" class="d-flex justify-center align-center me-3"  style="height: 45px;">
-                <v-avatar size="250%"  >
+              <v-col cols="1" class="d-flex justify-center align-center me-3"  style="height: 55px;">
+                <v-avatar size="35"  >
                 <v-img  :src="item.USER.IMAGE"></v-img>
               </v-avatar>
               </v-col>

@@ -154,7 +154,6 @@ onMounted(async () => {
   event.value = await getEventById()
   provide('routeEvent', event)
 })
-
 </script>
 <style scoped>
 </style>

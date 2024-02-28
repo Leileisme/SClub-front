@@ -55,8 +55,8 @@
     </v-app-bar>
   </template>
 
-  <NPersonalClub v-if="routeUser.ROLE !== UserRole.CLUB" :routeUser="routeUser" :routeEvent="routeEvent"></NPersonalClub>
-  <PersonalClub v-else :routeUser="routeUser" :routeEvent="routeEvent"></PersonalClub>
+  <NPersonalClub v-if="routeUser.ROLE !== UserRole.CLUB" ></NPersonalClub>
+  <PersonalClub v-else  ></PersonalClub>
 
 </template>
 

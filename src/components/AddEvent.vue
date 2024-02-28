@@ -65,9 +65,8 @@
                           label="活動日期" prepend-icon="mdi-calendar" readonly v-bind="attrs" @click="menu = !menu">
                         </v-text-field>
                       </template>
-                      <v-date-picker  type="date" color="#25ECE0" v-model="date.value.value" no-time no-title @input="menu = false">
-
-                      <!-- <v-date-picker  type="date" color="#25ECE0" v-model="date.value.value" :min="minDate" no-time no-title @input="menu = false"> -->
+                      <!-- <v-date-picker  type="date" color="#25ECE0" v-model="date.value.value" no-time no-title @input="menu = false"> -->
+                      <v-date-picker  type="date" color="#25ECE0" v-model="date.value.value" :min="minDate" no-time no-title @input="menu = false">
                         <template v-slot:actions>
                           <v-btn  style="background-color: #25ECE0; color: rgb(0, 0, 0); font-weight: 900;" @click="menu = false">確定</v-btn>
                         </template>
@@ -629,8 +628,6 @@ const submit = handleSubmit(async (values) => {
 
     const response = await apiAuth.post('/events', fd)
     const eventId = response.data.result._id // 從伺服器回應中取得新建事件的 _id
-    console.log('eventId', eventId)
-    // emitter.emit('updateUser')
     createSnackbar({
       text: '新增成功',
       showCloseButton: false,
@@ -640,7 +637,6 @@ const submit = handleSubmit(async (values) => {
         location: 'bottom'
       }
     })
-    emitter.emit('updateUserOk')
     router.push('/event/' + eventId)
   } catch (error) {
     console.log(error)
@@ -655,6 +651,10 @@ const submit = handleSubmit(async (values) => {
       }
     })
   }
+})
+
+emitter.on('updateUserOk', async () => {
+  closeDialog()
 })
 
 </script>
