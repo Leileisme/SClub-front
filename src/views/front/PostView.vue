@@ -114,6 +114,7 @@
                 <v-row>
                   <v-col cols="12">
                     <span class="me-2" style="font-size: 1.2rem;">{{ item.NICK_NAME }}</span>
+                    <span v-if=" item.CLUB_TH" class="me-2">第 {{ item.CLUB_TH }} 屆</span>
                     <span style="color: #aaa;">( {{ item.USER_NAME }} )</span>
                   </v-col>
 

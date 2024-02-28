@@ -132,7 +132,7 @@ const getEventById = async () => {
     routeEvent.value.HOUR_END = hourEnd.padStart(2, '0')
     routeEvent.value.YY_MM_DD = date
 
-    document.title = `學生社團 | ${routeEvent.value.TITLE}`
+    document.title = `SClub | ${routeEvent.value.TITLE}`
   } catch (error) {
     console.log(error)
     const text = error?.response?.data?.message || '發生錯誤，請稍後再試'

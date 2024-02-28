@@ -161,7 +161,7 @@ const getUserName = async () => {
     routeUser.value.IS_CORE_MEMBER = data.result.IS_CORE_MEMBER
     routeUser.value.MAKE_EVENTS_ID = data.result.MAKE_EVENTS_ID
 
-    document.title = `學生社團 | ${routeUser.value.NICK_NAME}（${routeUser.value.USER_NAME}）`
+    document.title = `SClub | ${routeUser.value.NICK_NAME}（${routeUser.value.USER_NAME}）`
     await getEventById()
     // await getEventById()
   } catch (error) {
