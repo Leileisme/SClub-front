@@ -171,7 +171,6 @@ const closeInfo = () => {
   router.push(`/event/${route.params.id}`)
 }
 
-console.log()
 // 取票
 const goTicket = async () => {
   if (routeEvent.value.HOST._id === user._id) {

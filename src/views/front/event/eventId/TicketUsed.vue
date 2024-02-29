@@ -173,7 +173,7 @@ const closeInfo = () => {
 }
 
 onMounted(async () => {
-  console.log(routeEvent.value)
+
 })
 </script>
 

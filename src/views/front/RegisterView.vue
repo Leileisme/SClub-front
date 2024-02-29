@@ -473,7 +473,6 @@ const submitOne = form1.handleSubmit(async (value) => {
   try {
     form2.resetForm()
     tab.value = 'two'
-    console.log(role.value.value)
   } catch (error) {
     console.log(error)
   }
@@ -690,7 +689,6 @@ const clubCategory = useField('clubCategory', undefined, { form: form3 })
 
 // 日期格式轉換
 const BDAYText = computed(() => BDAY.value.value ? new Date(BDAY.value.value).toLocaleDateString().substring(0, 10) : '')
-console.log(BDAYText, '日期')
 
 // 姓名、社團名稱判斷
 const realNameLabel = computed(() => {
@@ -699,7 +697,6 @@ const realNameLabel = computed(() => {
 
 // 3.送出表單
 const submitThree = form3.handleSubmit(async (values) => {
-  console.log(123)
   try {
     await api.post('/users', {
       ROLE: role.value.value,
