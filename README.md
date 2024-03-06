@@ -1,53 +1,15 @@
-# default
+# SClub | 學生社團社群 【專題網站-開發中】
 
-## Project setup
+### 前後端串接
 
-```
-# yarn
-yarn
+<pre>
+觀看可使用以下帳號登入或新註冊~~~
+帳號：ndhu_cdpd@gmail.com
+密碼：nnnnnn
+</pre>
 
-# npm
-npm install
+[前往 SClub](https://leileisme.github.io/SClub-front/#/login)
 
-# pnpm
-pnpm install
+[專題開發概念/紀錄 PPT](https://www.figma.com/proto/9mfnaEVrcCGWJtq2WV0Gwr/20240228_%E5%B0%88%E9%A1%8C%E5%A0%B1%E5%91%8A?node-id=9-502)
 
-# bun
-bun install
-```
-
-### Compiles and hot-reloads for development
-
-```
-# yarn
-yarn dev
-
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# bun
-bun run dev
-```
-
-### Compiles and minifies for production
-
-```
-# yarn
-yarn build
-
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# bun
-bun run build
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://vitejs.dev/config/).
+持續更新中:)
