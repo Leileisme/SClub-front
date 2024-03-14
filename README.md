@@ -10,6 +10,10 @@
 
 [前往 SClub](https://leileisme.github.io/SClub-front/#/login)
 
+<<<<<<< Updated upstream
 [專題開發概念/紀錄 PPT](https://www.figma.com/proto/9mfnaEVrcCGWJtq2WV0Gwr/20240228_%E5%B0%88%E9%A1%8C%E5%A0%B1%E5%91%8A?node-id=9-502)
 
 持續更新中:)
+=======
+
+>>>>>>> Stashed changes
