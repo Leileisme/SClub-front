@@ -163,6 +163,7 @@ const getUserName = async () => {
 
     document.title = `SClub | ${routeUser.value.NICK_NAME}（${routeUser.value.USER_NAME}）`
     await getEventById()
+    console.log(data.result)
     // await getEventById()
   } catch (error) {
     console.log(error)
